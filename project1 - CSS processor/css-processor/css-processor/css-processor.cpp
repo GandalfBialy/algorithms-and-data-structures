@@ -1,9 +1,8 @@
 #include <iostream>
 
 
-//#include "Node.h"
-#include "Node.cpp"
-
+#include "Node.h"
+#include "List.h"
 
 
 int main()
