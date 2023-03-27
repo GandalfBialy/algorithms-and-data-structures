@@ -49,6 +49,75 @@ void insertNodeAtBeginning(Node** head, int data)
 }
 
 
+void insertNodeAfter(Node* previousNode, int data)
+{
+	if (previousNode == NULL) {
+		std::cout << "The given previous node cannot be NULL" << std::endl;
+		return;
+	}
+
+	Node* newNode = new Node();
+	newNode->data = data;
+	newNode->next = previousNode->next;
+	newNode->previous = previousNode;
+
+	previousNode->next = newNode;
+
+	if (newNode->next != NULL) {
+		newNode->next->previous = newNode;
+	}
+}
+
+
+void deleteNode(Node** head, Node* nodeToDelete)
+{
+	if (*head == NULL || nodeToDelete == NULL) {
+		return;
+	}
+
+	if (*head == nodeToDelete) {
+		*head = nodeToDelete->next;
+	}
+
+	if (nodeToDelete->next != NULL) {
+		nodeToDelete->next->previous = nodeToDelete->previous;
+	}
+
+	if (nodeToDelete->previous != NULL) {
+		nodeToDelete->previous->next = nodeToDelete->next;
+	}
+
+	delete nodeToDelete;
+}
+
+
+void deleteNodeAtPosition(Node** head, int position)
+{
+	if (*head == NULL) {
+		return;
+	}
+
+	Node* currentNode = *head;
+
+	for (int i = 0; currentNode != NULL && i < position - 1; i++) {
+		currentNode = currentNode->next;
+	}
+
+	if (currentNode == NULL || currentNode->next == NULL) {
+		return;
+	}
+
+	Node* nodeToDelete = currentNode->next;
+
+	currentNode->next = nodeToDelete->next;
+
+	if (nodeToDelete->next != NULL) {
+		nodeToDelete->next->previous = currentNode;
+	}
+
+	delete nodeToDelete;
+}
+
 
 int main()
 {
