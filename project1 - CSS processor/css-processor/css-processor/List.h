@@ -128,4 +128,19 @@ namespace list {
 
 		delete nodeToDelete;
 	}
+
+	
+	static void clearList(Node** head)
+	{
+		Node* currentNode = *head;
+		Node* nextNode = NULL;
+
+		while (currentNode != NULL) {
+			nextNode = currentNode->next;
+			delete currentNode;
+			currentNode = nextNode;
+		}
+
+		*head = NULL;
+	}
 }
