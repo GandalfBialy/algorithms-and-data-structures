@@ -129,11 +129,13 @@
   <ItemGroup>
     <ClCompile Include="css-processor.cpp" />
     <ClCompile Include="Node.cpp" />
+    <ClCompile Include="String.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="List.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="String.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="css-processor.rc" />
