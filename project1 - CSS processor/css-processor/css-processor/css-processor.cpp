@@ -4,41 +4,38 @@
 #include "Node.h"
 #include "List.h"
 #include "String.h"
+//#include "Parser.h"
+//#include "CSS.h"
 
 
 void testList() {
-	Node* head = new Node();
-	head->data = 1;
-	head->next = NULL;
-	head->previous = NULL;
+	List<int> integersList;
+	integersList.insert(1);
+	integersList.insert(2);
+	integersList.insert(3);
+	integersList.insert(4);
+	integersList.insert(5);
+	std::cout << integersList;
 
-	for (int i = 2; i < 10; i++) {
-		list::insertNode(head, i);
-	}
-	list::print(head);
+	List<String> stringsList;
+	stringsList.insert("Hello");
+	stringsList.insert("World");
+	stringsList.insert("!");
+	std::cout << stringsList;
 
-	std::cout << "insertNodeAtBeginning(&head, 0)" << std::endl;
-	list::insertNodeAtBeginning(&head, 0);
-	list::print(head);
+	List<List<int>> listOfIntegersLists;
+	listOfIntegersLists.insert(integersList);
+	listOfIntegersLists.insert(integersList);
+	listOfIntegersLists.insert(integersList);
+	listOfIntegersLists.print();
 
-	std::cout << "insertNodeAfter(head->next->next, 300)" << std::endl;
-	list::insertNodeAfter(head->next->next, 300);
-	list::print(head);
-
-	std::cout << "deleteNode(&head, head->next->next)" << std::endl;
-	list::deleteNode(&head, head->next->next);
-	list::print(head);
-
-	std::cout << "deleteNodeAtPosition(&head, 3)" << std::endl;
-	list::deleteNodeAtPosition(&head, 3);
-	list::print(head);
-
-	std::cout << "clearList(&head)" << std::endl;
-	list::clearList(&head);
-	list::print(head);
-
-	delete head;
+	List<List<String>> stringListList;
+	stringListList.insert(stringsList);
+	stringListList.insert(stringsList);
+	stringListList.insert(stringsList);
+	stringListList.print();
 }
+
 
 
 void testString() {
@@ -72,7 +69,11 @@ void testString() {
 
 int main()
 {
-	testString();
+	testList();
+	//testString();
+
+	//Parser parser;
+	//parser.loadCSS();
 
 	return 0;
 }

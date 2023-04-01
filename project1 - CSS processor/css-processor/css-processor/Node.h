@@ -4,10 +4,19 @@
 #include <iostream>
 
 
-class Node
+#include "String.h"
+
+
+template <typename T>
+class Node 
 {
 public:
-	int data;
-	Node* next;
-	Node* previous;
+	T data;
+	Node<T>* next;
+	//Node<T>* previous;
+
+	Node(T data) {
+		this->data = data;
+		next = nullptr;
+	}
 };

@@ -1,53 +1,112 @@
 #pragma once
 
 
-#include <iostream>
-
-
 #include "Node.h"
 
 
-namespace list {
-	static void print(Node* head)
-	{
-		Node* currentNode = head;
+template <typename T>
+class List
+{
+private:
+	Node<T>* head;
+	int size;
 
-		std::cout << "List: ";
+	template <typename U>
+	friend std::ostream& operator<<(std::ostream& os, const List<U>& list);
 
-		while (currentNode != NULL) {
-			std::cout << currentNode->data;
+public:
+	List() {
+		head = nullptr;
+		size = 0;
+	}
 
-			if (currentNode->next != NULL) {
-				std::cout << ", ";
+
+	/*~List() {
+		Node<T>* current = head;
+
+		while (current != nullptr) {
+			Node<T>* temp = current;
+			current = current->next;
+			delete temp;
+		}
+	}*/
+
+
+	void print() {
+		for (Node<T>* current = head; current != nullptr; current = current->next) {
+			std::cout << current->data << " ";
+		}
+
+		std::cout << std::endl;
+	}
+
+
+	void insert(T data) {
+		Node<T>* node = new Node<T>(data);
+
+		if (head == nullptr) {
+			head = node;
+		}
+		else {
+			Node<T>* current = head;
+
+			while (current->next != nullptr) {
+				current = current->next;
 			}
 
-			currentNode = currentNode->next;
+			current->next = node;
 		}
 
-		std::cout << std::endl << std::endl;
+		size++;
 	}
 
 
-	static void insertNode(Node* head, int data)
-	{
-		Node* currentNode = head;
+	void remove(T data) {
+		if (head == nullptr) {
+			return;
+		}
 
-		while (currentNode->next != NULL) {
+		if (head->data == data) {
+			Node<T>* temp = head;
+			head = head->next;
+			delete temp;
+			size--;
+			return;
+		}
+
+		Node<T>* currentNode = head;
+
+		while (currentNode->next != nullptr and currentNode->next->data != data) {
 			currentNode = currentNode->next;
 		}
 
-		Node* newNode = new Node();
-		newNode->data = data;
-		newNode->next = NULL;
-		newNode->previous = currentNode;
-
-		currentNode->next = newNode;
+		if (currentNode->next != nullptr) {
+			Node<T>* temp = currentNode->next;
+			currentNode->next = currentNode->next->next;
+			delete temp;
+			size--;
+		}
 	}
 
 
-	static void insertNodeAtBeginning(Node** head, int data)
+	int getSize() {
+		return size;
+	}
+
+
+
+
+
+	
+
+
+
+
+
+
+	/*static void insertNodeAtBeginning(Node** head, int data)
 	{
-		Node* newNode = new Node();
+		Node<T>* newNode = new Node();
 		newNode->data = data;
 		newNode->next = *head;
 		newNode->previous = NULL;
@@ -57,17 +116,17 @@ namespace list {
 		}
 
 		*head = newNode;
-	}
+	}*/
 
 
-	static void insertNodeAfter(Node* previousNode, int data)
+	/*static void insertNodeAfter(Node* previousNode, int data)
 	{
 		if (previousNode == NULL) {
 			std::cout << "The given previous node cannot be NULL" << std::endl;
 			return;
 		}
 
-		Node* newNode = new Node();
+		Node<T>* newNode = new Node();
 		newNode->data = data;
 		newNode->next = previousNode->next;
 		newNode->previous = previousNode;
@@ -77,10 +136,10 @@ namespace list {
 		if (newNode->next != NULL) {
 			newNode->next->previous = newNode;
 		}
-	}
+	}*/
 
 
-	static void deleteNode(Node** head, Node* nodeToDelete)
+	/*static void deleteNode(Node** head, Node* nodeToDelete)
 	{
 		if (*head == NULL || nodeToDelete == NULL) {
 			return;
@@ -127,10 +186,10 @@ namespace list {
 		}
 
 		delete nodeToDelete;
-	}
+	}*/
 
-	
-	static void clearList(Node** head)
+
+	/*static void clearList(Node** head)
 	{
 		Node* currentNode = *head;
 		Node* nextNode = NULL;
@@ -142,5 +201,21 @@ namespace list {
 		}
 
 		*head = NULL;
+	}*/
+};
+
+
+
+
+template<typename T>
+std::ostream& operator<<(std::ostream& outputStream, const List<T>& list) {
+	Node<T>* current = list.head;
+
+	while (current != nullptr) {
+		outputStream << current->data << " ";
+		current = current->next;
 	}
+
+	outputStream << std::endl;
+	return outputStream;
 }
