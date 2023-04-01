@@ -27,6 +27,10 @@ void Parser::loadCSS() {
 
 	line += buffer;
 	std::cout << line;
+
+	cssBuffer = line;
+
+	delete[] buffer;
 }
 
 
@@ -34,7 +38,7 @@ void Parser::parseCSS() {
 	bufferIndex = 0;
 
 	while (cssBuffer[bufferIndex] != '\0') {
-		parseSelector();
+		//parseSelector();
 
 		if (cssBuffer[bufferIndex] == '{') {
 			parseProperty();
@@ -44,15 +48,44 @@ void Parser::parseCSS() {
 
 
 void Parser::parseSection() {
-	String selector = "";
+	String section = "";
+	char* sectionBuffer = new char[BUFFER_SIZE];
+	int sectionBufferIndex = 0;
 
 	while (cssBuffer[bufferIndex] != '{') {
-		//selector += cssBuffer[bufferIndex];
+		sectionBuffer[sectionBufferIndex] = cssBuffer[bufferIndex];
 		bufferIndex++;
 	}
 
-	// add selector to css
+	sectionBuffer[sectionBufferIndex] = '\0';
+
+	section = sectionBuffer;
+
+	std::cout << section;
+
+	parseSelectors(section);
+
+	delete[] sectionBuffer;
+}
 
 
-	std::cout << selector;
+void Parser::parseSelectors(String section) {
+	/*List<String> selectors;
+	String selector = "";
+	int selectorIndex = 0;
+	for (int i = 0; i < section.getLength(); i++) {
+		if (section[i] == ',') {
+			selector[selectorIndex] = '\0';
+			selectors.pushBack(selector);
+			selectorIndex = 0;
+			continue;
+		}
+		selector[selectorIndex] = section[i];
+		selectorIndex++;
+	}
+	selector[selectorIndex] = '\0';
+	selectors.pushBack(selector);
+	for (int i = 0; i < selectors.getSize(); i++) {
+		std::cout << selectors[i] << std::endl;
+	}*/
 }

@@ -1,12 +1,12 @@
 #pragma once
 
 
+#include "Section.h"
+
+
 class CSS
 {
 private:
-	List<String> sections;
-	List<String> selectors;
-	List<String> properties;
-	List<String> values;
+	List<Section> sections;
 };
 

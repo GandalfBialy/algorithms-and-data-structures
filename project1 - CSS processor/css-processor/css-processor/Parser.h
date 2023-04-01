@@ -23,8 +23,7 @@ public:
 	void loadCSS();
 	void parseCSS();
 	void parseSection();
-	void parseSelector();
+	void parseSelectors(String section);
 	void parseProperty();
 	void parseValue();
 };
-
