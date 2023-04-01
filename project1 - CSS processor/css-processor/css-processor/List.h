@@ -21,17 +21,6 @@ public:
 	}
 
 
-	/*~List() {
-		Node<T>* current = head;
-
-		while (current != nullptr) {
-			Node<T>* temp = current;
-			current = current->next;
-			delete temp;
-		}
-	}*/
-
-
 	void print() {
 		for (Node<T>* current = head; current != nullptr; current = current->next) {
 			std::cout << current->data << " ";
