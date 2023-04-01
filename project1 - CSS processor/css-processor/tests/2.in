@@ -15,12 +15,6 @@ h1, body {
 
 h1, h2, h3, h4, h5, h6 {color: #0066CB;}
 ????
-?
-1,S,?
-1,S,1
-1,A,?
-2,A,font-family
-4,S,?
-4,S,1
-1,S,2
-4,A,?
+h1,S,?
+color,A,?
+h1,E,color
