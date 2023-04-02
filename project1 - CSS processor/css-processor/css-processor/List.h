@@ -16,9 +16,12 @@ private:
 
 public:
 	List();
+
 	void print();
 	void append(T data);
 	void remove(T data);
+
+	Node<T>* getHead();
 	int getSize();
 
 	// assign operator
@@ -31,7 +34,15 @@ public:
 	}
 
 	// subscript operator
-	//T& operator[](int index);
+	T& operator[](int index) {
+		Node<T>* currentNode = head;
+
+		for (int i = 0; i < index; i++) {
+			currentNode = currentNode->next;
+		}
+
+		return currentNode->data;
+	}
 
 
 
@@ -209,6 +220,12 @@ void List<T>::remove(T data) {
 template<typename T>
 int List<T>::getSize() {
 	return size;
+}
+
+
+template<typename T>
+Node<T>* List<T>::getHead() {
+	return head;
 }
 
 
