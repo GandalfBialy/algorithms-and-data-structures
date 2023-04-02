@@ -16,6 +16,7 @@ private:
 	CSS css;
 	String cssBuffer;
 	int bufferIndex;
+	int declarationBufferIndex;
 
 public:
 	Parser();
@@ -23,8 +24,9 @@ public:
 	void loadCSS();
 	void parseCSS();
 	void parseSection();
-	void parseSelectors(String section);
+	void parseSelectors(Section section);
 	void parseDeclarations();
-	void parseProperty(String section);
+	void parseProperties(String section);
+	//void parseProperty(String section);
 	void parseValue(String section);
 };
