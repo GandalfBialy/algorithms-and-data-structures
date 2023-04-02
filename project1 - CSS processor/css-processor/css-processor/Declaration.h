@@ -13,5 +13,8 @@ private:
 public:
 	void setProperty(String property);
 	void setValue(String value);
+
+	String getProperty();
+	String getValue();
 };
 
