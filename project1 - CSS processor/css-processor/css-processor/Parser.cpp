@@ -133,15 +133,13 @@ void Parser::parseDeclarations() {
 	int declarationBufferIndex = 0;
 
 	while (cssBuffer[bufferIndex] != '}') {
-		declarationBufferIndex++; // skip the first '{'
-		
 		declarationBuffer[declarationBufferIndex] = cssBuffer[bufferIndex];
 		bufferIndex++;
 		declarationBufferIndex++;
 	}
 
-	//declarationBuffer[declarationBufferIndex] = '}';
-	//declarationBufferIndex++;
+	declarationBuffer[declarationBufferIndex] = '}';
+	declarationBufferIndex++;
 
 	declarationBuffer[declarationBufferIndex] = '\0';
 	declaration = declarationBuffer;
@@ -162,55 +160,39 @@ void Parser::parseProperties(String declaration) {
 	char* propertyBuffer = new char[BUFFER_SIZE];
 	int propertyBufferIndex = 0;
 
-	for (int i = 0; i < declaration.getLength(); i++) {
-		if (declaration[i] == ':') {
+	int declarationLength = declaration.getLength();
+	declarationBufferIndex++; // skip the first '{'
+
+	while (declarationBufferIndex < declarationLength) {
+		char currentCharacter = declaration[declarationBufferIndex];
+		
+		if (currentCharacter == ':') {
 			propertyBuffer[propertyBufferIndex] = '\0';
 			property = propertyBuffer;
 
 			propertyBufferIndex = 0;
-			declarationBufferIndex = i + 1;
+			declarationBufferIndex++;
 
 			std::cerr << "Property: " << std::endl;
 			std::cerr << property << std::endl << std::endl;
 
 			parseValue(declaration);
 
-			declarationBufferIndex = i + 1;
+			declarationBufferIndex++;
 
 			continue;
 		}
 
-		propertyBuffer[propertyBufferIndex] = declaration[i];
-		propertyBufferIndex++;
+		if (currentCharacter != ' ' and currentCharacter != '\t' and currentCharacter != '\n' and currentCharacter != '\r') {
+			propertyBuffer[propertyBufferIndex] = currentCharacter;
+			propertyBufferIndex++;
+		}
+
+		declarationBufferIndex++;
 	}
 
 	delete[] propertyBuffer;
 }
-
-
-//void Parser::parseProperty(String declaration) {
-//	std::cerr << "Parsing property..." << std::endl;
-//	
-//	String property = "";
-//	char* propertyBuffer = new char[BUFFER_SIZE];
-//	int propertyBufferIndex = 0;
-//
-//	for (int i = 0; i < declaration.getLength(); i++) {
-//		if (declaration[i] == ':') {
-//			propertyBuffer[propertyBufferIndex] = '\0';
-//			property = propertyBuffer;
-//			break;
-//		}
-//
-//		propertyBuffer[propertyBufferIndex] = declaration[i];
-//		propertyBufferIndex++;
-//	}
-//
-//	std::cerr << "Property: " << std::endl;
-//	std::cerr << property << std::endl << std::endl;
-//
-//	parseValue(declaration, propertyBufferIndex);
-//}
 
 
 void Parser::parseValue(String declaration) {
@@ -220,15 +202,23 @@ void Parser::parseValue(String declaration) {
 	char* valueBuffer = new char[BUFFER_SIZE];
 	int valueBufferIndex = 0;
 
-	for (int i = declarationBufferIndex; i < declaration.getLength(); i++) {
-		if (declaration[i] == ';') {
+	int declarationLength = declaration.getLength();
+
+	while (declarationBufferIndex < declarationLength) {
+		char currentCharacter = declaration[declarationBufferIndex];
+		
+		if (declaration[declarationBufferIndex] == ';') {
 			valueBuffer[valueBufferIndex] = '\0';
 			value = valueBuffer;
 			break;
 		}
 
-		valueBuffer[valueBufferIndex] = declaration[i];
-		valueBufferIndex++;
+		if (currentCharacter != ' ' and currentCharacter != '\t' and currentCharacter != '\n' and currentCharacter != '\r') {
+			valueBuffer[valueBufferIndex] = currentCharacter;
+			valueBufferIndex++;
+		}
+		
+		declarationBufferIndex++;
 	}
 
 	std::cerr << "Value: " << std::endl;
@@ -238,3 +228,6 @@ void Parser::parseValue(String declaration) {
 
 	delete[] valueBuffer;
 }
+
+
+
