@@ -15,78 +15,23 @@ private:
 	friend std::ostream& operator<<(std::ostream& os, const List<U>& list);
 
 public:
-	List() {
-		head = nullptr;
-		size = 0;
+	List();
+	void print();
+	void append(T data);
+	void remove(T data);
+	int getSize();
+
+	// assign operator
+	List<T>& operator=(const List<T>& list) {
+		if (this != &list) {
+			this->head = list.head;
+			this->size = list.size;
+		}
+		return *this;
 	}
 
-
-	void print() {
-		for (Node<T>* current = head; current != nullptr; current = current->next) {
-			std::cout << current->data << " ";
-		}
-
-		std::cout << std::endl;
-	}
-
-
-	void append(T data) {
-		Node<T>* node = new Node<T>(data);
-
-		if (head == nullptr) {
-			head = node;
-		}
-		else {
-			Node<T>* current = head;
-
-			while (current->next != nullptr) {
-				current = current->next;
-			}
-
-			current->next = node;
-		}
-
-		size++;
-	}
-
-
-	void remove(T data) {
-		if (head == nullptr) {
-			return;
-		}
-
-		if (head->data == data) {
-			Node<T>* temp = head;
-			head = head->next;
-			delete temp;
-			size--;
-			return;
-		}
-
-		Node<T>* currentNode = head;
-
-		while (currentNode->next != nullptr and currentNode->next->data != data) {
-			currentNode = currentNode->next;
-		}
-
-		if (currentNode->next != nullptr) {
-			Node<T>* temp = currentNode->next;
-			currentNode->next = currentNode->next->next;
-			delete temp;
-			size--;
-		}
-	}
-
-
-	int getSize() {
-		return size;
-	}
-
-
-
-
-
-	
+	// subscript operator
+	//T& operator[](int index);
 
 
 
@@ -194,6 +139,77 @@ public:
 };
 
 
+template<typename T>
+List<T>::List() {
+	head = nullptr;
+	size = 0;
+}
+
+
+template<typename T>
+void List<T>::print() {
+	for (Node<T>* current = head; current != nullptr; current = current->next) {
+		std::cout << current->data << " ";
+	}
+
+	std::cout << std::endl;
+}
+
+
+template<typename T>
+void List<T>::append(T data) {
+	Node<T>* node = new Node<T>(data);
+
+	if (head == nullptr) {
+		head = node;
+	}
+	else {
+		Node<T>* current = head;
+
+		while (current->next != nullptr) {
+			current = current->next;
+		}
+
+		current->next = node;
+	}
+
+	size++;
+}
+
+
+template<typename T>
+void List<T>::remove(T data) {
+	if (head == nullptr) {
+		return;
+	}
+
+	if (head->data == data) {
+		Node<T>* temp = head;
+		head = head->next;
+		delete temp;
+		size--;
+		return;
+	}
+
+	Node<T>* currentNode = head;
+
+	while (currentNode->next != nullptr and currentNode->next->data != data) {
+		currentNode = currentNode->next;
+	}
+
+	if (currentNode->next != nullptr) {
+		Node<T>* temp = currentNode->next;
+		currentNode->next = currentNode->next->next;
+		delete temp;
+		size--;
+	}
+}
+
+
+template<typename T>
+int List<T>::getSize() {
+	return size;
+}
 
 
 template<typename T>

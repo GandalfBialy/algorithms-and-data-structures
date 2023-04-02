@@ -15,8 +15,12 @@ public:
 	Node<T>* next;
 	//Node<T>* previous;
 
-	Node(T data) {
-		this->data = data;
-		next = nullptr;
-	}
+	Node(T data);
 };
+
+
+template <typename T>
+Node<T>::Node(T data) {
+	this->data = data;
+	next = nullptr;
+}
