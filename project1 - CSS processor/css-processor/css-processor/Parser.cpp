@@ -37,17 +37,23 @@ void Parser::loadCSS() {
 void Parser::parseCSS() {
 	bufferIndex = 0;
 
-	while (cssBuffer[bufferIndex] != '\0') {
-		//parseSelector();
+	parseSection();
 
-		if (cssBuffer[bufferIndex] == '{') {
+	//while (cssBuffer[bufferIndex] != '\0') {
+		//parseSection();
+		// 
+		// TODO: commands/instructions also should be parsed here, a flag should do the work
+
+		/*if (cssBuffer[bufferIndex] == '{') {
 			parseProperty();
-		}
-	}
+		}*/
+	//}
 }
 
 
 void Parser::parseSection() {
+	std::cout << "Parsing section..." << std::endl;
+	
 	String section = "";
 	char* sectionBuffer = new char[BUFFER_SIZE];
 	int sectionBufferIndex = 0;
@@ -55,6 +61,7 @@ void Parser::parseSection() {
 	while (cssBuffer[bufferIndex] != '{') {
 		sectionBuffer[sectionBufferIndex] = cssBuffer[bufferIndex];
 		bufferIndex++;
+		sectionBufferIndex++;
 	}
 
 	sectionBuffer[sectionBufferIndex] = '\0';
@@ -63,29 +70,50 @@ void Parser::parseSection() {
 
 	std::cout << section;
 
-	parseSelectors(section);
-
 	delete[] sectionBuffer;
+
+	parseSelectors(section);
+	parseDeclarations();
 }
 
 
 void Parser::parseSelectors(String section) {
-	/*List<String> selectors;
+	List<String> selectors;
 	String selector = "";
-	int selectorIndex = 0;
+	char* selectorBuffer = new char[BUFFER_SIZE];
+	int selectorBufferIndex = 0;
+
 	for (int i = 0; i < section.getLength(); i++) {
 		if (section[i] == ',') {
-			selector[selectorIndex] = '\0';
-			selectors.pushBack(selector);
-			selectorIndex = 0;
+			selectorBuffer[selectorBufferIndex] = '\0';
+			selectors.append(selector);
+			selectorBufferIndex = 0;
 			continue;
 		}
-		selector[selectorIndex] = section[i];
-		selectorIndex++;
+
+		selectorBuffer[selectorBufferIndex] = section[i];
+		selectorBufferIndex++;
 	}
-	selector[selectorIndex] = '\0';
-	selectors.pushBack(selector);
-	for (int i = 0; i < selectors.getSize(); i++) {
-		std::cout << selectors[i] << std::endl;
-	}*/
+
+	selectorBuffer[selectorBufferIndex] = '\0';
+	selectors.append(selector);
+
+	std::cout << "Selectors: " << std::endl;
+	selectors.print();
+}
+
+
+void Parser::parseDeclarations() {
+
+}
+
+
+void Parser::parseProperty(String declaration) {
+
+}
+
+
+void Parser::parseValue(String declaration) {
+
+
 }

@@ -24,6 +24,7 @@ public:
 	void parseCSS();
 	void parseSection();
 	void parseSelectors(String section);
-	void parseProperty();
-	void parseValue();
+	void parseDeclarations();
+	void parseProperty(String section);
+	void parseValue(String section);
 };
