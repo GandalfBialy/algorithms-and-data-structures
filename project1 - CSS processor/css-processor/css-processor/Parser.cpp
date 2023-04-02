@@ -133,13 +133,15 @@ void Parser::parseDeclarations() {
 	int declarationBufferIndex = 0;
 
 	while (cssBuffer[bufferIndex] != '}') {
+		declarationBufferIndex++; // skip the first '{'
+		
 		declarationBuffer[declarationBufferIndex] = cssBuffer[bufferIndex];
 		bufferIndex++;
 		declarationBufferIndex++;
 	}
 
-	declarationBuffer[declarationBufferIndex] = '}';
-	declarationBufferIndex++;
+	//declarationBuffer[declarationBufferIndex] = '}';
+	//declarationBufferIndex++;
 
 	declarationBuffer[declarationBufferIndex] = '\0';
 	declaration = declarationBuffer;
@@ -164,19 +166,25 @@ void Parser::parseProperties(String declaration) {
 		if (declaration[i] == ':') {
 			propertyBuffer[propertyBufferIndex] = '\0';
 			property = propertyBuffer;
-			break;
+
+			propertyBufferIndex = 0;
+			declarationBufferIndex = i + 1;
+
+			std::cerr << "Property: " << std::endl;
+			std::cerr << property << std::endl << std::endl;
+
+			parseValue(declaration);
+
+			declarationBufferIndex = i + 1;
+
+			continue;
 		}
 
 		propertyBuffer[propertyBufferIndex] = declaration[i];
 		propertyBufferIndex++;
-
-		parseValue(declaration, propertyBufferIndex + 1);
 	}
 
-	std::cerr << "Property: " << std::endl;
-	std::cerr << property << std::endl << std::endl;
-
-	parseValue(declaration, propertyBufferIndex + 1);
+	delete[] propertyBuffer;
 }
 
 
@@ -210,9 +218,9 @@ void Parser::parseValue(String declaration) {
 	
 	String value = "";
 	char* valueBuffer = new char[BUFFER_SIZE];
-	int valueBufferIndex = currentBufferIndex;
+	int valueBufferIndex = 0;
 
-	for (int i = currentBufferIndex; i < declaration.getLength(); i++) {
+	for (int i = declarationBufferIndex; i < declaration.getLength(); i++) {
 		if (declaration[i] == ';') {
 			valueBuffer[valueBufferIndex] = '\0';
 			value = valueBuffer;
@@ -222,6 +230,11 @@ void Parser::parseValue(String declaration) {
 		valueBuffer[valueBufferIndex] = declaration[i];
 		valueBufferIndex++;
 	}
+
 	std::cerr << "Value: " << std::endl;
 	std::cerr << value << std::endl << std::endl;
+
+	// TODO: add property and value to the last section
+
+	delete[] valueBuffer;
 }
