@@ -38,6 +38,7 @@ void Parser::parseCSS() {
 	bufferIndex = 0;
 
 	parseSection();
+	//parseDeclarations();
 
 	//while (cssBuffer[bufferIndex] != '\0') {
 		//parseSection();
@@ -52,7 +53,7 @@ void Parser::parseCSS() {
 
 
 void Parser::parseSection() {
-	std::cout << "Parsing section..." << std::endl;
+	std::cerr << "Parsing section..." << std::endl;
 	
 	String section = "";
 	char* sectionBuffer = new char[BUFFER_SIZE];
@@ -72,12 +73,13 @@ void Parser::parseSection() {
 
 	delete[] sectionBuffer;
 
-	parseSelectors(section);
-	parseDeclarations();
+	//parseSelectors(section);
 }
 
 
 void Parser::parseSelectors(String section) {
+	std::cerr << "Parsing selectors..." << std::endl;
+	
 	List<String> selectors;
 	String selector = "";
 	char* selectorBuffer = new char[BUFFER_SIZE];
@@ -86,8 +88,12 @@ void Parser::parseSelectors(String section) {
 	for (int i = 0; i < section.getLength(); i++) {
 		if (section[i] == ',') {
 			selectorBuffer[selectorBufferIndex] = '\0';
+			selector = selectorBuffer;
 			selectors.append(selector);
 			selectorBufferIndex = 0;
+			continue;
+		}
+		else if (section[i] == ' ') {
 			continue;
 		}
 
@@ -96,6 +102,7 @@ void Parser::parseSelectors(String section) {
 	}
 
 	selectorBuffer[selectorBufferIndex] = '\0';
+	selector = selectorBuffer;
 	selectors.append(selector);
 
 	std::cout << "Selectors: " << std::endl;
@@ -104,11 +111,26 @@ void Parser::parseSelectors(String section) {
 
 
 void Parser::parseDeclarations() {
-
+	//std::cerr << "Parsing declarations..." << std::endl;
+	
+	/*String declaration = "";
+	char* declarationBuffer = new char[BUFFER_SIZE];
+	int declarationBufferIndex = 0;
+	while (cssBuffer[bufferIndex] != '}') {
+		declarationBuffer[declarationBufferIndex] = cssBuffer[bufferIndex];
+		bufferIndex++;
+		declarationBufferIndex++;
+	}
+	declarationBuffer[declarationBufferIndex] = '\0';
+	declaration = declarationBuffer;
+	std::cout << declaration;
+	delete[] declarationBuffer;
+	parseProperty(declaration);*/
 }
 
 
 void Parser::parseProperty(String declaration) {
+
 
 }
 
