@@ -30,7 +30,7 @@ public:
 	}
 
 
-	void insert(T data) {
+	void append(T data) {
 		Node<T>* node = new Node<T>(data);
 
 		if (head == nullptr) {

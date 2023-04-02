@@ -11,29 +11,29 @@
 namespace tests {
 	void testList() {
 		List<int> integersList;
-		integersList.insert(1);
-		integersList.insert(2);
-		integersList.insert(3);
-		integersList.insert(4);
-		integersList.insert(5);
+		integersList.append(1);
+		integersList.append(2);
+		integersList.append(3);
+		integersList.append(4);
+		integersList.append(5);
 		std::cout << integersList;
 
 		List<String> stringsList;
-		stringsList.insert("Hello");
-		stringsList.insert("World");
-		stringsList.insert("!");
+		stringsList.append("Hello");
+		stringsList.append("World");
+		stringsList.append("!");
 		std::cout << stringsList;
 
 		List<List<int>> listOfIntegersLists;
-		listOfIntegersLists.insert(integersList);
-		listOfIntegersLists.insert(integersList);
-		listOfIntegersLists.insert(integersList);
+		listOfIntegersLists.append(integersList);
+		listOfIntegersLists.append(integersList);
+		listOfIntegersLists.append(integersList);
 		listOfIntegersLists.print();
 
 		List<List<String>> stringListList;
-		stringListList.insert(stringsList);
-		stringListList.insert(stringsList);
-		stringListList.insert(stringsList);
+		stringListList.append(stringsList);
+		stringListList.append(stringsList);
+		stringListList.append(stringsList);
 		stringListList.print();
 	}
 
@@ -81,6 +81,7 @@ int main()
 
 	Parser parser;
 	parser.loadCSS();
+	parser.parseCSS();
 
 	return 0;
 }
