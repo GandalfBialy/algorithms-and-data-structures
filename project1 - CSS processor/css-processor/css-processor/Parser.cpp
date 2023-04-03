@@ -5,22 +5,21 @@ Parser::Parser() {
 	currentDeclaration = Declaration();
 
 	inputString = "";
-	cssString = "";
 
 	inputStringIndex = 0;
 	sectionBodyBufferIndex = 0;
+
+	isCSSParserModeOn = true;
 }
 
 
-// TODO: handle input greater than BUFFER_SIZE
-void Parser::loadCSS() {
+void Parser::loadInput() {
 	inputStringIndex = 0;
 	char* inputBuffer = new char[BUFFER_SIZE];
-	String line = "";
 	
 	while (inputBuffer[inputStringIndex] = getchar()) {
 		if (inputStringIndex == BUFFER_SIZE) {
-			line += inputBuffer;
+			inputString += inputBuffer;
 			inputStringIndex = 0;
 			continue;
 		}
@@ -32,29 +31,28 @@ void Parser::loadCSS() {
 		inputStringIndex++;
 	}
 
-	line += inputBuffer;
-	//std::cerr << line;
-
-	//cssString = line;
-	cssString = line;
+	inputString += inputBuffer;
+	//std::cerr << inputString;
 
 	delete[] inputBuffer;
 }
 
 
-void Parser::parseCSS() {
+void Parser::parseInput() {
 	inputStringIndex = 0;
 
-	while (cssString[inputStringIndex] != '\0' and cssString[inputStringIndex + 1] != '\0') {
+	while (inputString[inputStringIndex] != '\0' and inputString[inputStringIndex + 1] != '\0') {
+		if (isCSSParserModeOn) {
 		parseSection();
+			
+		}
 
 		inputStringIndex++;
 
 		// TODO: commands/instructions also should be parsed here, a flag should do the work
 	}
 
-	std::cerr << std::endl << std::endl;
-	css.printCSS();
+	printParsedAndStructuredInput();
 }
 
 
@@ -65,8 +63,8 @@ void Parser::parseSection() {
 	char* sectionBuffer = new char[BUFFER_SIZE];
 	int sectionBufferIndex = 0;
 
-	while (cssString[inputStringIndex] != '{') {
-		sectionBuffer[sectionBufferIndex] = cssString[inputStringIndex];
+	while (inputString[inputStringIndex] != '{') {
+		sectionBuffer[sectionBufferIndex] = inputString[inputStringIndex];
 		inputStringIndex++;
 		sectionBufferIndex++;
 	}
@@ -74,6 +72,9 @@ void Parser::parseSection() {
 	sectionBuffer[sectionBufferIndex] = '\0';
 
 	sectionString = sectionBuffer;
+
+	sectionString.trimWhitespace();
+
 	this->currentSection = Section(sectionString);
 
 	std::cerr << "Section: " << std::endl;
@@ -99,30 +100,40 @@ void Parser::parseSelectors() {
 	char* selectorBuffer = new char[BUFFER_SIZE];
 	int selectorBufferIndex = 0;
 
-	for (int i = 0; i < sectionNameLength; i++) {
-		if (sectionName[i] == ',') {
+	int commaCount = sectionName.countCharacter(',');
+
+	for (int sectionNameIndex = 0; sectionNameIndex < sectionNameLength; sectionNameIndex++) {
+		char currentCharacter = sectionName[sectionNameIndex];
+		
+		if (currentCharacter == ',') {
 			selectorBuffer[selectorBufferIndex] = '\0';
-			selector = selectorBuffer;
-			selectors.append(selector);
 			selectorBufferIndex = 0;
+
+			commaCount--;
+			
+			selector = selectorBuffer;
+			selector.trimWhitespace();
+			selectors.append(selector);
+			
 			continue;
 		}
-		else if (sectionName[i] == ' ') {
+		else if (currentCharacter == ' ' and commaCount > 0) {
 			continue;
 		}
 
-		selectorBuffer[selectorBufferIndex] = sectionName[i];
+		selectorBuffer[selectorBufferIndex] = currentCharacter;
 		selectorBufferIndex++;
 	}
 
 	selectorBuffer[selectorBufferIndex] = '\0';
 	selector = selectorBuffer;
+
+	selector.trimWhitespace();
 	selectors.append(selector);
 
 	currentSection.setSelectors(selectors);
-	//css.appendSection(currentSection);
 
-	std::cerr << "Selectors: " << std::endl;
+	std::cerr << "Selectors: ";
 	selectors.print();
 	std::cerr << std::endl;
 
@@ -137,13 +148,13 @@ void Parser::parseDeclarations() {
 	int sectionBodyBufferIndex = 0;
 
 	// skip '{'
-	while (cssString[inputStringIndex] != '{') {
+	while (inputString[inputStringIndex] != '{') {
 		inputStringIndex++;
 	}
 	inputStringIndex++;
 
-	while (cssString[inputStringIndex] != '}') {
-		sectionBodyBuffer[sectionBodyBufferIndex] = cssString[inputStringIndex];
+	while (inputString[inputStringIndex] != '}') {
+		sectionBodyBuffer[sectionBodyBufferIndex] = inputString[inputStringIndex];
 		inputStringIndex++;
 		sectionBodyBufferIndex++;
 	}
@@ -151,13 +162,13 @@ void Parser::parseDeclarations() {
 	sectionBodyBuffer[sectionBodyBufferIndex] = '\0';
 	sectionBodyString = sectionBodyBuffer;
 
-	std::cerr << "Section body: " << std::endl;
-	std::cerr << sectionBodyString << std::endl << std::endl;
+	//std::cerr << "Section body: " << std::endl;
+	//std::cerr << sectionBodyString << std::endl << std::endl;
 
 	sectionBodyString.trimWhitespace();
 
-	std::cerr << "Section body (trimmed whitespace): " << std::endl;
-	std::cerr << sectionBodyString << std::endl << std::endl;
+	//std::cerr << "Section body (trimmed whitespace): " << std::endl;
+	//std::cerr << sectionBodyString << std::endl << std::endl;
 
 	parseProperties();
 
@@ -189,8 +200,8 @@ void Parser::parseProperties() {
 
 			property.trimWhitespace();
 
-			std::cerr << "Property: " << std::endl;
-			std::cerr << property << std::endl << std::endl;
+			//std::cerr << "Property: " << std::endl;
+			//std::cerr << property << std::endl << std::endl;
 
 			currentDeclaration.setProperty(property);
 
@@ -216,7 +227,7 @@ void Parser::parseProperties() {
 
 
 void Parser::parseValue() {
-	std::cerr << "Parsing value..." << std::endl;
+	//std::cerr << "Parsing value..." << std::endl;
 	
 	String value = "";
 	char* valueBuffer = new char[BUFFER_SIZE];
@@ -243,8 +254,8 @@ void Parser::parseValue() {
 
 	value.trimWhitespace();
 
-	std::cerr << "Value: " << std::endl;
-	std::cerr << value << std::endl << std::endl;
+	//std::cerr << "Value: " << std::endl;
+	//std::cerr << value << std::endl << std::endl;
 
 	currentDeclaration.setValue(value);
 
@@ -254,4 +265,13 @@ void Parser::parseValue() {
 
 bool Parser::isWhiteSpace(char character) {
 	return character == ' ' or character == '\t' or character == '\n' or character == '\r';
+}
+
+
+void Parser::printParsedAndStructuredInput() {
+	std::cerr << std::endl << std::endl;
+	css.printCSS();
+
+	std::cerr << std::endl << std::endl;
+	commandsInterpreter.printCommands();
 }

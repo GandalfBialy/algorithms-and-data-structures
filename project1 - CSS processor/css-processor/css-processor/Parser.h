@@ -5,6 +5,7 @@
 #include "Node.h"
 #include "String.h"
 #include "CSS.h"
+#include "CommandsInterpreter.h"
 
 
 int const BUFFER_SIZE = 1000;
@@ -14,27 +15,26 @@ class Parser
 {
 private:
 	CSS css;
+	CommandsInterpreter commandsInterpreter;
 
 	Section currentSection;
 	Declaration currentDeclaration;
 
 	String inputString;
-	//String cssBuffer;
-	String cssString;
 	String sectionBodyString;
 	
-	//int bufferIndex;
 	int inputStringIndex;
 	int sectionBodyBufferIndex;
+
+	bool isCSSParserModeOn;
 
 public:
 	Parser();
 
-	//void loadInput();
-	void loadCSS();
+	void loadInput();
 	
-	//void parseInput();
-	void parseCSS();
+	void parseInput();
+	//void parseCSS();
 	void parseSection();
 	void parseSelectors();
 	void parseDeclarations();
@@ -42,4 +42,6 @@ public:
 	void parseValue();
 
 	bool isWhiteSpace(char character);
+
+	void printParsedAndStructuredInput();
 };

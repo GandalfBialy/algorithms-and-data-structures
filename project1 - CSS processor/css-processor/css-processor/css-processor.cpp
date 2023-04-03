@@ -79,8 +79,8 @@ int main()
 	//tests::runTests();
 
 	Parser parser;
-	parser.loadCSS();
-	parser.parseCSS();
+	parser.loadInput();
+	parser.parseInput();
 
 	return 0;
 }
