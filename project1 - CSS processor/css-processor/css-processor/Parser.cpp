@@ -43,8 +43,10 @@ void Parser::parseInput() {
 
 	while (inputString[inputStringIndex] != '\0' and inputString[inputStringIndex + 1] != '\0') {
 		if (isCSSParserModeOn) {
-		parseSection();
-			
+			parseSection();
+		}
+		else {
+			parseCommands();
 		}
 
 		inputStringIndex++;
@@ -100,7 +102,7 @@ void Parser::parseSelectors() {
 	char* selectorBuffer = new char[BUFFER_SIZE];
 	int selectorBufferIndex = 0;
 
-	int commaCount = sectionName.countCharacter(',');
+	//int commaCount = sectionName.countCharacter(',');
 
 	for (int sectionNameIndex = 0; sectionNameIndex < sectionNameLength; sectionNameIndex++) {
 		char currentCharacter = sectionName[sectionNameIndex];
@@ -109,7 +111,7 @@ void Parser::parseSelectors() {
 			selectorBuffer[selectorBufferIndex] = '\0';
 			selectorBufferIndex = 0;
 
-			commaCount--;
+			//commaCount--;
 			
 			selector = selectorBuffer;
 			selector.trimWhitespace();
@@ -117,9 +119,9 @@ void Parser::parseSelectors() {
 			
 			continue;
 		}
-		else if (currentCharacter == ' ' and commaCount > 0) {
+		/*else if (currentCharacter == ' ' and commaCount > 0) {
 			continue;
-		}
+		}*/
 
 		selectorBuffer[selectorBufferIndex] = currentCharacter;
 		selectorBufferIndex++;
@@ -260,6 +262,47 @@ void Parser::parseValue() {
 	currentDeclaration.setValue(value);
 
 	delete[] valueBuffer;
+}
+
+
+void Parser::parseCommands() {
+	std::cerr << "Parsing commands..." << std::endl;
+
+	String command = "";
+	char* commandBuffer = new char[BUFFER_SIZE];
+	int commandBufferIndex = 0;
+
+	int inputStringLength = inputString.getLength();
+	inputStringIndex = 0;
+
+	while (inputStringIndex < inputStringLength) {
+		char currentCharacter = inputString[inputStringIndex];
+
+		if (currentCharacter == '*') {
+			commandBuffer[commandBufferIndex] = '\0';
+			command = commandBuffer;
+			commandBufferIndex = 0;
+			inputStringIndex++;
+
+			command.trimWhitespace();
+
+			//std::cerr << "Command: " << std::endl;
+			//std::cerr << command << std::endl << std::endl;
+
+			commandsInterpreter.appendCommand(command);
+
+			continue;
+		}
+
+		//if (!isWhiteSpace(currentCharacter)) {
+		commandBuffer[commandBufferIndex] = currentCharacter;
+		commandBufferIndex++;
+		//}
+
+		inputStringIndex++;
+	}
+
+	delete[] commandBuffer;
 }
 
 

@@ -40,6 +40,7 @@ public:
 	void parseDeclarations();
 	void parseProperties();
 	void parseValue();
+	void parseCommands();
 
 	bool isWhiteSpace(char character);
 

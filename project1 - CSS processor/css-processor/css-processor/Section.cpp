@@ -28,7 +28,7 @@ void Section::print() {
 	for (int i = 0; i < declarations.getSize(); i++) {
 		std::cerr << declarations[i].getProperty() << ": " << declarations[i].getValue() << std::endl;
 	}
-	std::cerr << std::endl;
+	std::cerr << "----------" << std::endl;
 }
 
 

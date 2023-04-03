@@ -27,4 +27,3 @@ public:
 	List<String> getSelectors();
 	List<Declaration> getDeclarations();
 };
-
