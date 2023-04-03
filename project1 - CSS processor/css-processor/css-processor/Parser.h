@@ -24,6 +24,7 @@ private:
 	String sectionBodyString;
 	
 	int inputStringIndex;
+	//int inputStringLength;
 	int sectionBodyBufferIndex;
 
 	bool isCSSParserModeOn;
@@ -40,7 +41,9 @@ public:
 	void parseDeclarations();
 	void parseProperties();
 	void parseValue();
-	void parseCommands();
+	void parseCommand();
+
+	void executeCommands();
 
 	bool isWhiteSpace(char character);
 

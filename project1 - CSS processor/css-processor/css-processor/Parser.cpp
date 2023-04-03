@@ -7,6 +7,7 @@ Parser::Parser() {
 	inputString = "";
 
 	inputStringIndex = 0;
+	//inputStringLength = 0;
 	sectionBodyBufferIndex = 0;
 
 	isCSSParserModeOn = true;
@@ -32,7 +33,12 @@ void Parser::loadInput() {
 	}
 
 	inputString += inputBuffer;
+	inputString.trimWhitespace();
+
 	//std::cerr << inputString;
+
+	//inputStringLength = inputString.getLength();
+	inputStringIndex = 0;
 
 	delete[] inputBuffer;
 }
@@ -41,17 +47,42 @@ void Parser::loadInput() {
 void Parser::parseInput() {
 	inputStringIndex = 0;
 
-	while (inputString[inputStringIndex] != '\0' and inputString[inputStringIndex + 1] != '\0') {
+	// for commands parsing testing purposes
+	//isCSSParserModeOn = false;
+	
+
+	while (inputString[inputStringIndex] != '\0') {
+		// if next characters are "????" then parse command
+		// else parse CSS
+		/*inputString.trimWhitespace();
+		inputStringLength = inputString.getLength();
+		
+		if (inputString[inputStringIndex] == '?' and inputStringIndex + 3 < inputStringLength and inputString[inputStringIndex + 1] == '?' and inputString[inputStringIndex + 2] == '?' and inputString[inputStringIndex + 3] == '?') {
+			isCSSParserModeOn = false;
+		}
+		else if (inputString[inputStringIndex] == '*' and inputStringIndex + 3 < inputStringLength and inputString[inputStringIndex + 1] == '*' and inputString[inputStringIndex + 2] == '*' and inputString[inputStringIndex + 3] == '*') {
+			isCSSParserModeOn = true;
+		}*/
+
 		if (isCSSParserModeOn) {
 			parseSection();
 		}
 		else {
-			parseCommands();
+			int nextCSSBlockIndex = inputString.findSubstring("****", inputStringIndex);
+
+			std::cerr << "nextCSSBlockIndex: " << nextCSSBlockIndex << std::endl;
+			std::cerr << "nextCSSBlockIndex in: " << nextCSSBlockIndex - inputStringIndex << std::endl;
+
+			if (nextCSSBlockIndex - inputStringIndex == 0) {
+				isCSSParserModeOn = true;
+				continue;
+			}
+			
+			
+			parseCommand();
 		}
 
 		inputStringIndex++;
-
-		// TODO: commands/instructions also should be parsed here, a flag should do the work
 	}
 
 	printParsedAndStructuredInput();
@@ -88,6 +119,23 @@ void Parser::parseSection() {
 	parseDeclarations();
 	
 	css.appendSection(currentSection);
+
+
+	// next '{' character index
+	int nextSectionIndex = inputString.findCharacter('{', inputStringIndex);
+
+	// next "????" characters index
+	int nextCommandIndex = inputString.findSubstring("????", inputStringIndex);
+
+
+	// if next "????" characters index is less than next '{' character index then parse command
+	if (nextCommandIndex < nextSectionIndex or nextSectionIndex == -1) {
+		isCSSParserModeOn = false;
+
+		inputStringIndex = nextCommandIndex;
+
+		inputStringIndex += 4; // skip "????"
+	}
 }
 
 
@@ -102,8 +150,6 @@ void Parser::parseSelectors() {
 	char* selectorBuffer = new char[BUFFER_SIZE];
 	int selectorBufferIndex = 0;
 
-	//int commaCount = sectionName.countCharacter(',');
-
 	for (int sectionNameIndex = 0; sectionNameIndex < sectionNameLength; sectionNameIndex++) {
 		char currentCharacter = sectionName[sectionNameIndex];
 		
@@ -111,18 +157,13 @@ void Parser::parseSelectors() {
 			selectorBuffer[selectorBufferIndex] = '\0';
 			selectorBufferIndex = 0;
 
-			//commaCount--;
-			
 			selector = selectorBuffer;
 			selector.trimWhitespace();
 			selectors.append(selector);
 			
 			continue;
 		}
-		/*else if (currentCharacter == ' ' and commaCount > 0) {
-			continue;
-		}*/
-
+		
 		selectorBuffer[selectorBufferIndex] = currentCharacter;
 		selectorBufferIndex++;
 	}
@@ -216,10 +257,8 @@ void Parser::parseProperties() {
 			continue;
 		}
 
-		//if (!isWhiteSpace(currentCharacter)) {
-			propertyBuffer[propertyBufferIndex] = currentCharacter;
-			propertyBufferIndex++;
-		//}
+		propertyBuffer[propertyBufferIndex] = currentCharacter;
+		propertyBufferIndex++;
 
 		sectionBodyBufferIndex++;
 	}
@@ -246,10 +285,8 @@ void Parser::parseValue() {
 			break;
 		}
 
-		//if (!isWhiteSpace(currentCharacter)) {
-			valueBuffer[valueBufferIndex] = currentCharacter;
-			valueBufferIndex++;
-		//}
+		valueBuffer[valueBufferIndex] = currentCharacter;
+		valueBufferIndex++;
 		
 		sectionBodyBufferIndex++;
 	}
@@ -265,44 +302,75 @@ void Parser::parseValue() {
 }
 
 
-void Parser::parseCommands() {
-	std::cerr << "Parsing commands..." << std::endl;
+void Parser::parseCommand() {
+	// next CSS block index
+	/*int nextCSSBlockIndex = inputString.findSubstring("****", inputStringIndex);
+
+	std::cerr << "nextCSSBlockIndex: " << nextCSSBlockIndex << std::endl;
+	std::cerr << "nextCSSBlockIndex in: " << nextCSSBlockIndex - inputStringIndex << std::endl;*/
+	
+	
+	
+	
+	
+	
+	std::cerr << "Parsing command..." << std::endl;
 
 	String command = "";
 	char* commandBuffer = new char[BUFFER_SIZE];
 	int commandBufferIndex = 0;
 
 	int inputStringLength = inputString.getLength();
-	inputStringIndex = 0;
 
 	while (inputStringIndex < inputStringLength) {
 		char currentCharacter = inputString[inputStringIndex];
 
-		if (currentCharacter == '*') {
+		if (currentCharacter == '\n') {
 			commandBuffer[commandBufferIndex] = '\0';
 			command = commandBuffer;
 			commandBufferIndex = 0;
-			inputStringIndex++;
 
 			command.trimWhitespace();
 
-			//std::cerr << "Command: " << std::endl;
-			//std::cerr << command << std::endl << std::endl;
+			if (command.getLength() == 0) {
+				return;
+			}
+
+			std::cerr << "Command: " << std::endl;
+			std::cerr << command << std::endl << std::endl;
 
 			commandsInterpreter.appendCommand(command);
 
-			continue;
+			return;
 		}
 
-		//if (!isWhiteSpace(currentCharacter)) {
 		commandBuffer[commandBufferIndex] = currentCharacter;
 		commandBufferIndex++;
-		//}
 
 		inputStringIndex++;
 	}
 
+	if (commandBufferIndex == 0) {
+		return;
+	}
+	
+	commandBuffer[commandBufferIndex] = '\0';
+	command = commandBuffer;
+	commandBufferIndex = 0;
+
+	command.trimWhitespace();
+
+	std::cerr << "Command: " << std::endl;
+	std::cerr << command << std::endl << std::endl;
+
+	commandsInterpreter.appendCommand(command);
+
 	delete[] commandBuffer;
+}
+
+
+void Parser::executeCommands() {
+	commandsInterpreter.executeCommands(css);
 }
 
 
