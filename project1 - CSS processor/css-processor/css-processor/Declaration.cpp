@@ -1,6 +1,12 @@
 #include "Declaration.h"
 
 
+Declaration::Declaration() {
+	property = "";
+	value = "";
+}
+
+
 void Declaration::setProperty(String property) {
 	this->property = property;
 }

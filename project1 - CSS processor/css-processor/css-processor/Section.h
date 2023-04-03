@@ -17,6 +17,8 @@ public:
 	Section(String sectionName);
 
 	void print();
+
+	void appendDeclaration(Declaration declaration);
 	
 	void setSelectors(List<String> selectors);
 	void setDeclarations(List<Declaration> declarations);

@@ -11,6 +11,8 @@ private:
 	String value;
 
 public:
+	Declaration();
+
 	void setProperty(String property);
 	void setValue(String value);
 
