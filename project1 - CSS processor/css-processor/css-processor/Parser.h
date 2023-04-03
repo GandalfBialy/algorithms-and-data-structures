@@ -15,20 +15,28 @@ class Parser
 private:
 	CSS css;
 
-	String cssBuffer;
+	Section currentSection;
+	Declaration currentDeclaration;
+
+	String inputString;
+	//String cssBuffer;
+	String cssString;
 	String sectionBodyString;
 	
-	int bufferIndex;
+	//int bufferIndex;
+	int inputStringIndex;
 	int sectionBodyBufferIndex;
 
 public:
 	Parser();
 
+	//void loadInput();
 	void loadCSS();
 	
+	//void parseInput();
 	void parseCSS();
 	void parseSection();
-	void parseSelectors(Section section);
+	void parseSelectors();
 	void parseDeclarations();
 	void parseProperties();
 	void parseValue();
