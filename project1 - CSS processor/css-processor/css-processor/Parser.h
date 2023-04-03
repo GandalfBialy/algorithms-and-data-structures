@@ -15,6 +15,7 @@ class Parser
 private:
 	CSS css;
 	String cssBuffer;
+	String sectionBodyString;
 	int bufferIndex;
 	int declarationBufferIndex;
 
@@ -26,8 +27,8 @@ public:
 	void parseSection();
 	void parseSelectors(Section section);
 	void parseDeclarations();
-	void parseProperties(String declaration);
-	void parseValue(String declaration);
+	void parseProperties();
+	void parseValue();
 
 	bool isWhiteSpace(char character);
 };

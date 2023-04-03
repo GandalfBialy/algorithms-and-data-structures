@@ -126,9 +126,10 @@ void Parser::parseSelectors(Section section) {
 
 
 void Parser::parseDeclarations() {
-	std::cerr << "Parsing declarations..." << std::endl;
+	std::cerr << "Parsing declarations (section body)..." << std::endl;
 	
-	String declaration = "";
+	//Declaration declaration;
+	String sectionBodyString = "";
 	char* declarationBuffer = new char[BUFFER_SIZE];
 	int declarationBufferIndex = 0;
 
@@ -142,29 +143,29 @@ void Parser::parseDeclarations() {
 	declarationBufferIndex++;
 
 	declarationBuffer[declarationBufferIndex] = '\0';
-	declaration = declarationBuffer;
+	sectionBodyString = declarationBuffer;
 
-	std::cerr << "Declaration: " << std::endl;
-	std::cerr << declaration << std::endl << std::endl;
+	std::cerr << "Section body: " << std::endl;
+	std::cerr << sectionBodyString << std::endl << std::endl;
 
-	parseProperties(declaration);
+	parseProperties();
 
 	delete[] declarationBuffer;
 }
 
 
-void Parser::parseProperties(String declaration) {
+void Parser::parseProperties() {
 	std::cerr << "Parsing properties..." << std::endl;
 	
 	String property = "";
 	char* propertyBuffer = new char[BUFFER_SIZE];
 	int propertyBufferIndex = 0;
 
-	int declarationLength = declaration.getLength();
+	int sectionBodyLength = sectionBodyString.getLength();
 	declarationBufferIndex++; // skip the first '{'
 
-	while (declarationBufferIndex < declarationLength) {
-		char currentCharacter = declaration[declarationBufferIndex];
+	while (declarationBufferIndex < sectionBodyLength) {
+		char currentCharacter = sectionBodyString[declarationBufferIndex];
 		
 		if (currentCharacter == ':') {
 			propertyBuffer[propertyBufferIndex] = '\0';
@@ -176,7 +177,7 @@ void Parser::parseProperties(String declaration) {
 			std::cerr << "Property: " << std::endl;
 			std::cerr << property << std::endl << std::endl;
 
-			parseValue(declaration);
+			parseValue();
 
 			declarationBufferIndex++;
 
@@ -195,19 +196,19 @@ void Parser::parseProperties(String declaration) {
 }
 
 
-void Parser::parseValue(String declaration) {
+void Parser::parseValue() {
 	std::cerr << "Parsing value..." << std::endl;
 	
 	String value = "";
 	char* valueBuffer = new char[BUFFER_SIZE];
 	int valueBufferIndex = 0;
 
-	int declarationLength = declaration.getLength();
+	int sectionBodyLength = sectionBodyString.getLength();
 
-	while (declarationBufferIndex < declarationLength) {
-		char currentCharacter = declaration[declarationBufferIndex];
+	while (declarationBufferIndex < sectionBodyLength) {
+		char currentCharacter = sectionBodyString[declarationBufferIndex];
 		
-		if (declaration[declarationBufferIndex] == ';') {
+		if (currentCharacter == ';') {
 			valueBuffer[valueBufferIndex] = '\0';
 			value = valueBuffer;
 			break;
