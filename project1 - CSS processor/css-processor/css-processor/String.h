@@ -25,6 +25,12 @@ public:
 	void trimPrecedingWhitespace();
 	void trimTrailingWhitespace();
 
+	bool hasCharacter(char character);
+	bool hasCharacter(char character, int startIndex);
+
+	int countCharacter(char character);
+	int countCharacter(char character, int startIndex);
+	
 	String& operator=(const String& string);
 	String& operator=(const char* cString);
 

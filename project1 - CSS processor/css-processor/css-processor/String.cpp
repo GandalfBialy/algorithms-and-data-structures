@@ -30,6 +30,40 @@ void String::trimWhitespace() {
 }
 
 
+bool String::hasCharacter(char character) {
+	return hasCharacter(character, 0);
+}
+
+
+bool String::hasCharacter(char character, int startIndex) {
+	for (int i = startIndex; i < length; i++) {
+		if (string[i] == character) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
+int String::countCharacter(char character) {
+	return countCharacter(character, 0);
+}
+
+
+int String::countCharacter(char character, int startIndex) {
+	int count = 0;
+
+	for (int i = startIndex; i < length; i++) {
+		if (string[i] == character) {
+			count++;
+		}
+	}
+
+	return count;
+}
+
+
 void String::trimPrecedingWhitespace() {
 	int whitespaceCount = 0;
 
