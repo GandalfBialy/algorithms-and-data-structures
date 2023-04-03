@@ -79,8 +79,11 @@ int main()
 	//tests::runTests();
 
 	Parser parser;
+	
 	parser.loadInput();
 	parser.parseInput();
+	
+	parser.executeCommands();
 
 	return 0;
 }

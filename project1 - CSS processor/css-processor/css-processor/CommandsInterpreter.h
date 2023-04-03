@@ -14,6 +14,8 @@ private:
 public:
 	CommandsInterpreter();
 
+	void executeCommands(CSS css);
+
 	void appendCommand(String command);
 
 	int getSectionsCount(CSS css); // ? (command)
