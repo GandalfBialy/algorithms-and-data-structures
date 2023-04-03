@@ -6,9 +6,12 @@ void CSS::appendSection(Section section) {
 }
 
 
-void CSS::printSections() {
+void CSS::printCSS() {
+	std::cerr << "--- PRINTING CSS SECTIONS ---" << std::endl;
+	
 	for (int i = 0; i < sections.getSize(); i++) {
 		sections[i].print();
+		std::cerr << std::endl;
 	}
 }
 

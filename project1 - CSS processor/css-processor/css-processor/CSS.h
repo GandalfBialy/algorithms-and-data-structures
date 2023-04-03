@@ -11,7 +11,7 @@ private:
 
 public:
 	void appendSection(Section section);
-	void printSections();
+	void printCSS();
 
 	void setSections(List<Section> sections);
 	List<Section> getSections();

@@ -67,7 +67,7 @@ public:
 	/*static void insertNodeAfter(Node* previousNode, int data)
 	{
 		if (previousNode == NULL) {
-			std::cout << "The given previous node cannot be NULL" << std::endl;
+			std::cerr << "The given previous node cannot be NULL" << std::endl;
 			return;
 		}
 
@@ -160,10 +160,10 @@ List<T>::List() {
 template<typename T>
 void List<T>::print() {
 	for (Node<T>* current = head; current != nullptr; current = current->next) {
-		std::cout << current->data << " ";
+		std::cerr << current->data << " ";
 	}
 
-	std::cout << std::endl;
+	std::cerr << std::endl;
 }
 
 
