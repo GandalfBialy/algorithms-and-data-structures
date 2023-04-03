@@ -30,40 +30,6 @@ void String::trimWhitespace() {
 }
 
 
-bool String::hasCharacter(char character) {
-	return hasCharacter(character, 0);
-}
-
-
-bool String::hasCharacter(char character, int startIndex) {
-	for (int i = startIndex; i < length; i++) {
-		if (string[i] == character) {
-			return true;
-		}
-	}
-
-	return false;
-}
-
-
-int String::countCharacter(char character) {
-	return countCharacter(character, 0);
-}
-
-
-int String::countCharacter(char character, int startIndex) {
-	int count = 0;
-
-	for (int i = startIndex; i < length; i++) {
-		if (string[i] == character) {
-			count++;
-		}
-	}
-
-	return count;
-}
-
-
 void String::trimPrecedingWhitespace() {
 	int whitespaceCount = 0;
 
@@ -110,6 +76,117 @@ void String::trimTrailingWhitespace() {
 		delete[] string;
 		string = temp;
 	}
+}
+
+
+bool String::hasCharacter(char character) {
+	return hasCharacter(character, 0);
+}
+
+
+bool String::hasCharacter(char character, int startIndex) {
+	for (int i = startIndex; i < length; i++) {
+		if (string[i] == character) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
+int String::countCharacter(char character) {
+	return countCharacter(character, 0);
+}
+
+
+int String::countCharacter(char character, int startIndex) {
+	int count = 0;
+
+	for (int i = startIndex; i < length; i++) {
+		if (string[i] == character) {
+			count++;
+		}
+	}
+
+	return count;
+}
+
+
+int String::findCharacter(char character) {
+	return findCharacter(character, 0);
+}
+
+
+int String::findCharacter(char character, int startIndex) {
+	for (int i = startIndex; i < length; i++) {
+		if (string[i] == character) {
+			return i;
+		}
+	}
+
+	return -1;
+}
+
+
+int String::findSubstring(const String& substring) {
+	return findSubstring(substring, 0);
+}
+
+
+int String::findSubstring(const String& substring, int startIndex) {
+	for (int i = startIndex; i < length; i++) {
+		if (string[i] == substring.string[0]) {
+			bool found = true;
+
+			for (int j = 1; j < substring.length; j++) {
+				if (string[i + j] != substring.string[j]) {
+					found = false;
+					break;
+				}
+			}
+
+			if (found) {
+				return i;
+			}
+		}
+	}
+
+	return -1;
+
+
+
+
+
+
+
+
+
+	//int String::findSubstring(const String & substring) {
+	//	// find substring and return index of first character
+	//	// if not found, return -1
+
+	//	int substringLength = substring.length;
+
+	//	for (int i = 0; i < length; i++) {
+	//		if (string[i] == substring.string[0]) {
+	//			bool found = true;
+
+	//			for (int j = 1; j < substringLength; j++) {
+	//				if (string[i + j] != substring.string[j]) {
+	//					found = false;
+	//					break;
+	//				}
+	//			}
+
+	//			if (found) {
+	//				return i;
+	//			}
+	//		}
+	//	}
+
+	//	return -1;
+	//}
 }
 
 

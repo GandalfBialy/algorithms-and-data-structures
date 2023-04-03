@@ -30,6 +30,11 @@ public:
 
 	int countCharacter(char character);
 	int countCharacter(char character, int startIndex);
+
+	int findCharacter(char character);
+	int findCharacter(char character, int startIndex);
+	int findSubstring(const String& substring);
+	int findSubstring(const String& substring, int startIndex);
 	
 	String& operator=(const String& string);
 	String& operator=(const char* cString);
