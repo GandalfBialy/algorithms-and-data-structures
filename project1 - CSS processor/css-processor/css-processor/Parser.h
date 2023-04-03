@@ -26,8 +26,8 @@ public:
 	void parseSection();
 	void parseSelectors(Section section);
 	void parseDeclarations();
-	void parseProperties(String section);
-	void parseValue(String section);
+	void parseProperties(String declaration);
+	void parseValue(String declaration);
 
 	bool isWhiteSpace(char character);
 };

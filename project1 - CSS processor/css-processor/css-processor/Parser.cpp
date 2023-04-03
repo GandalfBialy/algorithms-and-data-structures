@@ -183,7 +183,7 @@ void Parser::parseProperties(String declaration) {
 			continue;
 		}
 
-		if (currentCharacter != ' ' and currentCharacter != '\t' and currentCharacter != '\n' and currentCharacter != '\r') {
+		if (!isWhiteSpace(currentCharacter)) {
 			propertyBuffer[propertyBufferIndex] = currentCharacter;
 			propertyBufferIndex++;
 		}
@@ -213,7 +213,7 @@ void Parser::parseValue(String declaration) {
 			break;
 		}
 
-		if (currentCharacter != ' ' and currentCharacter != '\t' and currentCharacter != '\n' and currentCharacter != '\r') {
+		if (!isWhiteSpace(currentCharacter)) {
 			valueBuffer[valueBufferIndex] = currentCharacter;
 			valueBufferIndex++;
 		}
@@ -230,4 +230,6 @@ void Parser::parseValue(String declaration) {
 }
 
 
-
+bool Parser::isWhiteSpace(char character) {
+	return character == ' ' or character == '\t' or character == '\n' or character == '\r';
+}
