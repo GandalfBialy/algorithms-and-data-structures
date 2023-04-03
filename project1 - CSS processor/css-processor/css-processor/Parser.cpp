@@ -3,7 +3,7 @@
 
 Parser::Parser() {
 	bufferIndex = 0;
-	declarationBufferIndex = 0;
+	sectionBodyBufferIndex = 0;
 }
 
 
@@ -43,13 +43,7 @@ void Parser::parseCSS() {
 
 		bufferIndex++;
 
-
 		// TODO: commands/instructions also should be parsed here, a flag should do the work
-
-		/*if (cssBuffer[bufferIndex] == '{') {
-			parseProperty();
-		}*/
-
 	}
 
 	std::cerr << "Sections:" << std::endl;
@@ -129,28 +123,27 @@ void Parser::parseDeclarations() {
 	std::cerr << "Parsing declarations (section body)..." << std::endl;
 	
 	//Declaration declaration;
-	String sectionBodyString = "";
-	char* declarationBuffer = new char[BUFFER_SIZE];
-	int declarationBufferIndex = 0;
+	char* sectionBodyBuffer = new char[BUFFER_SIZE];
+	int sectionBodyBufferIndex = 0;
 
 	while (cssBuffer[bufferIndex] != '}') {
-		declarationBuffer[declarationBufferIndex] = cssBuffer[bufferIndex];
+		sectionBodyBuffer[sectionBodyBufferIndex] = cssBuffer[bufferIndex];
 		bufferIndex++;
-		declarationBufferIndex++;
+		sectionBodyBufferIndex++;
 	}
 
-	declarationBuffer[declarationBufferIndex] = '}';
-	declarationBufferIndex++;
+	sectionBodyBuffer[sectionBodyBufferIndex] = '}';
+	sectionBodyBufferIndex++;
 
-	declarationBuffer[declarationBufferIndex] = '\0';
-	sectionBodyString = declarationBuffer;
+	sectionBodyBuffer[sectionBodyBufferIndex] = '\0';
+	sectionBodyString = sectionBodyBuffer;
 
 	std::cerr << "Section body: " << std::endl;
 	std::cerr << sectionBodyString << std::endl << std::endl;
 
 	parseProperties();
 
-	delete[] declarationBuffer;
+	delete[] sectionBodyBuffer;
 }
 
 
@@ -162,24 +155,25 @@ void Parser::parseProperties() {
 	int propertyBufferIndex = 0;
 
 	int sectionBodyLength = sectionBodyString.getLength();
-	declarationBufferIndex++; // skip the first '{'
+	sectionBodyBufferIndex = 0;
+	sectionBodyBufferIndex++; // skip the first '{'
 
-	while (declarationBufferIndex < sectionBodyLength) {
-		char currentCharacter = sectionBodyString[declarationBufferIndex];
+	while (sectionBodyBufferIndex < sectionBodyLength) {
+		char currentCharacter = sectionBodyString[sectionBodyBufferIndex];
 		
 		if (currentCharacter == ':') {
 			propertyBuffer[propertyBufferIndex] = '\0';
 			property = propertyBuffer;
 
 			propertyBufferIndex = 0;
-			declarationBufferIndex++;
+			sectionBodyBufferIndex++;
 
 			std::cerr << "Property: " << std::endl;
 			std::cerr << property << std::endl << std::endl;
 
 			parseValue();
 
-			declarationBufferIndex++;
+			sectionBodyBufferIndex++;
 
 			continue;
 		}
@@ -189,7 +183,7 @@ void Parser::parseProperties() {
 			propertyBufferIndex++;
 		}
 
-		declarationBufferIndex++;
+		sectionBodyBufferIndex++;
 	}
 
 	delete[] propertyBuffer;
@@ -205,8 +199,8 @@ void Parser::parseValue() {
 
 	int sectionBodyLength = sectionBodyString.getLength();
 
-	while (declarationBufferIndex < sectionBodyLength) {
-		char currentCharacter = sectionBodyString[declarationBufferIndex];
+	while (sectionBodyBufferIndex < sectionBodyLength) {
+		char currentCharacter = sectionBodyString[sectionBodyBufferIndex];
 		
 		if (currentCharacter == ';') {
 			valueBuffer[valueBufferIndex] = '\0';
@@ -219,7 +213,7 @@ void Parser::parseValue() {
 			valueBufferIndex++;
 		}
 		
-		declarationBufferIndex++;
+		sectionBodyBufferIndex++;
 	}
 
 	std::cerr << "Value: " << std::endl;

@@ -14,15 +14,18 @@ class Parser
 {
 private:
 	CSS css;
+
 	String cssBuffer;
 	String sectionBodyString;
+	
 	int bufferIndex;
-	int declarationBufferIndex;
+	int sectionBodyBufferIndex;
 
 public:
 	Parser();
 
 	void loadCSS();
+	
 	void parseCSS();
 	void parseSection();
 	void parseSelectors(Section section);
