@@ -21,6 +21,10 @@ public:
 	String(const char* cString);
 	~String();
 
+	void trimWhitespace();
+	void trimPrecedingWhitespace();
+	void trimTrailingWhitespace();
+
 	String& operator=(const String& string);
 	String& operator=(const char* cString);
 

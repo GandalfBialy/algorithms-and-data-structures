@@ -24,6 +24,61 @@ String::~String() {
 }
 
 
+void String::trimWhitespace() {
+	trimPrecedingWhitespace();
+	trimTrailingWhitespace();
+}
+
+
+void String::trimPrecedingWhitespace() {
+	int whitespaceCount = 0;
+
+	for (int i = 0; i < length; i++) {
+		if (string[i] == ' ' or string[i] == '\t' or string[i] == '\n') {
+			whitespaceCount++;
+		}
+		else {
+			break;
+		}
+	}
+
+	if (whitespaceCount > 0) {
+		length -= whitespaceCount;
+
+		char* temp = new char[length + 1];
+		strcpy_s(temp, length + 1, string + whitespaceCount);
+
+		delete[] string;
+		string = temp;
+	}
+}
+
+
+void String::trimTrailingWhitespace() {
+	int whitespaceCount = 0;
+
+	for (int i = length - 1; i >= 0; i--) {
+		if (string[i] == ' ' or string[i] == '\t' or string[i] == '\n') {
+			whitespaceCount++;
+		}
+		else {
+			break;
+		}
+	}
+
+	if (whitespaceCount > 0) {
+		length -= whitespaceCount;
+
+		char* temp = new char[length + 1];
+		strncpy_s(temp, length + 1, string, length);
+		temp[length] = '\0';
+
+		delete[] string;
+		string = temp;
+	}
+}
+
+
 String& String::operator=(const String& string) {
 	if (this != &string) {
 		delete[] this->string;
