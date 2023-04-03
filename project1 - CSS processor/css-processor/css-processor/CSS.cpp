@@ -1,6 +1,11 @@
 #include "CSS.h"
 
 
+CSS::CSS() {
+	sections = List<Section>();
+}
+
+
 void CSS::appendSection(Section section) {
 	sections.append(section);
 }
@@ -23,4 +28,9 @@ void CSS::setSections(List<Section> sections) {
 
 List<Section> CSS::getSections() {
 	return sections;
+}
+
+
+int CSS::getSectionsCount() {
+	return sections.getSize();
 }
