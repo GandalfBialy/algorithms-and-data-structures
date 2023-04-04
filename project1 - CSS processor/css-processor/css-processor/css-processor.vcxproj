@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Command.cpp" />
     <ClCompile Include="CommandsInterpreter.cpp" />
     <ClCompile Include="css-processor.cpp" />
     <ClCompile Include="CSS.cpp" />
@@ -138,6 +139,7 @@
     <ClCompile Include="String.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Command.h" />
     <ClInclude Include="CommandsInterpreter.h" />
     <ClInclude Include="CSS.h" />
     <ClInclude Include="Declaration.h" />
