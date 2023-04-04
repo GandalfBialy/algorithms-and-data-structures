@@ -54,8 +54,9 @@ void Parser::parseInput() {
 		}
 		else {
 			if (shouldSwitchToCSSParserMode()) {
+				commandsInterpreter.printCommands();
 				executeCommands();
-				inputStringIndex += 4; // skip "????"
+				
 				continue;
 			}
 			
@@ -340,6 +341,8 @@ void Parser::parseCommand() {
 
 void Parser::executeCommands() {
 	commandsInterpreter.executeCommands();
+
+	inputStringIndex += 4; // skip "????"
 }
 
 

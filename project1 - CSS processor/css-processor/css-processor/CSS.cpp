@@ -21,6 +21,11 @@ void CSS::printCSS() {
 }
 
 
+void CSS::removeSection(int sectionIndex) {
+	sections.removeAt(sectionIndex);
+}
+
+
 void CSS::setSections(List<Section> sections) {
 	this->sections = sections;
 }

@@ -15,6 +15,8 @@ public:
 	void appendSection(Section section);
 	void printCSS();
 
+	void removeSection(int sectionIndex);
+
 	void setSections(List<Section> sections);
 	
 	List<Section> getSections();
