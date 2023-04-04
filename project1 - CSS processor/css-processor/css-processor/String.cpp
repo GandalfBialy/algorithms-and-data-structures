@@ -176,6 +176,17 @@ int String::findSubstring(const String& substring, int startIndex) {
 }
 
 
+bool String::isNumber() {
+	for (int i = 0; i < length; i++) {
+		if (string[i] < '0' or string[i] > '9') {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+
 int String::parseToInt() {
 	return atoi(string);
 }
