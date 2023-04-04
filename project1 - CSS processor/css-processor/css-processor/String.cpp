@@ -201,6 +201,18 @@ String& String::operator=(const char* cString) {
 }
 
 
+String& String::operator=(const int integer) {
+	delete[] this->string;
+
+	char* cString = new char[11];
+	_itoa_s(integer, cString, 11, 10);
+	
+	this->copy(cString);
+
+	return *this;
+}
+
+
 String& String::operator+=(const String& string) {
 	length += string.length;
 
@@ -216,6 +228,23 @@ String& String::operator+=(const String& string) {
 
 
 String& String::operator+=(const char* cString) {
+	length += strlen(cString);
+
+	char* temp = new char[length + 1];
+	strcpy_s(temp, length + 1, this->string);
+	strcat_s(temp, length + 1, cString);
+
+	delete[] this->string;
+	this->string = temp;
+
+	return *this;
+}
+
+
+String& String::operator+=(const int integer) {
+	char* cString = new char[11];
+	_itoa_s(integer, cString, 11, 10);
+
 	length += strlen(cString);
 
 	char* temp = new char[length + 1];

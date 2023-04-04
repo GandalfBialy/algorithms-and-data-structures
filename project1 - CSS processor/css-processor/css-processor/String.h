@@ -43,9 +43,11 @@ public:
 	
 	String& operator=(const String& string);
 	String& operator=(const char* cString);
+	String& operator=(const int number);
 
 	String& operator+=(const String& string);
 	String& operator+=(const char* cString);
+	String& operator+=(const int number);
 
 	String operator+(const String& string);
 	String operator+(const char* cString);
