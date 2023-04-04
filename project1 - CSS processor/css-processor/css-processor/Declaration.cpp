@@ -25,3 +25,8 @@ String Declaration::getProperty() {
 String Declaration::getValue() {
 	return value;
 }
+
+
+Declaration::operator String() const {
+	return property;
+}

@@ -13,6 +13,7 @@ private:
 public:
 	Command();
 	Command(String commandName);
+	Command(String commandName, String arguments[3]);
 
 	void setCommandName(String commandName);
 	void setArguments(String arguments[3]);

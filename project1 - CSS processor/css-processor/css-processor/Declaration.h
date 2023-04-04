@@ -18,5 +18,7 @@ public:
 
 	String getProperty();
 	String getValue();
+
+	operator String() const;
 };
 
