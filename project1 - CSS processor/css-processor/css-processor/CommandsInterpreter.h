@@ -13,6 +13,10 @@ private:
 	List<Command> commands;
 	CSS* css;
 
+	String currentCommandName;
+	String* currentArguments;
+	String currentCommandAnswer;
+
 public:
 	CommandsInterpreter();
 	CommandsInterpreter(CSS* css);
@@ -31,20 +35,28 @@ public:
 	// Commands
 	// ? (command)
 	int getSectionsCount(); 
-
+	void handleSectionsCountCommand();
+	
 	// i,S,? (command)
 	int getSelectorsCount(int sectionIndex);
+	void handleSelectorsCountBySectionIndexCommand();
+
+	// z,S,? (command)
+	int getSelectorsCount(String selectorName);
+	void handleSelectorsCountBySelectorNameCommand();
+
+	// i,S,j (command)
+	String getSelectorName(int sectionIndex, int selectorIndex); // !!! SHOULD BE BLOCK INDEX
+	void handleSelectorNameByBlockIndexAndSelectorIndexCommand();
 	
 	// i,A,? (command)
 	int getDeclarationsCount(int sectionIndex); 
 
-
 	// i,A,n (command)
 	String getPropertyValue(int sectionIndex, String propertyName); 
 
-
-	// z,S,? (command
-	int getSelectorsCount(String selectorName);
+	// z,E,n (command)
+	String getPropertyValue(String selectorName, String propertyName);
 };
 
 /* COMMANDS TO COVER
