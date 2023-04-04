@@ -13,7 +13,7 @@ class Node
 public:
 	T data;
 	Node<T>* next;
-	//Node<T>* previous;
+	Node<T>* previous;
 
 	Node(T data);
 

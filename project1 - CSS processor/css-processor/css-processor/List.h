@@ -9,6 +9,7 @@ class List
 {
 private:
 	Node<T>* head;
+	//Node<T>* tail;
 	int size;
 
 	template <typename U>
@@ -19,6 +20,12 @@ public:
 
 	void print();
 	void append(T data);
+
+	T front();
+	T back();
+
+	void popFront();
+
 	void remove(T data);
 
 	Node<T>* getHead();
@@ -185,6 +192,38 @@ void List<T>::append(T data) {
 	}
 
 	size++;
+}
+
+
+template<typename T>
+T List<T>::front() {
+	return head->data;
+}
+
+
+template<typename T>
+T List<T>::back() {
+	Node<T>* current = head;
+
+	while (current->next != nullptr) {
+		current = current->next;
+	}
+
+	return current->data;
+}
+
+
+template<typename T>
+void List<T>::popFront() {
+	if (head == nullptr) {
+		return;
+	}
+
+	Node<T>* temp = head;
+	head = head->next;
+	
+	size--;
+	delete temp;
 }
 
 
