@@ -7,17 +7,23 @@ CommandsInterpreter::CommandsInterpreter() {
 
 
 void CommandsInterpreter::executeCommands(CSS css) {
-	for (int commandIndex = 0; commandIndex < commands.getSize(); commandIndex++) {
-		String command = commands[commandIndex];
+	std::cerr << "--- EXECUTING COMMANDS ---" << std::endl;
+
+	while(commands.getSize() > 0) {
+		String command = commands.front();
 		int commasCount = command.countCharacter(',');
 
 		std::cout << command << " == ";
 
 		if (commasCount == 0) {
 			if (command == "?") {
-				std::cout << getSectionsCount(css) << "\n";
+				std::cout << getSectionsCount(css);
 			}
 		}
+
+		std::cout << "\n";
+
+		commands.popFront();
 	}
 }
 

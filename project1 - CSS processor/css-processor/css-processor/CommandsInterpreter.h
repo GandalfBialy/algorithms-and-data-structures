@@ -15,6 +15,7 @@ public:
 	CommandsInterpreter();
 
 	void executeCommands(CSS css);
+	//void executeCommand(CSS css, String command);
 
 	void appendCommand(String command);
 
