@@ -9,7 +9,7 @@ class List
 {
 private:
 	Node<T>* head;
-	//Node<T>* tail;
+	Node<T>* tail;
 	int size;
 
 	template <typename U>
@@ -27,6 +27,8 @@ public:
 	void popFront();
 
 	void remove(T data);
+	void removeAt(int index);
+	void clear();
 
 	Node<T>* getHead();
 	int getSize();
@@ -253,6 +255,54 @@ void List<T>::remove(T data) {
 		delete temp;
 		size--;
 	}
+}
+
+
+template<typename T>
+void List<T>::removeAt(int index) {
+	if (head == nullptr) {
+		return;
+	}
+
+	if (index == 0) {
+		Node<T>* temp = head;
+		head = head->next;
+		
+		size--;
+		delete temp;
+		
+		return;
+	}
+
+	Node<T>* currentNode = head;
+
+	for (int i = 0; i < index - 1; i++) {
+		currentNode = currentNode->next;
+	}
+
+	if (currentNode->next != nullptr) {
+		Node<T>* temp = currentNode->next;
+		currentNode->next = currentNode->next->next;
+		
+		size--;
+		delete temp;
+	}
+}
+
+
+template<typename T>
+void List<T>::clear() {
+	Node<T>* currentNode = head;
+	Node<T>* nextNode = nullptr;
+
+	while (currentNode != nullptr) {
+		nextNode = currentNode->next;
+		delete currentNode;
+		currentNode = nextNode;
+	}
+
+	head = nullptr;
+	size = 0;
 }
 
 
