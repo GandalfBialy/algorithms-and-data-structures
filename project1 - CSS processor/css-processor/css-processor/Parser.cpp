@@ -2,6 +2,9 @@
 
 
 Parser::Parser() {
+	css = new CSS();
+	commandsInterpreter = CommandsInterpreter(css);
+
 	currentDeclaration = Declaration();
 
 	inputString = "";
@@ -95,7 +98,7 @@ void Parser::parseSection() {
 	parseSelectors();
 	parseDeclarations();
 	
-	css.appendSection(currentSection);
+	css->appendSection(currentSection);
 
 
 	// next '{' character index
@@ -336,7 +339,7 @@ void Parser::parseCommand() {
 
 
 void Parser::executeCommands() {
-	commandsInterpreter.executeCommands(css);
+	commandsInterpreter.executeCommands();
 }
 
 
@@ -362,7 +365,7 @@ bool Parser::isWhiteSpace(char character) {
 
 void Parser::printParsedAndStructuredInput() {
 	std::cerr << std::endl << std::endl;
-	css.printCSS();
+	css->printCSS();
 
 	std::cerr << std::endl << std::endl;
 	commandsInterpreter.printCommands();

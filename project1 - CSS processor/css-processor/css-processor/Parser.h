@@ -14,7 +14,7 @@ int const BUFFER_SIZE = 1000;
 class Parser
 {
 private:
-	CSS css;
+	CSS* css;
 	CommandsInterpreter commandsInterpreter;
 
 	Section currentSection;
