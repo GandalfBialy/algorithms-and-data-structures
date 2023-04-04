@@ -2,39 +2,65 @@
 
 
 CommandsInterpreter::CommandsInterpreter() {
-	commands = List<String>();
+	commands = List<Command>();
+	css = nullptr;
 }
 
 
-void CommandsInterpreter::executeCommands(CSS css) {
+CommandsInterpreter::CommandsInterpreter(CSS* css) {
+	commands = List<Command>();
+	this->css = css;
+}
+
+
+Command CommandsInterpreter::parseCommand(String commandString) {
+	Command command = Command(commandString);
+
+	return command;
+}
+
+
+void CommandsInterpreter::executeCommands() {
 	std::cerr << "--- EXECUTING COMMANDS ---" << std::endl;
 
 	while(commands.getSize() > 0) {
-		String command = commands.front();
-		int commasCount = command.countCharacter(',');
-
-		std::cout << command << " == ";
-
-		if (commasCount == 0) {
-			if (command == "?") {
-				std::cout << getSectionsCount(css);
-			}
-		}
-
-		std::cout << "\n";
+		Command command = commands.front();
+		
+		executeCommand(command);
 
 		commands.popFront();
 	}
 }
 
 
-void CommandsInterpreter::appendCommand(String command) {
+void CommandsInterpreter::executeCommand(Command command) {
+	String commandName = command.getCommandName();
+	int commasCount = commandName.countCharacter(',');
+
+	std::cout << commandName << " == ";
+
+	if (commasCount == 0) {
+		if (commandName == "?") {
+			std::cout << getSectionsCount();
+		}
+	}
+	/*else if (commasCount == 2) {
+		if
+	}*/
+
+	std::cout << "\n";
+}
+
+
+void CommandsInterpreter::appendCommand(String commandString) {
+	Command command = parseCommand(commandString);
+
 	commands.append(command);
 }
 
 
-int CommandsInterpreter::getSectionsCount(CSS css) {
-	return css.getSectionsCount();
+int CommandsInterpreter::getSectionsCount() {
+	return css->getSectionsCount();
 }
 
 
@@ -42,16 +68,38 @@ void CommandsInterpreter::printCommands() {
 	std::cerr << "--- PRINTING COMMANDS ---" << std::endl;
 	
 	for (int commandIndex = 0; commandIndex < commands.getSize(); commandIndex++) {
-		std::cerr << commandIndex << ".: " << commands[commandIndex] << std::endl;
+		String commandName = commands[commandIndex].getCommandName();
+
+		std::cerr << commandIndex << ".: " << commandName << std::endl;
 	}
 }
 
 
-int CommandsInterpreter::getSelectorsCount(CSS css, int sectionIndex) {
-	return css.getSections()[sectionIndex].getSelectors().getSize();
+int CommandsInterpreter::getSelectorsCount(int sectionIndex) {
+	//sectionIndex--;
+
+	return css->getSections()[sectionIndex].getSelectors().getSize();
 }
 
 
-int CommandsInterpreter::getDeclarationsCount(CSS css, int sectionIndex, int selectorIndex) {
-	return css.getSections()[sectionIndex].getDeclarations().getSize();
+int CommandsInterpreter::getDeclarationsCount(int sectionIndex, int selectorIndex) {
+	return css->getSections()[sectionIndex].getDeclarations().getSize();
+}
+
+
+String CommandsInterpreter::getPropertyValue(int sectionIndex, String propertyName) {
+	List<Declaration> declarations = css->getSections()[sectionIndex].getDeclarations();
+
+	for (int declarationIndex = 0; declarationIndex < declarations.getSize(); declarationIndex++) {
+		if (declarations[declarationIndex].getProperty() == propertyName) {
+			return declarations[declarationIndex].getValue();
+		}
+	}
+
+	return "";
+}
+
+
+void CommandsInterpreter::setCSS(CSS* css) {
+	this->css = css;
 }

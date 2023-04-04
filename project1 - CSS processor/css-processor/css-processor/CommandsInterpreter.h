@@ -4,26 +4,35 @@
 #include "String.h"
 #include "List.h"
 #include "CSS.h"
+#include "Command.h"
 
 
 class CommandsInterpreter
 {
 private:
-	List<String> commands;
+	List<Command> commands;
+	CSS* css;
 
 public:
 	CommandsInterpreter();
+	CommandsInterpreter(CSS* css);
 
-	void executeCommands(CSS css);
-	//void executeCommand(CSS css, String command);
+	Command parseCommand(String commandString);
 
-	void appendCommand(String command);
+	void executeCommands();
+	void executeCommand(Command command);
 
-	int getSectionsCount(CSS css); // ? (command)
-	int getSelectorsCount(CSS css, int sectionIndex); // i,S,? (command)
-	int getDeclarationsCount(CSS css, int sectionIndex, int selectorIndex); // i,A,? (command)
+	void appendCommand(String commandString);
+
+	int getSectionsCount(); // ? (command)
+	int getSelectorsCount(int sectionIndex); // i,S,? (command)
+	int getDeclarationsCount(int sectionIndex, int selectorIndex); // i,A,? (command)
+
+	String getPropertyValue(int sectionIndex, String propertyName); // i,A,n (command)
 
 	void printCommands();
+	
+	void setCSS(CSS* css);
 };
 
 /* COMMANDS TO COVER
@@ -38,8 +47,10 @@ i,A,? - wypisz liczbê atrybutów dla sekcji nr i, jeœli nie ma takiego bloku lub 
 [implemented, tests needed]
 
 i,S,j – wypisz j-ty selector dla i-tego bloku (numery sekcji oraz atrybutów zaczynaj¹ siê od 1) jeœli nie ma sekcji lub selektora pomiñ;
+(!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!)
 
 i,A,n – wypisz dla i-tej sekcji wartoœæ atrybutu o nazwie n, jeœli nie ma takiego pomiñ;
+[implemented, tests needed]
 
 n,A,? – wypisz ³¹czn¹ (dla wszystkich bloków) liczbê wyst¹pieñ atrybutu nazwie n. (W ramach pojedynczego bloku duplikaty powinny zostaæ usuniête na etapie wczytywania). Mo¿liwe jest 0;
 
