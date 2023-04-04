@@ -7,7 +7,6 @@ Parser::Parser() {
 	inputString = "";
 
 	inputStringIndex = 0;
-	//inputStringLength = 0;
 	sectionBodyBufferIndex = 0;
 
 	isCSSParserModeOn = true;
@@ -37,7 +36,6 @@ void Parser::loadInput() {
 
 	//std::cerr << inputString;
 
-	//inputStringLength = inputString.getLength();
 	inputStringIndex = 0;
 
 	delete[] inputBuffer;
@@ -47,37 +45,16 @@ void Parser::loadInput() {
 void Parser::parseInput() {
 	inputStringIndex = 0;
 
-	// for commands parsing testing purposes
-	//isCSSParserModeOn = false;
-	
-
 	while (inputString[inputStringIndex] != '\0') {
-		// if next characters are "????" then parse command
-		// else parse CSS
-		/*inputString.trimWhitespace();
-		inputStringLength = inputString.getLength();
-		
-		if (inputString[inputStringIndex] == '?' and inputStringIndex + 3 < inputStringLength and inputString[inputStringIndex + 1] == '?' and inputString[inputStringIndex + 2] == '?' and inputString[inputStringIndex + 3] == '?') {
-			isCSSParserModeOn = false;
-		}
-		else if (inputString[inputStringIndex] == '*' and inputStringIndex + 3 < inputStringLength and inputString[inputStringIndex + 1] == '*' and inputString[inputStringIndex + 2] == '*' and inputString[inputStringIndex + 3] == '*') {
-			isCSSParserModeOn = true;
-		}*/
-
 		if (isCSSParserModeOn) {
 			parseSection();
 		}
 		else {
-			int nextCSSBlockIndex = inputString.findSubstring("****", inputStringIndex);
-
-			std::cerr << "nextCSSBlockIndex: " << nextCSSBlockIndex << std::endl;
-			std::cerr << "nextCSSBlockIndex in: " << nextCSSBlockIndex - inputStringIndex << std::endl;
-
-			if (nextCSSBlockIndex - inputStringIndex == 0) {
-				isCSSParserModeOn = true;
+			if (shouldSwitchToCSSParserMode()) {
+				executeCommands();
+				inputStringIndex += 4; // skip "????"
 				continue;
 			}
-			
 			
 			parseCommand();
 		}
@@ -90,7 +67,7 @@ void Parser::parseInput() {
 
 
 void Parser::parseSection() {
-	std::cerr << "Parsing section..." << std::endl;
+	//std::cerr << "Parsing section..." << std::endl;
 	
 	String sectionString = "";
 	char* sectionBuffer = new char[BUFFER_SIZE];
@@ -140,7 +117,7 @@ void Parser::parseSection() {
 
 
 void Parser::parseSelectors() {
-	std::cerr << "Parsing selectors..." << std::endl;
+	//std::cerr << "Parsing selectors..." << std::endl;
 	
 	String sectionName = currentSection.getSectionName();
 	int sectionNameLength = sectionName.getLength();
@@ -176,7 +153,7 @@ void Parser::parseSelectors() {
 
 	currentSection.setSelectors(selectors);
 
-	std::cerr << "Selectors: ";
+	std::cerr << "Selectors: " << std::endl;
 	selectors.print();
 	std::cerr << std::endl;
 
@@ -185,7 +162,7 @@ void Parser::parseSelectors() {
 
 
 void Parser::parseDeclarations() {
-	std::cerr << "Parsing declarations (section body)..." << std::endl;
+	//std::cerr << "Parsing declarations (section body)..." << std::endl;
 	
 	char* sectionBodyBuffer = new char[BUFFER_SIZE];
 	int sectionBodyBufferIndex = 0;
@@ -220,7 +197,7 @@ void Parser::parseDeclarations() {
 
 
 void Parser::parseProperties() {
-	std::cerr << "Parsing properties..." << std::endl;
+	//std::cerr << "Parsing properties..." << std::endl;
 
 	String property = "";
 	char* propertyBuffer = new char[BUFFER_SIZE];
@@ -303,18 +280,7 @@ void Parser::parseValue() {
 
 
 void Parser::parseCommand() {
-	// next CSS block index
-	/*int nextCSSBlockIndex = inputString.findSubstring("****", inputStringIndex);
-
-	std::cerr << "nextCSSBlockIndex: " << nextCSSBlockIndex << std::endl;
-	std::cerr << "nextCSSBlockIndex in: " << nextCSSBlockIndex - inputStringIndex << std::endl;*/
-	
-	
-	
-	
-	
-	
-	std::cerr << "Parsing command..." << std::endl;
+	//std::cerr << "Parsing command..." << std::endl;
 
 	String command = "";
 	char* commandBuffer = new char[BUFFER_SIZE];
@@ -371,6 +337,21 @@ void Parser::parseCommand() {
 
 void Parser::executeCommands() {
 	commandsInterpreter.executeCommands(css);
+}
+
+
+bool Parser::shouldSwitchToCSSParserMode() {
+	int nextCSSBlockIndex = inputString.findSubstring("****", inputStringIndex);
+
+	//std::cerr << "nextCSSBlockIndex: " << nextCSSBlockIndex << std::endl;
+	//std::cerr << "nextCSSBlockIndex in: " << nextCSSBlockIndex - inputStringIndex << std::endl;
+
+	if (nextCSSBlockIndex - inputStringIndex == 0) {
+		isCSSParserModeOn = true;
+		return true;
+	}
+
+	return false;
 }
 
 
