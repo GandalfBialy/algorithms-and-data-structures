@@ -14,9 +14,11 @@ void CSS::appendSection(Section section) {
 void CSS::printCSS() {
 	std::cerr << "--- PRINTING CSS SECTIONS ---" << std::endl;
 	
-	for (int i = 0; i < sections.getSize(); i++) {
-		sections[i].print();
-		std::cerr << std::endl;
+	Node<Section>* section = sections.getHead();
+
+	while (section != nullptr) {
+		section->data.print();
+		section = section->next;
 	}
 }
 
@@ -26,12 +28,12 @@ void CSS::removeSection(int sectionIndex) {
 }
 
 
-// TODO: PERFORMANCE ISSUE, USE LIST METHODS
 void CSS::removeProperty(int sectionIndex, String propertyName) {
-	sections[sectionIndex].removeProperty(propertyName);
+	Section section = sections[sectionIndex];
+	
+	section.removeProperty(propertyName);
 
-	// if section declarations list is empty, delete section
-	if (sections[sectionIndex].getDeclarations().getSize() == 0) {
+	if (section.getDeclarations().getSize() == 0) {
 		sections.removeAt(sectionIndex);
 	}
 }
