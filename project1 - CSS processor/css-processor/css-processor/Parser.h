@@ -8,7 +8,7 @@
 #include "CommandsInterpreter.h"
 
 
-int const BUFFER_SIZE = 1000;
+int const BUFFER_SIZE = 32000;
 
 
 class Parser

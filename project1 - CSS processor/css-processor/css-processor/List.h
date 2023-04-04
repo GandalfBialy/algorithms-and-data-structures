@@ -87,6 +87,7 @@ void List<T>::append(T data) {
 	}
 	else {
 		tail->next = newNode;
+		newNode->previous = tail;
 		tail = newNode;
 	}
 
