@@ -83,64 +83,23 @@ void CommandsInterpreter::executeCommand(Command command) {
 	// i,S,j (command)
 	handleSelectorNameByBlockIndexAndSelectorIndexCommand();
 
-	// i,A,? OR n,A,? (command)
-	if (arguments[1] == "A" and arguments[2] == "?") {
-		// i,A,? (command)
-		if (isArgumentNumber(arguments[0])) {
-			int sectionIndex = arguments[0].parseToInt() - 1;
+	// i,A,? (command)
+	handleDeclarationsCountBySectionIndexCommand();
 
-			std::cout << getDeclarationsCount(sectionIndex) << "\n";
+	// n,A,? (command)
+	handlePropertyCountByPropertyNameCommand();
 
-			return;
-		}
-	
-		// n,A,? (command) - TO IMPLEMENT
-		std::cout << "NOT IMPLEMENTED\n";
-	}
 	// i,A,n (command)
-	else if (arguments[1] == "A" and arguments[2].getLength() > 1) {
-		int sectionIndex = arguments[0].parseToInt() - 1;
-		String propertyName = arguments[2];
-
-		std::cout << getPropertyValue(sectionIndex, propertyName) << "\n";
-	}
+	handlePropertyValueBySectionIndexAndPropertyNameCommand();
+	
 	// z,E,n (command)
-	else if (arguments[1] == "E") {
-		std::cout << getPropertyValue(arguments[0], arguments[2]) << "\n";
+	handlePropertyValueBySelectorAndPropertyNameCommand();
 
-		//std::cout << "NOT IMPLEMENTED\n";
-	}
-	// i,D,* OR i,D,n (command)
-	else if (arguments[1] == "D") {
-		// i,D,* (command)
-		if (arguments[2] == "*") {
-			int sectionIndex = arguments[0].parseToInt() - 1;
+	// i,D,* (command)
+	handleSectionDeletionCommand();
 
-			css->removeSection(sectionIndex);
-			std::cout << "deleted\n";
-
-			return;
-		}
-		
-		// i, D, n (command)
-		int sectionIndex = arguments[0].parseToInt() - 1;
-		String propertyName = arguments[2];
-		
-		css->removeProperty(sectionIndex, propertyName);
-
-		std::cout << "deleted\n";
-	}
-}
-
-
-bool CommandsInterpreter::isArgumentNumber(String argument) {
-	for (int characterIndex = 0; characterIndex < argument.getLength(); characterIndex++) {
-		if (argument[characterIndex] < '0' or argument[characterIndex] > '9') {
-			return false;
-		}
-	}
-
-	return true;
+	// i,D,n (command)
+	handlePropertyDeletionCommand();
 }
 
 
@@ -222,6 +181,33 @@ int CommandsInterpreter::getDeclarationsCount(int sectionIndex) {
 }
 
 
+// n,A,? (command)
+int CommandsInterpreter::getPropertyCount(String propertyName) {
+	int propertyCount = 0;
+	List<Section> sections = css->getSections();
+
+	for (Node<Section>* section = sections.getHead();; section = section->next) {
+		List<Declaration> declarations = section->data.getDeclarations();
+
+		for (Node<Declaration>* declaration = declarations.getHead();; declaration = declaration->next) {
+			if (declaration->data.getProperty() == propertyName) {
+				propertyCount++;
+			}
+
+			if (declaration->next == nullptr) {
+				break;
+			}
+		}
+
+		if (section->next == nullptr) {
+			break;
+		}
+	}
+
+	return propertyCount;
+}
+
+
 // i,A,n (command)
 String CommandsInterpreter::getPropertyValue(int sectionIndex, String propertyName) {
 	Section section = css->getSections()[sectionIndex];
@@ -240,7 +226,7 @@ String CommandsInterpreter::getPropertyValue(int sectionIndex, String propertyNa
 // z,E,n (command)
 String CommandsInterpreter::getPropertyValue(String selectorName, String propertyName) {
 	List<Section> sections = css->getSections();
-	
+
 	for (Node<Section>* section = sections.getTail(); section != nullptr; section = section->previous) {
 		List<String> selectors = section->data.getSelectors();
 
@@ -275,7 +261,7 @@ void CommandsInterpreter::handleSectionsCountCommand() {
 
 // i,S,? (command)
 void CommandsInterpreter::handleSelectorsCountBySectionIndexCommand() {
-	if (currentArguments[1] == "S" and currentArguments[2] == "?" and isArgumentNumber(currentArguments[0])) {
+	if (currentArguments[1] == "S" and currentArguments[2] == "?" and currentArguments[0].isNumber()) {
 		int sectionIndex = currentArguments[0].parseToInt() - 1;
 		int sectionsCount = getSectionsCount();
 
@@ -294,11 +280,10 @@ void CommandsInterpreter::handleSelectorsCountBySectionIndexCommand() {
 void CommandsInterpreter::handleSelectorsCountBySelectorNameCommand() {
 	String selectorName = currentArguments[0];
 	
-	if (currentArguments[1] == "S" and currentArguments[2] == "?" and !isArgumentNumber(selectorName)) {
-		//currentCommandAnswer = getSelectorsCount(selectorName);
-		currentCommandAnswer = "";
-
-		if (currentCommandAnswer == 0) {
+	//if (currentArguments[1] == "S" and currentArguments[2] == "?" and !isArgumentNumber(selectorName)) {
+	if (currentArguments[1] == "S" and currentArguments[2] == "?" and !selectorName.isNumber()) {
+		currentCommandAnswer = getSelectorsCount(selectorName);
+		if (currentCommandAnswer == "") {
 			return;
 		}
 		
@@ -309,7 +294,7 @@ void CommandsInterpreter::handleSelectorsCountBySelectorNameCommand() {
 
 // i,S,j (command)
 void CommandsInterpreter::handleSelectorNameByBlockIndexAndSelectorIndexCommand() {
-	if (currentArguments[1] == "S" and isArgumentNumber(currentArguments[0]) and isArgumentNumber(currentArguments[2])) {
+	if (currentArguments[1] == "S" and currentArguments[0].isNumber() and currentArguments[2].isNumber()) {
 		int sectionIndex = currentArguments[0].parseToInt() - 1;
 		int selectorIndex = currentArguments[2].parseToInt() - 1;
 		int sectionsCount = getSectionsCount();
@@ -330,3 +315,77 @@ void CommandsInterpreter::handleSelectorNameByBlockIndexAndSelectorIndexCommand(
 	}
 }
 
+
+// i,A,? (command)
+void CommandsInterpreter::handleDeclarationsCountBySectionIndexCommand() {
+	if (currentArguments[1] == "A" and currentArguments[2] == "?" and currentArguments[0].isNumber()) {
+		int sectionIndex = currentArguments[0].parseToInt() - 1;
+		int sectionsCount = getSectionsCount();
+
+		if (sectionIndex < 0 or sectionIndex >= sectionsCount) {
+			return;
+		}
+
+		currentCommandAnswer = getDeclarationsCount(sectionIndex);
+
+		std::cout << currentCommandName << " == " << currentCommandAnswer << "\n";
+	}
+}
+
+
+// n,A,? (command)
+void CommandsInterpreter::handlePropertyCountByPropertyNameCommand() {
+	if (currentArguments[1] == "A" and currentArguments[2] == "?" and !currentArguments[0].isNumber()) {
+		String propertyName = currentArguments[0];
+
+		currentCommandAnswer = getPropertyCount(propertyName);
+
+		std::cout << currentCommandName << " == " << currentCommandAnswer << "\n";
+	}
+}
+
+
+// i,A,n
+void CommandsInterpreter::handlePropertyValueBySectionIndexAndPropertyNameCommand() {
+	if (currentArguments[1] == "A" and currentArguments[0].isNumber() and currentArguments[2].getLength() > 1) {
+		int sectionIndex = currentArguments[0].parseToInt() - 1;
+		String propertyName = currentArguments[2];
+
+		std::cout << currentCommandName << " == " << getPropertyValue(sectionIndex, propertyName) << "\n";
+	}
+}
+
+
+// z,E,n (command)
+void CommandsInterpreter::handlePropertyValueBySelectorAndPropertyNameCommand() {
+	if (currentArguments[1] == "E") {
+		String selectorName = currentArguments[0];
+		String propertyName = currentArguments[2];
+
+		std::cout << currentCommandName << " == " << getPropertyValue(selectorName, propertyName) << "\n";
+	}
+}
+
+
+// i,D,* (command)
+void CommandsInterpreter::handleSectionDeletionCommand() {
+	if (currentArguments[1] == "D" and currentArguments[2] == "*") {
+		int sectionIndex = currentArguments[0].parseToInt() - 1;
+
+		css->removeSection(sectionIndex);
+		std::cout << currentCommandName << " == " << "deleted\n";
+	}
+}
+
+
+// i,D,n (command)
+void CommandsInterpreter::handlePropertyDeletionCommand() {
+	if (currentArguments[1] == "D" and currentArguments[2].getLength() > 1) {
+		int sectionIndex = currentArguments[0].parseToInt() - 1;
+		String propertyName = currentArguments[2];
+
+		css->removeProperty(sectionIndex, propertyName);
+
+		std::cout << currentCommandName << " == " << "deleted\n";
+	}
+}

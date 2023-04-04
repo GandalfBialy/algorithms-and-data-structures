@@ -28,8 +28,6 @@ public:
 	void executeCommands();
 	void executeCommand(Command command);
 
-	bool isArgumentNumber(String argument);
-
 	void setCSS(CSS* css);
 
 	// Commands
@@ -50,13 +48,26 @@ public:
 	void handleSelectorNameByBlockIndexAndSelectorIndexCommand();
 	
 	// i,A,? (command)
-	int getDeclarationsCount(int sectionIndex); 
+	int getDeclarationsCount(int sectionIndex);
+	void handleDeclarationsCountBySectionIndexCommand();
+
+	// n,A,? (command)
+	int getPropertyCount(String propertyName);
+	void handlePropertyCountByPropertyNameCommand();
 
 	// i,A,n (command)
-	String getPropertyValue(int sectionIndex, String propertyName); 
+	String getPropertyValue(int sectionIndex, String propertyName);
+	void handlePropertyValueBySectionIndexAndPropertyNameCommand();
 
 	// z,E,n (command)
 	String getPropertyValue(String selectorName, String propertyName);
+	void handlePropertyValueBySelectorAndPropertyNameCommand();
+
+	// i,D,* (command)
+	void handleSectionDeletionCommand();
+
+	// i,D,n (command)
+	void handlePropertyDeletionCommand();
 };
 
 /* COMMANDS TO COVER
@@ -71,6 +82,7 @@ i,A,? - wypisz liczbê atrybutów dla sekcji nr i, jeœli nie ma takiego bloku lub 
 [implemented, tests needed]
 
 i,S,j – wypisz j-ty selector dla i-tego bloku (numery sekcji oraz atrybutów zaczynaj¹ siê od 1) jeœli nie ma sekcji lub selektora pomiñ;
+[temporarily implemented, tests needed]
 (!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!)
 implement blocks
 (!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!)
@@ -78,14 +90,14 @@ implement blocks
 i,A,n – wypisz dla i-tej sekcji wartoœæ atrybutu o nazwie n, jeœli nie ma takiego pomiñ;
 [implemented, tests needed]
 
-n,A,? – wypisz ³¹czn¹ (dla wszystkich bloków) liczbê wyst¹pieñ atrybutu nazwie n. (W ramach pojedynczego bloku duplikaty powinny zostaæ usuniête na etapie wczytywania). Mo¿liwe jest 0;
+n,A,? – wypisz ³¹czn¹ (dla wszystkich bloków) liczbê wyst¹pieñ atrybutu o nazwie n. (W ramach pojedynczego bloku duplikaty powinny zostaæ usuniête na etapie wczytywania). Mo¿liwe jest 0;
 (!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!)
 
 z,S,? – wypisz ³¹czn¹ (dla wszystkich bloków) liczbê wyst¹pieñ selektora z. Mo¿liwe jest 0;
 [implemented, tests needed]
 
 z,E,n – wypisz wartoœæ atrybutu o nazwie n dla selektora z, w przypadku wielu wyst¹pieñ selektora z bierzemy ostatnie. W przypadku braku pomiñ;
-(!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!)
+[implemented, tests needed]
 
 i,D,* - usuñ ca³¹ sekcjê nr i (tj. separatory+atrybuty), po poprawnym wykonaniu wypisz deleted;
 [implemented, tests needed]
