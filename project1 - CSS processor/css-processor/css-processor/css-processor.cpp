@@ -16,13 +16,13 @@ namespace tests {
 		integersList.append(3);
 		integersList.append(4);
 		integersList.append(5);
-		std::cout << integersList;
+		std::cerr << integersList;
 
 		List<String> stringsList;
 		stringsList.append("Hello");
 		stringsList.append("World");
 		stringsList.append("!");
-		std::cout << stringsList;
+		std::cerr << stringsList;
 
 		List<List<int>> listOfIntegersLists;
 		listOfIntegersLists.append(integersList);
@@ -47,23 +47,23 @@ namespace tests {
 		string4 += " ";
 		string4 += string3;
 
-		std::cout << string1 << std::endl;
-		std::cout << string1Copy << std::endl;
-		std::cout << string2 << std::endl;
-		std::cout << string3 << std::endl;
-		std::cout << string4 << std::endl;
+		std::cerr << string1 << std::endl;
+		std::cerr << string1Copy << std::endl;
+		std::cerr << string2 << std::endl;
+		std::cerr << string3 << std::endl;
+		std::cerr << string4 << std::endl;
 
 		for (int i = 0; i < 5; i++) {
-			std::cout << string1[i] << std::endl;
+			std::cerr << string1[i] << std::endl;
 		}
 
-		std::cout << string1.getLength() << std::endl;
-		std::cout << string2.getLength() << std::endl;
-		std::cout << string3.getLength() << std::endl;
-		std::cout << string4.getLength() << std::endl;
+		std::cerr << string1.getLength() << std::endl;
+		std::cerr << string2.getLength() << std::endl;
+		std::cerr << string3.getLength() << std::endl;
+		std::cerr << string4.getLength() << std::endl;
 
-		std::cout << (string1 == string1Copy) << std::endl;
-		std::cout << (string1 == string2) << std::endl;
+		std::cerr << (string1 == string1Copy) << std::endl;
+		std::cerr << (string1 == string2) << std::endl;
 	}
 
 
@@ -76,6 +76,9 @@ namespace tests {
 
 int main()
 {
+	std::ios_base::sync_with_stdio(false);
+	std::cin.tie(NULL);
+	
 	//tests::runTests();
 
 	Parser parser;
