@@ -19,6 +19,8 @@ public:
 	void print();
 
 	void appendDeclaration(Declaration declaration);
+
+	void removeProperty(String propertyName);
 	
 	void setSelectors(List<String> selectors);
 	void setDeclarations(List<Declaration> declarations);

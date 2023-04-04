@@ -16,6 +16,7 @@ public:
 	void printCSS();
 
 	void removeSection(int sectionIndex);
+	void removeProperty(int sectionIndex, String propertyName);
 
 	void setSections(List<Section> sections);
 	

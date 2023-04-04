@@ -26,6 +26,17 @@ void CSS::removeSection(int sectionIndex) {
 }
 
 
+// TODO: PERFORMANCE ISSUE, USE LIST METHODS
+void CSS::removeProperty(int sectionIndex, String propertyName) {
+	sections[sectionIndex].removeProperty(propertyName);
+
+	// if section declarations list is empty, delete section
+	if (sections[sectionIndex].getDeclarations().getSize() == 0) {
+		sections.removeAt(sectionIndex);
+	}
+}
+
+
 void CSS::setSections(List<Section> sections) {
 	this->sections = sections;
 }
