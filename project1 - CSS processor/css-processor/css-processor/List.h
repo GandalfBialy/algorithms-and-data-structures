@@ -69,11 +69,11 @@ void List<T>::print() {
 	Node<T>* current = head;
 
 	while (current != nullptr) {
-		std::cout << current->data << " ";
+		std::cerr << current->data << " ";
 		current = current->next;
 	}
 
-	std::cout << std::endl;
+	std::cerr << std::endl;
 }
 
 

@@ -157,9 +157,9 @@ void Parser::parseSelectors() {
 
 	currentSection.setSelectors(selectors);
 
-	std::cerr << "Selectors: " << std::endl;
+	//std::cerr << "Selectors: " << std::endl;
 	selectors.print();
-	std::cerr << std::endl;
+	//std::cerr << std::endl;
 
 	delete[] selectorBuffer;
 }
@@ -306,8 +306,8 @@ void Parser::parseCommand() {
 				return;
 			}
 
-			std::cerr << "Command: " << std::endl;
-			std::cerr << command << std::endl << std::endl;
+			//std::cerr << "Command: " << std::endl;
+			//std::cerr << command << std::endl << std::endl;
 
 			commandsInterpreter.appendCommand(command);
 
@@ -330,8 +330,8 @@ void Parser::parseCommand() {
 
 	command.trimWhitespace();
 
-	std::cerr << "Command: " << std::endl;
-	std::cerr << command << std::endl << std::endl;
+	//std::cerr << "Command: " << std::endl;
+	//std::cerr << command << std::endl << std::endl;
 
 	commandsInterpreter.appendCommand(command);
 
