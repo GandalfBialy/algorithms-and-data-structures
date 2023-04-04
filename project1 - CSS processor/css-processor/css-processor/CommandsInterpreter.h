@@ -67,11 +67,13 @@ i,A,n – wypisz dla i-tej sekcji wartoœæ atrybutu o nazwie n, jeœli nie ma takieg
 [implemented, tests needed]
 
 n,A,? – wypisz ³¹czn¹ (dla wszystkich bloków) liczbê wyst¹pieñ atrybutu nazwie n. (W ramach pojedynczego bloku duplikaty powinny zostaæ usuniête na etapie wczytywania). Mo¿liwe jest 0;
+(!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!)
 
 z,S,? – wypisz ³¹czn¹ (dla wszystkich bloków) liczbê wyst¹pieñ selektora z. Mo¿liwe jest 0;
 [implemented, tests needed]
 
 z,E,n – wypisz wartoœæ atrybutu o nazwie n dla selektora z, w przypadku wielu wyst¹pieñ selektora z bierzemy ostatnie. W przypadku braku pomiñ;
+(!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!)
 
 i,D,* - usuñ ca³¹ sekcjê nr i (tj. separatory+atrybuty), po poprawnym wykonaniu wypisz deleted;
 [implemented, tests needed]

@@ -76,10 +76,22 @@ void CommandsInterpreter::executeCommand(Command command) {
 	if (commandName[0] == '?') {
 		std::cout << getSectionsCount() << "\n";
 	}
-	// i,S,? OR z,S,? (command)
+	// i,S,? OR z,S,? OR i,S,j (command)
 	else if (arguments[1] == "S" and arguments[2] == "?") {
-		// i,S,? (command)
 		if (isArgumentNumber(arguments[0])) {
+			// i,S,j (command)
+			if (isArgumentNumber(arguments[2])) {
+				/*int sectionIndex = arguments[0].parseToInt() - 1;
+				int selectorIndex = arguments[2].parseToInt() - 1;
+
+				std::cout << getSelector(sectionIndex, selectorIndex) << "\n";*/
+
+				std::cout << "NOT IMPLEMENTED\n";
+
+				return;
+			}
+			
+			// i,S,? (command)
 			int sectionIndex = arguments[0].parseToInt() - 1;
 
 			std::cout << getSelectorsCount(sectionIndex) << "\n";
@@ -90,11 +102,19 @@ void CommandsInterpreter::executeCommand(Command command) {
 		// z,S,? (command)
 		std::cout << getSelectorsCount(arguments[0]) << "\n";
 	}
-	// i,A,? (command)
+	// i,A,? OR n,A,? (command)
 	else if (arguments[1] == "A" and arguments[2] == "?") {
-		int sectionIndex = arguments[0].parseToInt() - 1;
+		// i,A,? (command)
+		if (isArgumentNumber(arguments[0])) {
+			int sectionIndex = arguments[0].parseToInt() - 1;
 
-		std::cout << getDeclarationsCount(sectionIndex) << "\n";
+			std::cout << getDeclarationsCount(sectionIndex) << "\n";
+
+			return;
+		}
+	
+		// n,A,? (command) - TO IMPLEMENT
+		std::cout << "NOT IMPLEMENTED\n";
 	}
 	// i,A,n (command)
 	else if (arguments[1] == "A" and arguments[2].getLength() > 1) {
@@ -102,6 +122,14 @@ void CommandsInterpreter::executeCommand(Command command) {
 		String propertyName = arguments[2];
 
 		std::cout << getPropertyValue(sectionIndex, propertyName) << "\n";
+	}
+	// z,E,n (command)
+	else if (arguments[1] == "E") {
+		//String selectorName = arguments[2];
+
+		//std::cout << getSectionIndex(selectorName) << "\n";
+
+		std::cout << "NOT IMPLEMENTED\n";
 	}
 	// i,D,* OR i,D,n (command)
 	else if (arguments[1] == "D") {
@@ -114,36 +142,17 @@ void CommandsInterpreter::executeCommand(Command command) {
 
 			return;
 		}
-
 		
 		// i, D, n (command)
-		// delete attribute from i section and of name n
-		//int sectionIndex = arguments[0].parseToInt() - 1;
-		//String propertyName = arguments[2];
-		//
-		//// find property in declaration
-		//int declarationIndex = -1;
-		//
-		//for (int declarationIndex = 0; declarationIndex < css->getSections()[sectionIndex].getDeclarations().getSize(); declarationIndex++) {
-		//	if (css->getSections()[sectionIndex].getDeclarations()[declarationIndex].getProperty() == propertyName) {
-		//		break;
-		//	}
-		//}
+		int sectionIndex = arguments[0].parseToInt() - 1;
+		String propertyName = arguments[2];
+		
+		css->removeProperty(sectionIndex, propertyName);
 
-		//// delete property
-		//css->getSections()[sectionIndex].getDeclarations().removeAt(declarationIndex);
-
-		//// print section
-
-		//// if declaration is empty, delete it
-		//if (css->getSections()[sectionIndex].getDeclarations().getSize() == 0) {
-		//	css->removeSection(sectionIndex);
-		//}
-
-		//std::cout << "deleted\n";
+		std::cout << "deleted\n";
 	}
 
-	std::cout << "\n";
+	//std::cout << "\n";
 }
 
 
