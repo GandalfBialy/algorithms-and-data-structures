@@ -113,6 +113,26 @@ int String::countCharacter(char character, int startIndex) {
 }
 
 
+String String::substring(int startIndex) {
+	return substring(startIndex, length - 1);
+}
+
+
+String String::substring(int startIndex, int endIndex) {
+	if (startIndex < 0 or startIndex >= length or endIndex < 0 or endIndex >= length) {
+		return String();
+	}
+
+	int substringLength = endIndex - startIndex + 1;
+
+	char* substring = new char[substringLength + 1];
+	strncpy_s(substring, substringLength + 1, string + startIndex, substringLength);
+	substring[substringLength] = '\0';
+
+	return String(substring);
+}
+
+
 int String::findCharacter(char character) {
 	return findCharacter(character, 0);
 }
@@ -153,40 +173,11 @@ int String::findSubstring(const String& substring, int startIndex) {
 	}
 
 	return -1;
+}
 
 
-
-
-
-
-
-
-
-	//int String::findSubstring(const String & substring) {
-	//	// find substring and return index of first character
-	//	// if not found, return -1
-
-	//	int substringLength = substring.length;
-
-	//	for (int i = 0; i < length; i++) {
-	//		if (string[i] == substring.string[0]) {
-	//			bool found = true;
-
-	//			for (int j = 1; j < substringLength; j++) {
-	//				if (string[i + j] != substring.string[j]) {
-	//					found = false;
-	//					break;
-	//				}
-	//			}
-
-	//			if (found) {
-	//				return i;
-	//			}
-	//		}
-	//	}
-
-	//	return -1;
-	//}
+int String::parseToInt() {
+	return atoi(string);
 }
 
 
