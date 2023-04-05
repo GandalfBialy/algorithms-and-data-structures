@@ -13,9 +13,8 @@ private:
 	List<Command> commands;
 	CSS* css;
 
-	String currentCommandName;
-	String* currentArguments;
-	String currentCommandAnswer;
+	String commandName;
+	String* arguments;
 
 public:
 	CommandsInterpreter();
@@ -27,6 +26,9 @@ public:
 
 	void executeCommands();
 	void executeCommand(Command command);
+
+	void printCommandResultIfNotEmpty(String commandResult);
+	void printCommandResult(int commandResult);
 
 	void setCSS(CSS* css);
 
