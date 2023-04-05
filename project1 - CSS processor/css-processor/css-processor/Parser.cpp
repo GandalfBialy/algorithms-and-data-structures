@@ -1,18 +1,29 @@
 #include "Parser.h"
 
 
-Parser::Parser() {
+Parser::Parser() : inputString(""), sectionBodyString(""), inputStringIndex(0), sectionBodyBufferIndex(0), isCSSParserModeOn(true) {
 	css = new CSS();
 	commandsInterpreter = CommandsInterpreter(css);
 
+	currentSection = Section();
 	currentDeclaration = Declaration();
+}
 
-	inputString = "";
 
-	inputStringIndex = 0;
-	sectionBodyBufferIndex = 0;
+Parser::Parser(const Parser& other) {
+	css = other.css;
+	commandsInterpreter = other.commandsInterpreter;
 
-	isCSSParserModeOn = true;
+	currentSection = other.currentSection;
+	currentDeclaration = other.currentDeclaration;
+
+	inputString = other.inputString;
+	sectionBodyString = other.sectionBodyString;
+
+	inputStringIndex = other.inputStringIndex;
+	sectionBodyBufferIndex = other.sectionBodyBufferIndex;
+
+	isCSSParserModeOn = other.isCSSParserModeOn;
 }
 
 
@@ -361,7 +372,7 @@ bool Parser::shouldSwitchToCSSParserMode() {
 }
 
 
-bool Parser::isWhiteSpace(char character) {
+ bool Parser::isWhiteSpace(char character) {
 	return character == ' ' or character == '\t' or character == '\n' or character == '\r';
 }
 
@@ -372,4 +383,21 @@ void Parser::printParsedAndStructuredInput() {
 
 	std::cerr << std::endl << std::endl;
 	commandsInterpreter.printCommands();
+}
+
+
+Parser& Parser::operator=(const Parser& other) {
+	if (this != &other) {
+		inputString = other.inputString;
+		inputStringIndex = other.inputStringIndex;
+		sectionBodyString = other.sectionBodyString;
+		sectionBodyBufferIndex = other.sectionBodyBufferIndex;
+		currentSection = other.currentSection;
+		currentDeclaration = other.currentDeclaration;
+		isCSSParserModeOn = other.isCSSParserModeOn;
+		css = other.css;
+		commandsInterpreter = other.commandsInterpreter;
+	}
+
+	return *this;
 }
