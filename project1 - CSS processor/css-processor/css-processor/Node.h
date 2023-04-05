@@ -26,6 +26,7 @@ template <typename T>
 Node<T>::Node(T data) {
 	this->data = data;
 	next = nullptr;
+	previous = nullptr;
 }
 
 

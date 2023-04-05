@@ -17,33 +17,37 @@ private:
 
 public:
 	List();
+	List(const List<T>& list);
+
 	//~List();
 
-	void print();
+	void print() const;
 	void append(T data);
 
-	T front();
-	T back();
+	T front() const;
+	T back() const;
 
 	void popFront();
 
 	void removeFront();
 	void removeBack();
-	bool remove(T data);
+	bool remove(const T data);
 	void removeAt(int index);
 
 	void clear();
 
 	Node<T>* getHead();
 	Node<T>* getTail();
-	int getSize();
+	int getSize() const;
 
 	
 	List<T>& operator=(const List<T>& list) {
 		if (this != &list) {
 			this->head = list.head;
+			this->tail = list.tail;
 			this->size = list.size;
 		}
+
 		return *this;
 	}
 
@@ -68,6 +72,14 @@ List<T>::List() {
 }
 
 
+template<typename T>
+List<T>::List(const List<T>& list) {
+	this->head = list.head;
+	this->tail = list.tail;
+	this->size = list.size;
+}
+
+
 //template<typename T>
 //List<T>::~List() {
 //	while (head != nullptr) {
@@ -81,7 +93,7 @@ List<T>::List() {
 
 
 template<typename T>
-void List<T>::print() {
+void List<T>::print() const {
 	Node<T>* current = head;
 
 	while (current != nullptr) {
@@ -127,13 +139,13 @@ void List<T>::append(T data) {
 
 
 template<typename T>
-T List<T>::front() {
+T List<T>::front() const {
 	return head->data;
 }
 
 
 template<typename T>
-T List<T>::back() {
+T List<T>::back() const {
 	return tail->data;
 }
 
@@ -195,7 +207,7 @@ void List<T>::removeBack() {
 
 
 template<typename T>
-bool List<T>::remove(T data) {
+bool List<T>::remove(const T data) {
 	Node* current = head;
 	while (current != nullptr) {
 		if (current->data == data) {
@@ -299,7 +311,7 @@ void List<T>::clear() {
 
 
 template<typename T>
-int List<T>::getSize() {
+int List<T>::getSize() const{
 	return size;
 }
 
