@@ -17,6 +17,7 @@ private:
 
 public:
 	List();
+	//~List();
 
 	void print();
 	void append(T data);
@@ -26,8 +27,11 @@ public:
 
 	void popFront();
 
-	void remove(T data);
+	void removeFront();
+	void removeBack();
+	bool remove(T data);
 	void removeAt(int index);
+
 	void clear();
 
 	Node<T>* getHead();
@@ -64,6 +68,18 @@ List<T>::List() {
 }
 
 
+//template<typename T>
+//List<T>::~List() {
+//	while (head != nullptr) {
+//		Node<T>* temp = head;
+//		head = head->next;
+//		delete temp;
+//	}
+//
+//	tail = nullptr;
+//}
+
+
 template<typename T>
 void List<T>::print() {
 	Node<T>* current = head;
@@ -86,12 +102,27 @@ void List<T>::append(T data) {
 		tail = newNode;
 	}
 	else {
+		newNode->previous = tail;
+		tail->next = newNode;
+		tail = newNode;
+	}
+
+	size++;
+	
+	
+	/*Node<T>* newNode = new Node<T>(data);
+
+	if (head == nullptr) {
+		head = newNode;
+		tail = newNode;
+	}
+	else {
 		tail->next = newNode;
 		newNode->previous = tail;
 		tail = newNode;
 	}
 
-	size++;
+	size++;*/
 }
 
 
@@ -122,63 +153,136 @@ void List<T>::popFront() {
 
 
 template<typename T>
-void List<T>::remove(T data) {
+void List<T>::removeFront() {
 	if (head == nullptr) {
 		return;
 	}
 
-	if (head->data == data) {
-		Node<T>* temp = head;
-		head = head->next;
-		delete temp;
-		size--;
+	Node<T>* temp = head;
+	head = head->next;
+
+	if (head != nullptr) {
+		head->previous = nullptr;
+	}
+	else {
+		tail = nullptr;
+	}
+
+	size--;
+	delete temp;
+}
+
+
+template<typename T>
+void List<T>::removeBack() {
+	if (tail == nullptr) {
 		return;
 	}
 
-	Node<T>* currentNode = head;
+	Node<T>* temp = tail;
+	tail = tail->previous;
 
-	while (currentNode->next != nullptr and currentNode->next->data != data) {
-		currentNode = currentNode->next;
+	if (tail != nullptr) {
+		tail->next = nullptr;
+	}
+	else {
+		head = nullptr;
+	}
+	
+	size--;
+	delete temp;
+}
+
+
+template<typename T>
+bool List<T>::remove(T data) {
+	Node* current = head;
+	while (current != nullptr) {
+		if (current->data == data) {
+			if (current->previous != nullptr) {
+				current->previous->next = current->next;
+			}
+			else {
+				head = current->next;
+			}
+			if (current->next != nullptr) {
+				current->next->previous = current->previous;
+			}
+			else {
+				tail = current->previous;
+			}
+
+			size--;
+			delete current;
+			
+			return true;
+		}
+
+		current = current->next;
 	}
 
-	if (currentNode->next != nullptr) {
-		Node<T>* temp = currentNode->next;
-		currentNode->next = currentNode->next->next;
-		delete temp;
-		size--;
-	}
+	return false;
 }
 
 
 template<typename T>
 void List<T>::removeAt(int index) {
-	if (head == nullptr) {
+	if (index < 0 || index >= size) {
+		std::cerr << "Index out of bounds!" << std::endl;
 		return;
 	}
 
 	if (index == 0) {
-		Node<T>* temp = head;
-		head = head->next;
-
-		size--;
-		delete temp;
-
+		removeFront();
 		return;
 	}
 
-	Node<T>* currentNode = head;
-
-	for (int i = 0; i < index - 1; i++) {
-		currentNode = currentNode->next;
+	if (index == size - 1) {
+		removeBack();
+		return;
 	}
 
-	if (currentNode->next != nullptr) {
-		Node<T>* temp = currentNode->next;
-		currentNode->next = currentNode->next->next;
-
-		size--;
-		delete temp;
+	Node<T>* current = head;
+	for (int i = 0; i < index; i++) {
+		current = current->next;
 	}
+
+	current->previous->next = current->next;
+	current->next->previous = current->previous;
+	delete current;
+	size--;
+
+	/*if (index < 0 || index >= size) {
+		return;
+	}
+
+	Node* current = head;
+
+	for (int i = 0; i < index; i++) {
+		current = current->next;
+	}
+
+	if (current == head) {
+		head = head->next;
+
+		if (head) {
+			head->previous = nullptr;
+		}
+		else {
+			tail = nullptr;
+		}
+	}
+	else if (current == tail) {
+		tail = tail->previous;
+		tail->next = nullptr;
+	}
+	else {
+		current->previous->next = current->next;
+		current->next->previous = current->previous;
+	}
+
+	size--;
+	delete current;*/
 }
 
 
