@@ -35,6 +35,32 @@ void Section::appendDeclaration(Declaration declaration) {
 }
 
 
+int Section::findProperty(String propertyName) {
+	if (declarations.getSize() == 0) {
+		return -1;
+	}
+
+	Node<Declaration>* declaration = declarations.getHead();
+	int index = 0;
+
+	while (declaration != nullptr) {
+		if (declaration->data.getProperty() == propertyName) {
+			return index;
+		}
+
+		declaration = declaration->next;
+		index++;
+	}
+
+	return -1;
+}
+
+
+void Section::replaceDeclarationValue(int declarationIndex, String valueName) {
+	declarations[declarationIndex].setValue(valueName);
+}
+
+
 void Section::removeProperty(String propertyName) {
 	if (declarations.getSize() == 0) {
 		return;

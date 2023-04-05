@@ -20,6 +20,8 @@ public:
 
 	void appendDeclaration(Declaration declaration);
 
+	int findProperty(String propertyName);
+	void replaceDeclarationValue(int declarationIndex, String valueName);
 	void removeProperty(String propertyName);
 	
 	void setSelectors(List<String> selectors);
