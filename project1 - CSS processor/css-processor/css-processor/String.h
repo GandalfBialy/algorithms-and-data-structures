@@ -13,7 +13,7 @@ private:
 
 	void copy(const String& string);
 	void copy(const char* cString);
-	void clear();
+	void clear() const;
 	
 public:
 	String();
@@ -26,19 +26,19 @@ public:
 	void trimPrecedingWhitespace();
 	void trimTrailingWhitespace();
 
-	bool hasCharacter(char character);
-	bool hasCharacter(char character, int startIndex);
+	bool hasCharacter(char character) const;
+	bool hasCharacter(char character, int startIndex) const;
 
-	int countCharacter(char character);
-	int countCharacter(char character, int startIndex);
+	int countCharacter(char character) const;
+	int countCharacter(char character, int startIndex) const;
 
 	String substring(int startIndex);
 	String substring(int startIndex, int endIndex);
 
-	int findCharacter(char character);
-	int findCharacter(char character, int startIndex);
-	int findSubstring(const String& substring);
-	int findSubstring(const String& substring, int startIndex);
+	int findCharacter(char character) const;
+	int findCharacter(char character, int startIndex) const;
+	int findSubstring(const String& substring) const;
+	int findSubstring(const String& substring, int startIndex) const;
 
 	bool isNumber();
 	int parseToInt();

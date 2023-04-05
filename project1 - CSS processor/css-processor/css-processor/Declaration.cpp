@@ -1,9 +1,7 @@
 #include "Declaration.h"
 
 
-Declaration::Declaration() {
-	property = "";
-	value = "";
+Declaration::Declaration() : property(""), value("") {
 }
 
 
@@ -17,12 +15,12 @@ void Declaration::setValue(String value) {
 }
 
 
-String Declaration::getProperty() {
+String Declaration::getProperty() const {
 	return property;
 }
 
 
-String Declaration::getValue() {
+String Declaration::getValue() const {
 	return value;
 }
 

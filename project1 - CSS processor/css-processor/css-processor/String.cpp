@@ -100,12 +100,12 @@ void String::trimTrailingWhitespace() {
 }
 
 
-bool String::hasCharacter(char character) {
+bool String::hasCharacter(char character) const {
 	return hasCharacter(character, 0);
 }
 
 
-bool String::hasCharacter(char character, int startIndex) {
+bool String::hasCharacter(char character, int startIndex) const {
 	for (int i = startIndex; i < length; i++) {
 		if (string[i] == character) {
 			return true;
@@ -116,12 +116,12 @@ bool String::hasCharacter(char character, int startIndex) {
 }
 
 
-int String::countCharacter(char character) {
+int String::countCharacter(char character) const {
 	return countCharacter(character, 0);
 }
 
 
-int String::countCharacter(char character, int startIndex) {
+int String::countCharacter(char character, int startIndex) const {
 	int count = 0;
 
 	for (int i = startIndex; i < length; i++) {
@@ -154,12 +154,12 @@ String String::substring(int startIndex, int endIndex) {
 }
 
 
-int String::findCharacter(char character) {
+int String::findCharacter(char character) const {
 	return findCharacter(character, 0);
 }
 
 
-int String::findCharacter(char character, int startIndex) {
+int String::findCharacter(char character, int startIndex) const {
 	for (int i = startIndex; i < length; i++) {
 		if (string[i] == character) {
 			return i;
@@ -170,12 +170,12 @@ int String::findCharacter(char character, int startIndex) {
 }
 
 
-int String::findSubstring(const String& substring) {
+int String::findSubstring(const String& substring) const {
 	return findSubstring(substring, 0);
 }
 
 
-int String::findSubstring(const String& substring, int startIndex) {
+int String::findSubstring(const String& substring, int startIndex) const {
 	for (int i = startIndex; i < length; i++) {
 		if (string[i] == substring.string[0]) {
 			bool found = true;
@@ -233,14 +233,12 @@ String& String::operator=(const char* cString) {
 }
 
 
-String& String::operator=(int integer) {
+String& String::operator=(int number) {
 	delete[] this->string;
 
-	this->copy(integer);
+	this->copy(number);
 
 	return *this;
-
-	delete[] this->string;
 }
 
 
@@ -272,9 +270,9 @@ String& String::operator+=(const char* cString) {
 }
 
 
-String& String::operator+=(const int integer) {
+String& String::operator+=(const int number) {
 	char* cString = new char[11];
-	_itoa_s(integer, cString, 11, 10);
+	_itoa_s(number, cString, 11, 10);
 
 	length += strlen(cString);
 
@@ -373,6 +371,6 @@ void String::copy(const char* cString) {
 }
 
 
-void String::clear() {
+void String::clear() const {
 	delete[] string;
 }

@@ -16,8 +16,8 @@ public:
 	void setProperty(String property);
 	void setValue(String value);
 
-	String getProperty();
-	String getValue();
+	String getProperty() const;
+	String getValue() const;
 
 	operator String() const;
 };

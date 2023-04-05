@@ -20,15 +20,15 @@ public:
 	CommandsInterpreter();
 	CommandsInterpreter(CSS* css);
 
-	void appendCommand(String commandString);
-	Command parseCommand(String commandString);
+	void appendCommand(String commandName);
+	Command parseCommand(String commandName);
 	void printCommands();
 
 	void executeCommands();
 	void executeCommand(Command command);
 
-	void printCommandResultIfNotEmpty(String commandResult);
-	void printCommandResult(int commandResult);
+	void printCommandResultIfNotEmpty(String commandResult) const;
+	void printCommandResult(int commandResult) const;
 
 	void setCSS(CSS* css);
 

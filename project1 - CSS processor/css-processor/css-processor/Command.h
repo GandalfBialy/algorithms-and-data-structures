@@ -18,7 +18,7 @@ public:
 	void setCommandName(String commandName);
 	void setArguments(String arguments[3]);
 
-	String getCommandName();
+	String getCommandName() const;
 	String* getArguments();
 };
 

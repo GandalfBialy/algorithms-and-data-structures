@@ -4,17 +4,22 @@
 CommandsInterpreter::CommandsInterpreter() {
 	commands = List<Command>();
 	css = nullptr;
+
+	commandName = String();
+	arguments = nullptr;
 }
 
 
-CommandsInterpreter::CommandsInterpreter(CSS* css) {
+CommandsInterpreter::CommandsInterpreter(CSS* css) : css(css) {
 	commands = List<Command>();
-	this->css = css;
+
+	commandName = String();
+	arguments = nullptr;
 }
 
 
-void CommandsInterpreter::appendCommand(String commandString) {
-	Command command = parseCommand(commandString);
+void CommandsInterpreter::appendCommand(String commandName) {
+	Command command = parseCommand(commandName);
 
 	commands.append(command);
 }
@@ -102,14 +107,14 @@ void CommandsInterpreter::executeCommand(Command command) {
 }
 
 
-void CommandsInterpreter::printCommandResultIfNotEmpty(String commandResult) {
+void CommandsInterpreter::printCommandResultIfNotEmpty(String commandResult) const {
 	if (commandResult != "") {
 		std::cout << commandName << " == " << commandResult << "\n";
 	}
 }
 
 
-void CommandsInterpreter::printCommandResult(int commandResult) {
+void CommandsInterpreter::printCommandResult(int commandResult) const {
 	std::cout << commandName << " == " << commandResult << "\n";
 }
 

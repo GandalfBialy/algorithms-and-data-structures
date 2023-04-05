@@ -25,7 +25,8 @@ public:
 	void setSelectors(List<String> selectors);
 	void setDeclarations(List<Declaration> declarations);
 
-	String getSectionName();
-	List<String> getSelectors();
-	List<Declaration> getDeclarations();
+	String getSectionName() const;
+	List<String> getSelectors() const;
+	List<String>* getSelectorsPointer();
+	List<Declaration> getDeclarations() const;
 };

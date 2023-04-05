@@ -1,15 +1,13 @@
 #include "Section.h"
 
 
-Section::Section() {
-	sectionName = "";
+Section::Section() : sectionName("") {
 	selectors = List<String>();
 	declarations = List<Declaration>();
 }
 
 
-Section::Section(String sectionName) {
-	this->sectionName = sectionName;
+Section::Section(String sectionName) : sectionName(sectionName) {
 	selectors = List<String>();
 	declarations = List<Declaration>();
 }
@@ -39,15 +37,19 @@ void Section::appendDeclaration(Declaration declaration) {
 
 // TODO: PERFORMANCE ISSUE, USE LIST METHODS
 void Section::removeProperty(String propertyName) {
-	int declarationIndex = -1;
+	// Remove declaration from list, don't use for loop because of performance issues
+	Node<Declaration>* declaration = declarations.getHead();
+	int index = 0;
 
-	for (int declarationIndex = 0; declarationIndex < declarations.getSize(); declarationIndex++) {
-		if (declarations[declarationIndex].getProperty() == propertyName) {
-			declarations.removeAt(declarationIndex);
+	while (declaration != nullptr) {
+		if (declaration->data.getProperty() == propertyName) {
+			declarations.removeAt(index);
+			break;
 		}
-	}
 
-	declarations.removeAt(declarationIndex);
+		declaration = declaration->next;
+		index++;
+	}
 
 	if (declarations.getSize() == 0) {
 		sectionName = "";
@@ -65,16 +67,21 @@ void Section::setDeclarations(List<Declaration> declarations) {
 }
 
 
-String Section::getSectionName() {
+String Section::getSectionName() const {
 	return sectionName;
 }
 
 
-List<String> Section::getSelectors() {
+List<String> Section::getSelectors() const {
 	return selectors;
 }
 
 
-List<Declaration> Section::getDeclarations() {
+List<String>* Section::getSelectorsPointer() {
+	return &selectors;
+}
+
+
+List<Declaration> Section::getDeclarations() const {
 	return declarations;
 }
