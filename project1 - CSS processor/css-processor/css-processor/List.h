@@ -34,6 +34,7 @@ public:
 	bool remove(const T& data);
 	void removeAt(int index);
 
+	bool contains(const T& data) const;
 	void clear();
 
 	Node<T>* getHead();
@@ -254,6 +255,22 @@ void List<T>::removeAt(int index) {
 	
 	delete current;
 	size--;
+}
+
+
+template<typename T>
+bool List<T>::contains(const T& data) const {
+	Node<T>* current = head;
+
+	while (current != nullptr) {
+		if (current->data == data) {
+			return true;
+		}
+
+		current = current->next;
+	}
+
+	return false;
 }
 
 
