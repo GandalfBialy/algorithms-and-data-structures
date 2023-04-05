@@ -35,9 +35,11 @@ void Section::appendDeclaration(Declaration declaration) {
 }
 
 
-// TODO: PERFORMANCE ISSUE, USE LIST METHODS
 void Section::removeProperty(String propertyName) {
-	// Remove declaration from list, don't use for loop because of performance issues
+	if (declarations.getSize() == 0) {
+		return;
+	}
+	
 	Node<Declaration>* declaration = declarations.getHead();
 	int index = 0;
 
@@ -59,11 +61,6 @@ void Section::removeProperty(String propertyName) {
 
 void Section::setSelectors(List<String> selectors) {
 	this->selectors = selectors;
-}
-
-
-void Section::setDeclarations(List<Declaration> declarations) {
-	this->declarations = declarations;
 }
 
 

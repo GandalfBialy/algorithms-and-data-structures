@@ -18,9 +18,7 @@ public:
 	void removeSection(int sectionIndex);
 	void removeProperty(int sectionIndex, String propertyName);
 
-	void setSections(List<Section> sections);
-	
-	List<Section> getSections();
+	List<Section> getSections() const;
 	int getSectionsCount();
 };
 

@@ -39,12 +39,7 @@ void CSS::removeProperty(int sectionIndex, String propertyName) {
 }
 
 
-void CSS::setSections(List<Section> sections) {
-	this->sections = sections;
-}
-
-
-List<Section> CSS::getSections() {
+List<Section> CSS::getSections() const {
 	return sections;
 }
 

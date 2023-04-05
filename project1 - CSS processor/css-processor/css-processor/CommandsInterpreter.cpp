@@ -119,11 +119,6 @@ void CommandsInterpreter::printCommandResult(int commandResult) const {
 }
 
 
-void CommandsInterpreter::setCSS(CSS* css) {
-	this->css = css;
-}
-
-
 // Commands
 
 // ? (command)

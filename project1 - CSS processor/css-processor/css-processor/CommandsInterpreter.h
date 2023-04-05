@@ -30,8 +30,6 @@ public:
 	void printCommandResultIfNotEmpty(String commandResult) const;
 	void printCommandResult(int commandResult) const;
 
-	void setCSS(CSS* css);
-
 	// Commands
 	// ? (command)
 	int getSectionsCount(); 
@@ -75,7 +73,7 @@ public:
 /* COMMANDS TO COVER
 
 ? – wypisz liczbê sekcji CSS;
-[implemented, tests needed]
+[implemented; tested]
 
 i,S,? – wypisz liczbê selektorów dla sekcji nr i (numery zaczynaj¹ siê od 1), jeœli nie ma takiego bloku pomiñ;
 [implemented, tests needed]

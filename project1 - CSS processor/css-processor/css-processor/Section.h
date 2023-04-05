@@ -23,7 +23,6 @@ public:
 	void removeProperty(String propertyName);
 	
 	void setSelectors(List<String> selectors);
-	void setDeclarations(List<Declaration> declarations);
 
 	String getSectionName() const;
 	List<String> getSelectors() const;
