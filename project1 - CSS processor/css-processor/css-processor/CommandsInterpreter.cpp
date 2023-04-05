@@ -128,7 +128,7 @@ int CommandsInterpreter::getSectionsCount() {
 
 
 // i,S,? (command)
-int CommandsInterpreter::getSelectorsCount(int sectionIndex) {
+int CommandsInterpreter::getSelectorsCount(int sectionIndex) const {
 	Section section = css->getSections()[sectionIndex];
 
 	return section.getSelectors().getSize();
@@ -136,7 +136,7 @@ int CommandsInterpreter::getSelectorsCount(int sectionIndex) {
 
 
 // z,S,? (command)
-int CommandsInterpreter::getSelectorsCount(String selectorName) {
+int CommandsInterpreter::getSelectorsCount(String selectorName) const {
 	int selectorsCount = 0;
 	List<Section> sections = css->getSections();
 
@@ -167,7 +167,7 @@ int CommandsInterpreter::getSelectorsCount(String selectorName) {
 
 
 // i,S,j (command)
-String CommandsInterpreter::getSelectorName(int sectionIndex, int selectorIndex) {
+String CommandsInterpreter::getSelectorName(int sectionIndex, int selectorIndex) const {
 	Section section = css->getSections()[sectionIndex];
 	List<String> selectors = section.getSelectors();
 
@@ -185,7 +185,7 @@ String CommandsInterpreter::getSelectorName(int sectionIndex, int selectorIndex)
 
 
 // i,A,? (command)
-int CommandsInterpreter::getDeclarationsCount(int sectionIndex) {
+int CommandsInterpreter::getDeclarationsCount(int sectionIndex) const {
 	Section section = css->getSections()[sectionIndex];
 	
 	return section.getDeclarations().getSize();
@@ -193,7 +193,7 @@ int CommandsInterpreter::getDeclarationsCount(int sectionIndex) {
 
 
 // n,A,? (command)
-int CommandsInterpreter::getPropertyCount(String propertyName) {
+int CommandsInterpreter::getPropertyCount(String propertyName) const {
 	int propertyCount = 0;
 	List<Section> sections = css->getSections();
 
@@ -220,7 +220,7 @@ int CommandsInterpreter::getPropertyCount(String propertyName) {
 
 
 // i,A,n (command)
-String CommandsInterpreter::getPropertyValue(int sectionIndex, String propertyName) {
+String CommandsInterpreter::getPropertyValue(int sectionIndex, String propertyName) const {
 	Section section = css->getSections()[sectionIndex];
 	List<Declaration> declarations = section.getDeclarations();
 	
@@ -235,7 +235,7 @@ String CommandsInterpreter::getPropertyValue(int sectionIndex, String propertyNa
 
 
 // z,E,n (command)
-String CommandsInterpreter::getPropertyValue(String selectorName, String propertyName) {
+String CommandsInterpreter::getPropertyValue(String selectorName, String propertyName) const {
 	List<Section> sections = css->getSections();
 
 	// if sections list is empty, return empty string

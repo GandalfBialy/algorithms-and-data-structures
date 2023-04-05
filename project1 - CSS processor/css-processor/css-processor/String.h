@@ -40,7 +40,7 @@ public:
 	int findSubstring(const String& substring) const;
 	int findSubstring(const String& substring, int startIndex) const;
 
-	bool isNumber();
+	bool isNumber() const;
 	int parseToInt();
 	
 	String& operator=(const String& string);

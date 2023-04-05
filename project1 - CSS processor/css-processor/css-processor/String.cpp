@@ -201,7 +201,7 @@ int String::findSubstring(const String& substring, int startIndex) const {
 }
 
 
-bool String::isNumber() {
+bool String::isNumber() const {
 	for (int i = 0; i < length; i++) {
 		if (string[i] < '0' or string[i] > '9') {
 			return false;

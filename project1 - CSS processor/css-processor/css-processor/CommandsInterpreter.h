@@ -36,31 +36,31 @@ public:
 	void handleSectionsCountCommand();
 	
 	// i,S,? (command)
-	int getSelectorsCount(int sectionIndex);
+	int getSelectorsCount(int sectionIndex) const;
 	void handleSelectorsCountBySectionIndexCommand();
 
 	// z,S,? (command)
-	int getSelectorsCount(String selectorName);
+	int getSelectorsCount(String selectorName) const;
 	void handleSelectorsCountBySelectorNameCommand();
 
 	// i,S,j (command)
-	String getSelectorName(int sectionIndex, int selectorIndex); // !!! SHOULD BE BLOCK INDEX
+	String getSelectorName(int sectionIndex, int selectorIndex) const; // !!! SHOULD BE BLOCK INDEX
 	void handleSelectorNameByBlockIndexAndSelectorIndexCommand();
 	
 	// i,A,? (command)
-	int getDeclarationsCount(int sectionIndex);
+	int getDeclarationsCount(int sectionIndex) const;
 	void handleDeclarationsCountBySectionIndexCommand();
 
 	// n,A,? (command)
-	int getPropertyCount(String propertyName);
+	int getPropertyCount(String propertyName) const;
 	void handlePropertyCountByPropertyNameCommand();
 
 	// i,A,n (command)
-	String getPropertyValue(int sectionIndex, String propertyName);
+	String getPropertyValue(int sectionIndex, String propertyName) const;
 	void handlePropertyValueBySectionIndexAndPropertyNameCommand();
 
 	// z,E,n (command)
-	String getPropertyValue(String selectorName, String propertyName);
+	String getPropertyValue(String selectorName, String propertyName) const;
 	void handlePropertyValueBySelectorAndPropertyNameCommand();
 
 	// i,D,* (command)

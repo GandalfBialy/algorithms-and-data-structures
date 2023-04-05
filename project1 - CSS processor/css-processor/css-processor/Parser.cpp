@@ -319,6 +319,8 @@ void Parser::parseCommand() {
 			command.trimWhitespace();
 
 			if (command.getLength() == 0) {
+				delete[] commandBuffer;
+				
 				return;
 			}
 
@@ -326,6 +328,8 @@ void Parser::parseCommand() {
 			//std::cerr << command << std::endl << std::endl;
 
 			commandsInterpreter.appendCommand(command);
+
+			delete[] commandBuffer;
 
 			return;
 		}
@@ -337,6 +341,8 @@ void Parser::parseCommand() {
 	}
 
 	if (commandBufferIndex == 0) {
+		delete[] commandBuffer;
+		
 		return;
 	}
 	
