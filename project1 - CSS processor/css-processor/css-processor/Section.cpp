@@ -62,10 +62,21 @@ void Section::replaceDeclarationValue(int declarationIndex, String valueName) {
 
 
 void Section::removeProperty(String propertyName) {
-	if (declarations.getSize() == 0) {
+	int index = findProperty(propertyName);
+
+	if (index != -1) {
+		declarations.removeAt(index);
+	}
+
+
+
+
+
+
+	/*if (declarations.getSize() == 0) {
 		return;
 	}
-	
+
 	Node<Declaration>* declaration = declarations.getHead();
 	int index = 0;
 
@@ -81,7 +92,7 @@ void Section::removeProperty(String propertyName) {
 
 	if (declarations.getSize() == 0) {
 		sectionName = "";
-	}
+	}*/
 }
 
 
