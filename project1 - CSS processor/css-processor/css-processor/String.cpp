@@ -19,6 +19,27 @@ String::String(const char* cString) {
 }
 
 
+String::String(int number) {
+	length = 0;
+
+	int temp = number;
+
+	while (temp > 0) {
+		temp /= 10;
+		length++;
+	}
+
+	string = new char[length + 1];
+
+	for (int i = length - 1; i >= 0; i--) {
+		string[i] = number % 10 + '0';
+		number /= 10;
+	}
+
+	string[length] = '\0';
+}
+
+
 String::~String() {
 	delete[] string;
 }
@@ -212,15 +233,14 @@ String& String::operator=(const char* cString) {
 }
 
 
-String& String::operator=(const int integer) {
+String& String::operator=(int integer) {
 	delete[] this->string;
 
-	char* cString = new char[11];
-	_itoa_s(integer, cString, 11, 10);
-	
-	this->copy(cString);
+	this->copy(integer);
 
 	return *this;
+
+	delete[] this->string;
 }
 
 

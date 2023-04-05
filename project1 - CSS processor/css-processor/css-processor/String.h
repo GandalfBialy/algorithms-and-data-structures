@@ -19,6 +19,7 @@ public:
 	String();
 	String(const String& string);
 	String(const char* cString);
+	String(int number);
 	~String();
 
 	void trimWhitespace();
