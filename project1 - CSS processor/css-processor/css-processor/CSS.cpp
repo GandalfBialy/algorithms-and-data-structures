@@ -29,11 +29,9 @@ void CSS::removeSection(int sectionIndex) {
 
 
 void CSS::removeProperty(int sectionIndex, String propertyName) {
-	Section section = sections[sectionIndex];
-	
-	section.removeProperty(propertyName);
+	sections[sectionIndex].removeProperty(propertyName);
 
-	if (section.getDeclarations().getSize() == 0) {
+	if (sections[sectionIndex].getDeclarations().getSize() == 0) {
 		sections.removeAt(sectionIndex);
 	}
 }

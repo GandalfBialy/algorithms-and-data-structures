@@ -55,7 +55,7 @@ void String::trimPrecedingWhitespace() {
 	int whitespaceCount = 0;
 
 	for (int i = 0; i < length; i++) {
-		if (string[i] == ' ' or string[i] == '\t' or string[i] == '\n') {
+		if (string[i] == ' ' or string[i] == '\t' or string[i] == '\n' or string[i] == '\r') {
 			whitespaceCount++;
 		}
 		else {
@@ -79,7 +79,8 @@ void String::trimTrailingWhitespace() {
 	int whitespaceCount = 0;
 
 	for (int i = length - 1; i >= 0; i--) {
-		if (string[i] == ' ' or string[i] == '\t' or string[i] == '\n') {
+		//if (string[i] == ' ' or string[i] == '\t' or string[i] == '\n') {
+		if (string[i] == ' ' or string[i] == '\t' or string[i] == '\n' or string[i] == '\r') {
 			whitespaceCount++;
 		}
 		else {

@@ -142,14 +142,20 @@ int CommandsInterpreter::getSelectorsCount(String selectorName) const {
 
 	for (Node<Section>* section = sections.getHead();; section = section->next) {
 		List<String> selectors = section->data.getSelectors();
-
-		//std::cerr << "Current section: " << section->data.getSectionName() << "\n";
+		List<String> foundSections = List<String>();
 
 		for (Node<String>* selector = selectors.getHead();; selector = selector->next) {
-			//std::cerr << "Current selector: " << selector->data << "\n";
 
 			if (selector->data == selectorName) {
-				selectorsCount++;
+				String foundSection = section->data.getSectionName();
+				
+				if (foundSections.contains(section->data.getSectionName())) {
+					continue;
+				}
+				else {
+					selectorsCount++;
+					foundSections.append(section->data.getSectionName());
+				}
 			}
 
 			if (selector->next == nullptr) {
