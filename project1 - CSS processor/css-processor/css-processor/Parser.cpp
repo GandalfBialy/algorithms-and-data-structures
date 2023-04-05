@@ -231,11 +231,23 @@ void Parser::parseProperties() {
 			//std::cerr << "Property: " << std::endl;
 			//std::cerr << property << std::endl << std::endl;
 
-			currentDeclaration.setProperty(property);
+			// check if property is already defined
+			int propertyIndexIfAlreadyDefined = currentSection.findProperty(property);
 
-			parseValue();
+			if (propertyIndexIfAlreadyDefined == -1) {
+				currentDeclaration.setProperty(property);
 
-			currentSection.appendDeclaration(currentDeclaration);
+				parseValue();
+
+				currentSection.appendDeclaration(currentDeclaration);
+			}
+			else {
+				parseValue();
+
+				String valueName = currentDeclaration.getValue();
+
+				currentSection.replaceDeclarationValue(propertyIndexIfAlreadyDefined, valueName);
+			}
 
 			sectionBodyBufferIndex++;
 
