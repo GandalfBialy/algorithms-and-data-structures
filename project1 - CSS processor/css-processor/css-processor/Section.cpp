@@ -41,8 +41,6 @@ void Section::appendDeclaration(Declaration declaration) {
 void Section::removeProperty(String propertyName) {
 	int declarationIndex = -1;
 
-	//std::cerr << "Declarations size before deletion: " << declarations.getSize() << std::endl;
-
 	for (int declarationIndex = 0; declarationIndex < declarations.getSize(); declarationIndex++) {
 		if (declarations[declarationIndex].getProperty() == propertyName) {
 			declarations.removeAt(declarationIndex);
@@ -51,8 +49,6 @@ void Section::removeProperty(String propertyName) {
 
 	declarations.removeAt(declarationIndex);
 
-	//std::cerr << "Declaration size after deletion: " << declarations.getSize() << std::endl;
-	
 	if (declarations.getSize() == 0) {
 		sectionName = "";
 	}

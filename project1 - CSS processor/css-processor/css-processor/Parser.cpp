@@ -20,7 +20,7 @@ void Parser::loadInput() {
 	inputStringIndex = 0;
 	char* inputBuffer = new char[BUFFER_SIZE];
 	
-	while (inputBuffer[inputStringIndex] = getchar()) {
+	while (inputBuffer[inputStringIndex] = (char)(getchar())) {
 		if (inputStringIndex == BUFFER_SIZE) {
 			inputString += inputBuffer;
 			inputStringIndex = 0;

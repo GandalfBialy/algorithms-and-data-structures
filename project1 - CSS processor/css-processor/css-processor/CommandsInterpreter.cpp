@@ -69,7 +69,6 @@ void CommandsInterpreter::executeCommands() {
 void CommandsInterpreter::executeCommand(Command command) {
 	currentCommandName = command.getCommandName();
 	currentArguments = command.getArguments();
-	String* arguments = command.getArguments();
 
 	// ? (command)
 	handleSectionsCountCommand();
