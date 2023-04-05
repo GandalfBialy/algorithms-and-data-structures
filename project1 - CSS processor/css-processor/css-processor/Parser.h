@@ -35,7 +35,6 @@ public:
 	void loadInput();
 	
 	void parseInput();
-	//void parseCSS();
 	void parseSection();
 	void parseSelectors();
 	void parseDeclarations();
@@ -45,11 +44,11 @@ public:
 
 	void executeCommands();
 	bool shouldSwitchToCSSParserMode();
+	void skipCommandsSectionStartSigns();
 
 	static bool isWhiteSpace(char character);
 
 	void printParsedAndStructuredInput();
 
-	// implement operator= method below
 	Parser& operator=(const Parser& other);
 };

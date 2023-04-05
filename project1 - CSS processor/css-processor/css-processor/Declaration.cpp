@@ -1,7 +1,7 @@
 #include "Declaration.h"
 
 
-Declaration::Declaration() : property(""), value("") {
+Declaration::Declaration() : property(String()), value(String()) {
 }
 
 

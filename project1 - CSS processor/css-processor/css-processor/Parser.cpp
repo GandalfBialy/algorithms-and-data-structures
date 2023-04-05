@@ -48,8 +48,6 @@ void Parser::loadInput() {
 	inputString += inputBuffer;
 	inputString.trimWhitespace();
 
-	//std::cerr << inputString;
-
 	inputStringIndex = 0;
 
 	delete[] inputBuffer;
@@ -112,21 +110,16 @@ void Parser::parseSection() {
 	
 	css->appendSection(currentSection);
 
-
-	// next '{' character index
 	int nextSectionIndex = inputString.findCharacter('{', inputStringIndex);
 
-	// next "????" characters index
 	int nextCommandIndex = inputString.findSubstring("????", inputStringIndex);
 
-
-	// if next "????" characters index is less than next '{' character index then parse command
 	if (nextCommandIndex < nextSectionIndex or nextSectionIndex == -1) {
 		isCSSParserModeOn = false;
 
 		inputStringIndex = nextCommandIndex;
 
-		inputStringIndex += 4; // skip "????"
+		skipCommandsSectionStartSigns();
 	}
 }
 
@@ -360,15 +353,17 @@ void Parser::executeCommands() {
 bool Parser::shouldSwitchToCSSParserMode() {
 	int nextCSSBlockIndex = inputString.findSubstring("****", inputStringIndex);
 
-	//std::cerr << "nextCSSBlockIndex: " << nextCSSBlockIndex << std::endl;
-	//std::cerr << "nextCSSBlockIndex in: " << nextCSSBlockIndex - inputStringIndex << std::endl;
-
 	if (nextCSSBlockIndex - inputStringIndex == 0) {
 		isCSSParserModeOn = true;
 		return true;
 	}
 
 	return false;
+}
+
+
+void Parser::skipCommandsSectionStartSigns() {
+	inputStringIndex += 4; // skip "????"
 }
 
 
