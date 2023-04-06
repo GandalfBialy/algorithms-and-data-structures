@@ -128,7 +128,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
+    <ClCompile Include="BlockIterator.cpp" />
     <ClCompile Include="BlockList.cpp" />
+    <ClCompile Include="BlockListIterator.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="CommandsInterpreter.cpp" />
     <ClCompile Include="css-processor.cpp" />
@@ -140,7 +142,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Block.h" />
+    <ClInclude Include="BlockIterator.h" />
     <ClInclude Include="BlockList.h" />
+    <ClInclude Include="BlockListIterator.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="CommandsInterpreter.h" />
     <ClInclude Include="CSS.h" />
