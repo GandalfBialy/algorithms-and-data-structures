@@ -40,8 +40,6 @@ void Section::appendDeclaration(Declaration declaration) {
 
 
 int Section::findProperty(String propertyName) {
-	std::cerr << "findProperty: " << propertyName << std::endl;
-	
 	if (declarations.getSize() == 0) {
 		return -1;
 	}
@@ -80,6 +78,11 @@ void Section::removeProperty(String propertyName) {
 }
 
 
+bool Section::isEmpty() const {
+	return declarations.getSize() == 0;
+}
+
+
 void Section::setSelectors(List<String> selectors) {
 	this->selectors = selectors;
 }
@@ -102,6 +105,17 @@ List<String> Section::getSelectors() const {
 
 List<String>* Section::getSelectorsPointer() {
 	return &selectors;
+}
+
+
+List<String> Section::getProperties() const {
+	List<String> properties;
+
+	for (int i = 0; i < declarations.getSize(); i++) {
+		properties.append(declarations[i].getProperty());
+	}	
+
+	return properties;
 }
 
 

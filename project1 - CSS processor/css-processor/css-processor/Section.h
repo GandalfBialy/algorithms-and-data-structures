@@ -26,12 +26,15 @@ public:
 	void replaceDeclarationValue(int declarationIndex, String valueName);
 	void removeProperty(String propertyName);
 	
+	bool isEmpty() const;
+
 	void setSelectors(List<String> selectors);
 	void setHasNoSelectors(bool hasNoSelectors);
 
 	String getSectionName() const;
 	List<String> getSelectors() const;
 	List<String>* getSelectorsPointer();
+	List<String> getProperties() const;
 	List<Declaration> getDeclarations() const;
 	bool getHasNoSelectors() const;
 };
