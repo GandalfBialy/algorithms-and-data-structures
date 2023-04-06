@@ -2,13 +2,13 @@
 
 
 #include "Section.h"
+//#include "BlockIterator.h"
 
 
 template<size_t N>
 class Block {
 private:
-    //std::array<Section, N> sections;
-    Section* sections = new Section[N];
+	Section sections[N];
 	bool isFull = false;
 
 public:
@@ -35,6 +35,16 @@ public:
 	}
 
 	
+	void setIsFull(bool isFull) {
+		this->isFull = isFull;
+	}
+	
+	
+	void removeSection(int index) {
+		sections[index] = Section();
+	}
+
+	
 	int getSectionsCount() const {
 		int count = 0;
 
@@ -47,11 +57,10 @@ public:
 		//	currentSection = currentSection->next;
 		//}
 
-		//return count;
+		return count;
 	}
 
 
-	// operator
 	Section& operator[](int index) {
 		return sections[index];
 	}
