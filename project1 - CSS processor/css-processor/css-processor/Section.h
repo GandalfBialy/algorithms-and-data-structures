@@ -12,6 +12,8 @@ private:
 	List<String> selectors;
 	List<Declaration> declarations;
 
+	bool hasNoSelectors = true;
+
 public:
 	Section();
 	Section(String sectionName);
@@ -25,9 +27,11 @@ public:
 	void removeProperty(String propertyName);
 	
 	void setSelectors(List<String> selectors);
+	void setHasNoSelectors(bool hasNoSelectors);
 
 	String getSectionName() const;
 	List<String> getSelectors() const;
 	List<String>* getSelectorsPointer();
 	List<Declaration> getDeclarations() const;
+	bool getHasNoSelectors() const;
 };

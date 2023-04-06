@@ -1,13 +1,13 @@
 #include "Section.h"
 
 
-Section::Section() : sectionName("") {
+Section::Section() : sectionName(""), hasNoSelectors(false) {
 	selectors = List<String>();
 	declarations = List<Declaration>();
 }
 
 
-Section::Section(String sectionName) : sectionName(sectionName) {
+Section::Section(String sectionName) : sectionName(sectionName), hasNoSelectors(false) {
 	selectors = List<String>();
 	declarations = List<Declaration>();
 }
@@ -36,6 +36,8 @@ void Section::appendDeclaration(Declaration declaration) {
 
 
 int Section::findProperty(String propertyName) {
+	std::cerr << "findProperty: " << propertyName << std::endl;
+	
 	if (declarations.getSize() == 0) {
 		return -1;
 	}
@@ -64,40 +66,23 @@ void Section::replaceDeclarationValue(int declarationIndex, String valueName) {
 void Section::removeProperty(String propertyName) {
 	int index = findProperty(propertyName);
 
-	if (index != -1) {
+	if (index != -1 and declarations.getSize() != 0 and declarations.getSize() > index) {
 		declarations.removeAt(index);
-	}
-
-
-
-
-
-
-	/*if (declarations.getSize() == 0) {
-		return;
-	}
-
-	Node<Declaration>* declaration = declarations.getHead();
-	int index = 0;
-
-	while (declaration != nullptr) {
-		if (declaration->data.getProperty() == propertyName) {
-			declarations.removeAt(index);
-			break;
-		}
-
-		declaration = declaration->next;
-		index++;
 	}
 
 	if (declarations.getSize() == 0) {
 		sectionName = "";
-	}*/
+	}
 }
 
 
 void Section::setSelectors(List<String> selectors) {
 	this->selectors = selectors;
+}
+
+
+void Section::setHasNoSelectors(bool hasNoSelectors) {
+	this->hasNoSelectors = hasNoSelectors;
 }
 
 
@@ -118,4 +103,9 @@ List<String>* Section::getSelectorsPointer() {
 
 List<Declaration> Section::getDeclarations() const {
 	return declarations;
+}
+
+
+bool Section::getHasNoSelectors() const {
+	return hasNoSelectors;
 }
