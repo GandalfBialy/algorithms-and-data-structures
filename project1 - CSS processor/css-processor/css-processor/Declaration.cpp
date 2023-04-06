@@ -5,6 +5,10 @@ Declaration::Declaration() : property(String()), value(String()) {
 }
 
 
+Declaration::Declaration(String property, String value) : property(property), value(value) {
+}
+
+
 void Declaration::setProperty(String property) {
 	this->property = property;
 }

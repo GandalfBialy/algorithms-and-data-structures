@@ -29,21 +29,24 @@ Parser::Parser(const Parser& other) {
 
 void Parser::loadInput() {
 	inputStringIndex = 0;
-	char* inputBuffer = new char[BUFFER_SIZE];
+	char* inputBuffer = new char[BIG_BUFFER_SIZE];
 	
 	while (inputBuffer[inputStringIndex] = (char)(getchar())) {
-		if (inputStringIndex == BUFFER_SIZE) {
+		if (inputStringIndex + 2 == BIG_BUFFER_SIZE) {
+			inputBuffer[inputStringIndex + 1] = '\0';
 			inputString += inputBuffer;
 			inputStringIndex = 0;
 			continue;
 		}
-		else if (inputBuffer[inputStringIndex] == EOF) {
+
+		if (inputBuffer[inputStringIndex] == EOF) {
 			inputBuffer[inputStringIndex] = '\0';
 			break;
 		}
 
 		inputStringIndex++;
 	}
+
 
 	inputString += inputBuffer;
 	inputString.trimWhitespace();
@@ -80,30 +83,19 @@ void Parser::parseInput() {
 
 
 void Parser::parseSection() {
-	//std::cerr << "Parsing section..." << std::endl;
-	
 	String sectionString = "";
-	char* sectionBuffer = new char[BUFFER_SIZE];
-	int sectionBufferIndex = 0;
 
-	while (inputString[inputStringIndex] != '{') {
-		sectionBuffer[sectionBufferIndex] = inputString[inputStringIndex];
-		inputStringIndex++;
-		sectionBufferIndex++;
-	}
-
-	sectionBuffer[sectionBufferIndex] = '\0';
-
-	sectionString = sectionBuffer;
+	int sectionNameStartIndex = inputStringIndex;
+	int sectionNameEndIndex = inputString.findCharacter('{', inputStringIndex) - 1;
+	
+	sectionString = inputString.substring(sectionNameStartIndex, sectionNameEndIndex);
 
 	sectionString.trimWhitespace();
 
 	this->currentSection = Section(sectionString);
 
-	std::cerr << "Section: " << std::endl;
-	std::cerr << sectionString << std::endl << std::endl;
-
-	delete[] sectionBuffer;
+	//std::cerr << "Section: " << std::endl;
+	//std::cerr << sectionString << std::endl << std::endl;
 
 	parseSelectors();
 	parseDeclarations();
@@ -111,102 +103,72 @@ void Parser::parseSection() {
 	css->appendSection(currentSection);
 
 	int nextSectionIndex = inputString.findCharacter('{', inputStringIndex);
-
 	int nextCommandIndex = inputString.findSubstring("????", inputStringIndex);
 
 	if (nextCommandIndex < nextSectionIndex or nextSectionIndex == -1) {
 		isCSSParserModeOn = false;
-
 		inputStringIndex = nextCommandIndex;
-
 		skipCommandsSectionStartSigns();
 	}
 }
 
 
 void Parser::parseSelectors() {
-	//std::cerr << "Parsing selectors..." << std::endl;
-	
 	String sectionName = currentSection.getSectionName();
 	int sectionNameLength = sectionName.getLength();
 	
 	List<String> selectors;
 	String selector = "";
-	char* selectorBuffer = new char[BUFFER_SIZE];
-	int selectorBufferIndex = 0;
+	
+	int selectorStartIndex = 0;
+	int selectorEndIndex = 0;
 
 	for (int sectionNameIndex = 0; sectionNameIndex < sectionNameLength; sectionNameIndex++) {
 		char currentCharacter = sectionName[sectionNameIndex];
-		
-		if (currentCharacter == ',') {
-			selectorBuffer[selectorBufferIndex] = '\0';
-			selectorBufferIndex = 0;
 
-			selector = selectorBuffer;
+		if (currentCharacter == ',') {
+			selectorEndIndex = sectionNameIndex - 1;
+
+			selector = sectionName.substring(selectorStartIndex, selectorEndIndex);
 			selector.trimWhitespace();
 			selectors.append(selector);
-			
+
+			selectorStartIndex = sectionNameIndex + 1;
+
 			continue;
 		}
-		
-		selectorBuffer[selectorBufferIndex] = currentCharacter;
-		selectorBufferIndex++;
 	}
 
-	selectorBuffer[selectorBufferIndex] = '\0';
-	selector = selectorBuffer;
+	selectorEndIndex = sectionNameLength - 1;
 
+	selector = sectionName.substring(selectorStartIndex, selectorEndIndex);
+	
 	selector.trimWhitespace();
 	selectors.append(selector);
 
 	currentSection.setSelectors(selectors);
 
-	//std::cerr << "Selectors: " << std::endl;
 	selectors.print();
-	//std::cerr << std::endl;
-
-	delete[] selectorBuffer;
 }
 
 
 void Parser::parseDeclarations() {
-	//std::cerr << "Parsing declarations (section body)..." << std::endl;
+	this->sectionBodyString = "";
 	
-	char* sectionBodyBuffer = new char[BUFFER_SIZE];
-	int sectionBodyBufferIndex = 0;
-
-	// skip '{'
-	while (inputString[inputStringIndex] != '{') {
-		inputStringIndex++;
-	}
-	inputStringIndex++;
-
-	while (inputString[inputStringIndex] != '}') {
-		sectionBodyBuffer[sectionBodyBufferIndex] = inputString[inputStringIndex];
-		inputStringIndex++;
-		sectionBodyBufferIndex++;
-	}
-
-	sectionBodyBuffer[sectionBodyBufferIndex] = '\0';
-	sectionBodyString = sectionBodyBuffer;
-
-	//std::cerr << "Section body: " << std::endl;
-	//std::cerr << sectionBodyString << std::endl << std::endl;
+	int sectionBodyStartIndex = inputString.findCharacter('{', inputStringIndex) + 1;
+	int sectionBodyEndIndex = inputString.findCharacter('}', inputStringIndex) - 1;
+	
+	inputStringIndex = sectionBodyEndIndex + 1;
+	
+	sectionBodyString = inputString.substring(sectionBodyStartIndex, sectionBodyEndIndex);
 
 	sectionBodyString.trimWhitespace();
 
-	//std::cerr << "Section body (trimmed whitespace): " << std::endl;
-	//std::cerr << sectionBodyString << std::endl << std::endl;
-
 	parseProperties();
-
-	delete[] sectionBodyBuffer;
 }
 
 
 void Parser::parseProperties() {
-	//std::cerr << "Parsing properties..." << std::endl;
-
 	String property = "";
 	char* propertyBuffer = new char[BUFFER_SIZE];
 	int propertyBufferIndex = 0;
@@ -228,8 +190,8 @@ void Parser::parseProperties() {
 
 			property.trimWhitespace();
 
-			//std::cerr << "Property: " << std::endl;
-			//std::cerr << property << std::endl << std::endl;
+			std::cerr << "Property: " << std::endl;
+			std::cerr << property << std::endl << std::endl;
 
 			// check if property is already defined
 			int propertyIndexIfAlreadyDefined = currentSection.findProperty(property);
@@ -364,7 +326,7 @@ void Parser::parseCommand() {
 void Parser::executeCommands() {
 	commandsInterpreter.executeCommands();
 
-	inputStringIndex += 4; // skip "????"
+	skipCommandsSectionStartSigns();
 }
 
 

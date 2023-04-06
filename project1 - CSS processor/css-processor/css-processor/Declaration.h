@@ -12,6 +12,7 @@ private:
 
 public:
 	Declaration();
+	Declaration(String property, String value);
 
 	void setProperty(String property);
 	void setValue(String value);
