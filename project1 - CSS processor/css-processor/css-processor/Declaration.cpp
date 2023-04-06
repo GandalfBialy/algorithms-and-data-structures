@@ -1,11 +1,15 @@
 #include "Declaration.h"
 
 
-Declaration::Declaration() : property(String()), value(String()) {
+Declaration::Declaration() :
+	property(String()),
+	value(String()) {
 }
 
 
-Declaration::Declaration(String property, String value) : property(property), value(value) {
+Declaration::Declaration(String property, String value) :
+	property(property),
+	value(value) {
 }
 
 

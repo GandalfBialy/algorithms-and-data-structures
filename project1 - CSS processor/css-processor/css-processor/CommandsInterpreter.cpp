@@ -1,20 +1,19 @@
 #include "CommandsInterpreter.h"
 
 
-CommandsInterpreter::CommandsInterpreter() {
-	commands = List<Command>();
-	css = nullptr;
-
-	commandName = String();
-	arguments = nullptr;
+CommandsInterpreter::CommandsInterpreter() :
+	commands{ List<Command>() },
+	css{ nullptr },
+	commandName{ String() },
+	arguments{ nullptr } {
 }
 
 
-CommandsInterpreter::CommandsInterpreter(CSS* css) : css(css) {
-	commands = List<Command>();
-
-	commandName = String();
-	arguments = nullptr;
+CommandsInterpreter::CommandsInterpreter(CSS* css) :
+	css(css),
+	commands{ List<Command>() },
+	commandName{ String() },
+	arguments{ nullptr } {
 }
 
 

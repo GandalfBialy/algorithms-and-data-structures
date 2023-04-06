@@ -1,29 +1,29 @@
 #include "Parser.h"
 
 
-Parser::Parser() : inputString(""), sectionBodyString(""), inputStringIndex(0), sectionBodyBufferIndex(0), isCSSParserModeOn(true) {
-	css = new CSS();
-	commandsInterpreter = CommandsInterpreter(css);
-
-	currentSection = Section();
-	currentDeclaration = Declaration();
+Parser::Parser() :
+	inputString{ "" },
+	sectionBodyString{ "" },
+	inputStringIndex{ 0 },
+	sectionBodyBufferIndex{ 0 },
+	isCSSParserModeOn{ true },
+	currentSection{ Section() },
+	currentDeclaration{ Declaration() },
+	css{ new CSS },
+	commandsInterpreter{ CommandsInterpreter(css) } {
 }
 
 
-Parser::Parser(const Parser& other) {
-	css = other.css;
-	commandsInterpreter = other.commandsInterpreter;
-
-	currentSection = other.currentSection;
-	currentDeclaration = other.currentDeclaration;
-
-	inputString = other.inputString;
-	sectionBodyString = other.sectionBodyString;
-
-	inputStringIndex = other.inputStringIndex;
-	sectionBodyBufferIndex = other.sectionBodyBufferIndex;
-
-	isCSSParserModeOn = other.isCSSParserModeOn;
+Parser::Parser(const Parser& other) :
+	css{ other.css },
+	commandsInterpreter{ other.commandsInterpreter },
+	currentSection{ other.currentSection },
+	currentDeclaration{ other.currentDeclaration },
+	inputString{ other.inputString },
+	sectionBodyString{ other.sectionBodyString },
+	inputStringIndex{ other.inputStringIndex },
+	sectionBodyBufferIndex{ other.sectionBodyBufferIndex },
+	isCSSParserModeOn{ other.isCSSParserModeOn } {
 }
 
 
@@ -103,6 +103,7 @@ void Parser::parseSection() {
 
 	int nextSectionIndex = inputString.findCharacter('{', inputStringIndex);
 	int nextCommandIndex = inputString.findSubstring("????", inputStringIndex);
+	//int nextCommandIndex = inputString.findSubstring("????", inputStringIndex, inputStringIndex + 4);
 
 	if (nextCommandIndex < nextSectionIndex or nextSectionIndex == -1) {
 		isCSSParserModeOn = false;

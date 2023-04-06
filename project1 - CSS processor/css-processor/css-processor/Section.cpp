@@ -1,15 +1,19 @@
 #include "Section.h"
 
 
-Section::Section() : sectionName(""), hasNoSelectors(false) {
-	selectors = List<String>();
-	declarations = List<Declaration>();
+Section::Section() :
+	sectionName(""),
+	hasNoSelectors(false),
+	selectors(List<String>()),
+	declarations(List<Declaration>()) {
 }
 
 
-Section::Section(String sectionName) : sectionName(sectionName), hasNoSelectors(false) {
-	selectors = List<String>();
-	declarations = List<Declaration>();
+Section::Section(String sectionName) :
+	sectionName{ sectionName },
+	hasNoSelectors{ false },
+	selectors{ List<String>() },
+	declarations{ List<Declaration>() } {
 }
 
 
