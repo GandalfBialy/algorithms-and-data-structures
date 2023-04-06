@@ -2,15 +2,17 @@
 
 
 Parser::Parser() :
+	css{ new CSS },
+	commandsInterpreter { CommandsInterpreter(css) },
+	currentSection{ Section() },
+	currentDeclaration{ Declaration() },
 	inputString{ "" },
 	sectionBodyString{ "" },
 	inputStringIndex{ 0 },
 	sectionBodyBufferIndex{ 0 },
-	isCSSParserModeOn{ true },
-	currentSection{ Section() },
-	currentDeclaration{ Declaration() },
-	css{ new CSS },
-	commandsInterpreter{ CommandsInterpreter(css) } {
+	nextCommandIndex{ 0 },
+	isCSSParserModeOn{ true }
+	 {
 }
 
 
@@ -23,7 +25,8 @@ Parser::Parser(const Parser& other) :
 	sectionBodyString{ other.sectionBodyString },
 	inputStringIndex{ other.inputStringIndex },
 	sectionBodyBufferIndex{ other.sectionBodyBufferIndex },
-	isCSSParserModeOn{ other.isCSSParserModeOn } {
+	isCSSParserModeOn{ other.isCSSParserModeOn },
+	nextCommandIndex{ other.nextCommandIndex } {
 }
 
 
@@ -65,7 +68,7 @@ void Parser::parseInput() {
 			parseSection();
 		}
 		else if (shouldSwitchToCSSParserMode()) {
-				commandsInterpreter.printCommands();
+				//commandsInterpreter.printCommands();
 				executeCommands();
 				
 				continue;
@@ -77,7 +80,7 @@ void Parser::parseInput() {
 		inputStringIndex++;
 	}
 
-	printParsedAndStructuredInput();
+	//printParsedAndStructuredInput();
 }
 
 
@@ -93,19 +96,19 @@ void Parser::parseSection() {
 
 	this->currentSection = Section(sectionString);
 
-	//std::cerr << "Section: " << std::endl;
-	//std::cerr << sectionString << std::endl << std::endl;
-
 	parseSelectors();
 	parseDeclarations();
 	
 	css->appendSection(currentSection);
 
 	int nextSectionIndex = inputString.findCharacter('{', inputStringIndex);
-	int nextCommandIndex = inputString.findSubstring("????", inputStringIndex);
-	//int nextCommandIndex = inputString.findSubstring("????", inputStringIndex, inputStringIndex + 4);
 
-	if (nextCommandIndex < nextSectionIndex or nextSectionIndex == -1) {
+	//if (nextCommandIndex - nextSectionIndex <= 1000) {
+	if (nextCommandIndex - nextSectionIndex <= 0) {
+		nextCommandIndex = inputString.findSubstring("????", inputStringIndex);
+	}
+	
+	if (nextCommandIndex < nextSectionIndex and nextSectionIndex != -1 or nextSectionIndex == -1) {
 		isCSSParserModeOn = false;
 		inputStringIndex = nextCommandIndex;
 		skipCommandsSectionStartSigns();
@@ -145,10 +148,8 @@ void Parser::parseSelectors() {
 	selector = sectionName.substring(selectorStartIndex, selectorEndIndex);
 	selector.trimWhitespace();
 
-	// if there is only one selector and its empty string, append empty list
 	if (selectors.getSize() == 0 and selector == "") {
 		currentSection.setHasNoSelectors(true);
-		
 		
 		selectors.append(selector);
 		currentSection.setSelectors(selectors);
@@ -158,7 +159,7 @@ void Parser::parseSelectors() {
 
 		currentSection.setSelectors(selectors);
 
-		selectors.print();
+		//selectors.print();
 	}
 }
 
@@ -230,9 +231,6 @@ void Parser::parseValue() {
 
 	value.trimWhitespace();
 
-	//std::cerr << "Value: " << std::endl;
-	//std::cerr << value << std::endl << std::endl;
-
 	currentDeclaration.setValue(value);
 }
 
@@ -259,9 +257,6 @@ void Parser::parseCommand() {
 				
 				return;
 			}
-
-			//std::cerr << "Command: " << std::endl;
-			//std::cerr << command << std::endl << std::endl;
 
 			commandsInterpreter.appendCommand(command);
 
@@ -302,13 +297,13 @@ void Parser::parseCommand() {
 void Parser::executeCommands() {
 	commandsInterpreter.executeCommands();
 
+	nextCommandIndex = inputString.findSubstring("????", inputStringIndex);
+
 	skipCommandsSectionStartSigns();
 }
 
 
 bool Parser::shouldSwitchToCSSParserMode() {
-	//inputString.trimWhitespace();
-	
 	int nextCSSBlockIndex = inputString.findSubstring("****", inputStringIndex);
 
 	if (nextCSSBlockIndex - inputStringIndex == 0) {
@@ -331,11 +326,11 @@ void Parser::skipCommandsSectionStartSigns() {
 
 
 void Parser::printParsedAndStructuredInput() {
-	//std::cerr << std::endl << std::endl;
-	//css->printCSS();
+	std::cerr << std::endl << std::endl;
+	css->printCSS();
 
-	//std::cerr << std::endl << std::endl;
-	//commandsInterpreter.printCommands();
+	std::cerr << std::endl << std::endl;
+	commandsInterpreter.printCommands();
 }
 
 

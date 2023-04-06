@@ -8,8 +8,8 @@
 #include "CommandsInterpreter.h"
 
 
-int const BUFFER_SIZE = 16000;
-int const BIG_BUFFER_SIZE = 256000;
+int const BUFFER_SIZE = 8000;
+int const BIG_BUFFER_SIZE = 512000;
 
 
 class Parser
@@ -26,6 +26,7 @@ private:
 	
 	int inputStringIndex;
 	int sectionBodyBufferIndex;
+	int nextCommandIndex;
 
 	bool isCSSParserModeOn;
 

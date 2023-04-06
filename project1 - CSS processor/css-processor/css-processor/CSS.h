@@ -27,6 +27,8 @@ public:
 	void removeSection(int sectionIndex, String commandName);
 	void removeProperty(int sectionIndex, String propertyName, String commandName);
 
+	bool isSectionEmpty(int sectionIndex);
+
 	List<Section> getSections() const;
 	int getSectionsCount();
 	

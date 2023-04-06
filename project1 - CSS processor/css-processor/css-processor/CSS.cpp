@@ -13,18 +13,10 @@ void CSS::appendSection(Section section) {
 	sections.append(section);
 
 	
-	/*std::cerr << "Block before: ";
-	if (currentBlock != nullptr) {
-		currentBlock->print();
-	}
-	else {
-		std::cerr << "nullptr" << std::endl;
-	}*/
-	
+	blockList.appendSection(section);
 
-	if (currentBlock == nullptr) {
+	/*if (currentBlock == nullptr) {
 		currentBlock = new Block<SECTIONS_PER_BLOCK>();
-		// set sections in currentBlock
 		currentBlock->setSection(currentSectionIndex, section);
 		currentSectionIndex++;
 	}
@@ -33,7 +25,7 @@ void CSS::appendSection(Section section) {
 		blockList.append(*currentBlock);
 		currentBlock = new Block<SECTIONS_PER_BLOCK>();
 		currentSectionIndex = 0;
-	}
+	}*/
 
 	
 	/*std::cerr << "Block after: ";
@@ -55,35 +47,28 @@ void CSS::printCSS() {
 		section->data.print();
 		section = section->next;
 	}
+
+
+	blockList.print();
 }
 
 
 void CSS::removeSection(int sectionIndex, String commandName) {
-	// check if the section exists
-	//std::cerr << "removeSection: " << sectionIndex << std::endl;
 	if (sectionIndex < 0 or sectionIndex >= sections.getSize()) {
 		return;
 	}
 	
 	sections.removeAt(sectionIndex);
-	std::cout << commandName << " == " << "deleted\n";
 
 
-
-	// BLOCK LIST BELOW
-
-	// remove section in block list
-	//std::cerr << "removeSection: " << sectionIndex << std::endl;
-	if (sectionIndex < 0 or sectionIndex >= blockList.getBlocks().getSize()) {
+	// block list below
+	/*if (sectionIndex < 0 or sectionIndex >= blockList.getSectionsCount()) {
 		return;
-	}
+	}*/
 
-	blockList.getBlocks().removeAt(sectionIndex);
-	
-	// decrease sectionsCounter
-	//blockList.decrementSectionsCounter();
+	//blockList.removeSection(sectionIndex);
 
-	//std::cout << commandName << " == " << "deleted\n";
+	std::cout << commandName << " == " << "deleted\n";
 }
 
 
@@ -102,49 +87,67 @@ void CSS::removeProperty(int sectionIndex, String propertyName, String commandNa
 
 	std::cout << commandName << " == " << "deleted\n";
 
-	if (sections[sectionIndex].getDeclarations().getSize() == 0 or sections[sectionIndex].getSelectors().getSize() == 0 or sections[sectionIndex].getSectionName() == "") {
+	if (isSectionEmpty(sectionIndex)) {
 		sections.removeAt(sectionIndex);
 	}
 
 
 
 
-
-	// remove property in block list
-	//std::cerr << "removeProperty: " << sectionIndex << std::endl;
-	if (sectionIndex < 0 or sectionIndex >= blockList.getBlocks().getSize()) {
+	// block section below
+	/*if (sectionIndex < 0 or sectionIndex >= blockList.getSectionsCount()) {
 		return;
 	}
 
-	// int
-	propertyIndex = blockList.getBlocks()[sectionIndex].getSection(sectionIndex).findProperty(propertyName);
+	auto& section = blockList.getSection(sectionIndex);
+	section.removeProperty(propertyName);
+
+	if (section.getProperties().isEmpty() or section.getSelectors().isEmpty() or section.getSectionName().isEmpty()) {
+		blockList.removeSection(sectionIndex);
+	}*/
+
 	
-	if (propertyIndex < 0 or propertyIndex >= blockList.getBlocks()[sectionIndex].getSection(sectionIndex).getDeclarations().getSize()) {
-		return;
+	//std::cout << commandName << " == " << "deleted\n";
+}
+
+
+bool CSS::isSectionEmpty(int sectionIndex) {
+	//sections[sectionIndex].getDeclarations().getSize() == 0 or sections[sectionIndex].getSelectors().getSize() == 0 or sections[sectionIndex].getSectionName() == "";
+	
+	
+	if (sectionIndex < 0 or sectionIndex >= sections.getSize()) {
+		return true;
 	}
 
-	blockList.getBlocks()[sectionIndex].getSection(sectionIndex).removeProperty(propertyName);
-
-	// if the section is empty, remove it
-	if (blockList.getBlocks()[sectionIndex].getSection(sectionIndex).getDeclarations().getSize() == 0 or
-		blockList.getBlocks()[sectionIndex].getSection(sectionIndex).getSelectors().getSize() == 0 or
-		blockList.getBlocks()[sectionIndex].getSection(sectionIndex).getSectionName() == "") {
-		blockList.getBlocks()[sectionIndex].getSection(sectionIndex).removeProperty(propertyName);
-	}
-
-	std::cout << commandName << " == " << "deleted\n";
+	return sections[sectionIndex].isEmpty();
 }
 
 
 List<Section> CSS::getSections() const {
 	return sections;
+
+	// block list below
+
+	/*List<Section> allSections;
+	BlockIterator<SECTIONS_PER_BLOCK> blockIt(blockList);
+
+	for (auto& block : blockIt) {
+		for (int i = 0; i < SECTIONS_PER_BLOCK; i++) {
+			Section& section = block.getSection(i);
+
+			if (!section.isEmpty()) {
+				allSections.append(section);
+			}
+		}
+	}
+
+	return allSections;*/
 }
 
 
 int CSS::getSectionsCount() {
 	return sections.getSize();
 
-	// return sections counter from block list
 	//return blockList.getSectionsCount();
 }
 
