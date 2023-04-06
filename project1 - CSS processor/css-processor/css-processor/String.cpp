@@ -206,6 +206,13 @@ int String::findSubstring(const String& substring, int startIndex, int endIndex)
 		return -1;
 	}
 
+	
+	// endIndex - choose the smaller of the two
+	if (endIndex > length - 1) {
+		endIndex = length - 1;
+	}
+	
+
 	for (int i = startIndex; i < length and i <= endIndex; i++) {
 		if (string[i] == substring.string[0]) {
 			bool found = true;
@@ -235,6 +242,11 @@ bool String::isNumber() const {
 	}
 
 	return true;
+}
+
+
+bool String::isEmpty() const {
+	return length == 0;
 }
 
 

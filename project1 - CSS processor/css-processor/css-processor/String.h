@@ -42,6 +42,7 @@ public:
 	int findSubstring(const String& substring, int startIndex, int endIndex) const;
 
 	bool isNumber() const;
+	bool isEmpty() const;
 	int parseToInt();
 	
 	String& operator=(const String& string);
