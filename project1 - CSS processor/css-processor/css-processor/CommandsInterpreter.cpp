@@ -58,8 +58,6 @@ void CommandsInterpreter::printCommands() {
 
 
 void CommandsInterpreter::executeCommands() {
-	//std::cerr << "--- EXECUTING COMMANDS ---" << std::endl;
-
 	while(commands.getSize() > 0) {
 		Command command = commands.front();
 		
@@ -243,7 +241,6 @@ String CommandsInterpreter::getPropertyValue(int sectionIndex, String propertyNa
 String CommandsInterpreter::getPropertyValue(String selectorName, String propertyName) const {
 	List<Section> sections = css->getSections();
 
-	// if sections list is empty, return empty string
 	if (sections.getHead() == nullptr) {
 		return "";
 	}
@@ -251,7 +248,6 @@ String CommandsInterpreter::getPropertyValue(String selectorName, String propert
 	for (Node<Section>* section = sections.getTail(); section != nullptr; section = section->previous) {
 		List<String>* selectors = section->data.getSelectorsPointer();
 
-		// if selectors list is empty, continue to the next section
 		if (selectors->getHead() == nullptr) {
 			continue;
 		}
@@ -260,7 +256,6 @@ String CommandsInterpreter::getPropertyValue(String selectorName, String propert
 			if (selector->data == selectorName) {
 				List<Declaration> declarations = section->data.getDeclarations();
 
-				// if declarations list is empty, continue to the next selector
 				if (declarations.getHead() == nullptr) {
 					continue;
 				}
@@ -411,7 +406,6 @@ void CommandsInterpreter::handleSectionDeletionCommand() {
 		int sectionIndex = arguments[0].parseToInt() - 1;
 
 		css->removeSection(sectionIndex, commandName);
-		/*std::cout << commandName << " == " << "deleted\n";*/
 	}
 }
 
@@ -423,7 +417,5 @@ void CommandsInterpreter::handlePropertyDeletionCommand() {
 		String propertyName = arguments[2];
 
 		css->removeProperty(sectionIndex, propertyName, commandName);
-
-		//std::cout << commandName << " == " << "deleted\n";
 	}
 }
