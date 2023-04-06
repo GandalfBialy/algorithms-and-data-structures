@@ -291,6 +291,8 @@ void CommandsInterpreter::handleSectionsCountCommand() {
 
 // i,S,? (command)
 void CommandsInterpreter::handleSelectorsCountBySectionIndexCommand() {
+	
+
 	if (arguments[1] == "S" and arguments[2] == "?" and arguments[0].isNumber()) {
 		int sectionIndex = arguments[0].parseToInt() - 1;
 		int sectionsCount = getSectionsCount();
@@ -299,6 +301,14 @@ void CommandsInterpreter::handleSelectorsCountBySectionIndexCommand() {
 			return;
 		}
 		
+		Section section = css->getSections()[sectionIndex];
+
+		if (section.getHasNoSelectors() == true) {
+			std::cout << commandName << " == " << 0 << "\n";
+
+			return;
+		}
+
 		std::cout << commandName << " == " << getSelectorsCount(sectionIndex) << "\n";
 	}
 }
@@ -401,20 +411,20 @@ void CommandsInterpreter::handleSectionDeletionCommand() {
 	if (arguments[1] == "D" and arguments[2] == "*") {
 		int sectionIndex = arguments[0].parseToInt() - 1;
 
-		css->removeSection(sectionIndex);
-		std::cout << commandName << " == " << "deleted\n";
+		css->removeSection(sectionIndex, commandName);
+		/*std::cout << commandName << " == " << "deleted\n";*/
 	}
 }
 
 
 // i,D,n (command)
 void CommandsInterpreter::handlePropertyDeletionCommand() {
-	if (arguments[1] == "D" and arguments[2].getLength() > 1) {
+	if (arguments[1] == "D" and arguments[2] != "*" and arguments[0].isNumber()) {
 		int sectionIndex = arguments[0].parseToInt() - 1;
 		String propertyName = arguments[2];
 
-		css->removeProperty(sectionIndex, propertyName);
+		css->removeProperty(sectionIndex, propertyName, commandName);
 
-		std::cout << commandName << " == " << "deleted\n";
+		//std::cout << commandName << " == " << "deleted\n";
 	}
 }

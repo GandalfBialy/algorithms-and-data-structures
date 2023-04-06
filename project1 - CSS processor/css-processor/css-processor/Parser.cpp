@@ -138,16 +138,27 @@ void Parser::parseSelectors() {
 		}
 	}
 
+	
 	selectorEndIndex = sectionNameLength - 1;
 
 	selector = sectionName.substring(selectorStartIndex, selectorEndIndex);
-	
 	selector.trimWhitespace();
-	selectors.append(selector);
 
-	currentSection.setSelectors(selectors);
+	// if there is only one selector and its empty string, append empty list
+	if (selectors.getSize() == 0 and selector == "") {
+		currentSection.setHasNoSelectors(true);
+		
+		
+		selectors.append(selector);
+		currentSection.setSelectors(selectors);
+	}
+	else {
+		selectors.append(selector);
 
-	selectors.print();
+		currentSection.setSelectors(selectors);
+
+		selectors.print();
+	}
 }
 
 

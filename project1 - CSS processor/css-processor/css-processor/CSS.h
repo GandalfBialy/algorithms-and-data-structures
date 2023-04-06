@@ -15,8 +15,8 @@ public:
 	void appendSection(Section section);
 	void printCSS();
 
-	void removeSection(int sectionIndex);
-	void removeProperty(int sectionIndex, String propertyName);
+	void removeSection(int sectionIndex, String commandName);
+	void removeProperty(int sectionIndex, String propertyName, String commandName);
 
 	List<Section> getSections() const;
 	int getSectionsCount();

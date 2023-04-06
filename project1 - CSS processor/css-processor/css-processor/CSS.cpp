@@ -23,15 +23,34 @@ void CSS::printCSS() {
 }
 
 
-void CSS::removeSection(int sectionIndex) {
+void CSS::removeSection(int sectionIndex, String commandName) {
+	// check if the section exists
+	std::cerr << "removeSection: " << sectionIndex << std::endl;
+	if (sectionIndex < 0 or sectionIndex >= sections.getSize()) {
+		return;
+	}
+	
 	sections.removeAt(sectionIndex);
+	std::cout << commandName << " == " << "deleted\n";
 }
 
 
-void CSS::removeProperty(int sectionIndex, String propertyName) {
+void CSS::removeProperty(int sectionIndex, String propertyName, String commandName) {
+	if (sectionIndex < 0 or sectionIndex >= sections.getSize()) {
+		return;
+	}
+
+	int propertyIndex = sections[sectionIndex].findProperty(propertyName);
+
+	if (propertyIndex < 0 or propertyIndex >= sections[sectionIndex].getDeclarations().getSize()) {
+		return;
+	}
+
 	sections[sectionIndex].removeProperty(propertyName);
 
-	if (sections[sectionIndex].getDeclarations().getSize() == 0) {
+	std::cout << commandName << " == " << "deleted\n";
+
+	if (sections[sectionIndex].getDeclarations().getSize() == 0 or sections[sectionIndex].getSelectors().getSize() == 0 or sections[sectionIndex].getSectionName() == "") {
 		sections.removeAt(sectionIndex);
 	}
 }
