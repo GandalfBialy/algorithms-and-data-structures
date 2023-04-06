@@ -59,7 +59,7 @@ void CommandsInterpreter::printCommands() {
 
 
 void CommandsInterpreter::executeCommands() {
-	std::cerr << "--- EXECUTING COMMANDS ---" << std::endl;
+	//std::cerr << "--- EXECUTING COMMANDS ---" << std::endl;
 
 	while(commands.getSize() > 0) {
 		Command command = commands.front();

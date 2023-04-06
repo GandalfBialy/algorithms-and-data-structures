@@ -64,14 +64,13 @@ void Parser::parseInput() {
 		if (isCSSParserModeOn) {
 			parseSection();
 		}
-		else {
-			if (shouldSwitchToCSSParserMode()) {
+		else if (shouldSwitchToCSSParserMode()) {
 				commandsInterpreter.printCommands();
 				executeCommands();
 				
 				continue;
-			}
-			
+		}
+		else {
 			parseCommand();
 		}
 
@@ -170,85 +169,52 @@ void Parser::parseDeclarations() {
 
 void Parser::parseProperties() {
 	String property = "";
-	char* propertyBuffer = new char[BUFFER_SIZE];
-	int propertyBufferIndex = 0;
 
 	int sectionBodyLength = sectionBodyString.getLength();
 	sectionBodyBufferIndex = 0;
 
 	while (sectionBodyBufferIndex < sectionBodyLength) {
-		char currentCharacter = sectionBodyString[sectionBodyBufferIndex];
-		
-		if (currentCharacter == ':') {
-			this->currentDeclaration = Declaration();
-			
-			propertyBuffer[propertyBufferIndex] = '\0';
-			property = propertyBuffer;
+		int propertyStartIndex = sectionBodyBufferIndex;
+		int propertyEndIndex = sectionBodyString.findCharacter(':', sectionBodyBufferIndex) - 1;
 
-			propertyBufferIndex = 0;
-			sectionBodyBufferIndex++;
+		property = sectionBodyString.substring(propertyStartIndex, propertyEndIndex);
 
-			property.trimWhitespace();
+		sectionBodyBufferIndex = propertyEndIndex + 2;
 
-			std::cerr << "Property: " << std::endl;
-			std::cerr << property << std::endl << std::endl;
+		property.trimWhitespace();
 
-			// check if property is already defined
-			int propertyIndexIfAlreadyDefined = currentSection.findProperty(property);
 
-			if (propertyIndexIfAlreadyDefined == -1) {
-				currentDeclaration.setProperty(property);
+		int propertyIndexIfAlreadyDefined = currentSection.findProperty(property);
 
-				parseValue();
+		if (propertyIndexIfAlreadyDefined == -1) {
+			currentDeclaration.setProperty(property);
 
-				currentSection.appendDeclaration(currentDeclaration);
-			}
-			else {
-				parseValue();
+			parseValue();
 
-				String valueName = currentDeclaration.getValue();
-
-				currentSection.replaceDeclarationValue(propertyIndexIfAlreadyDefined, valueName);
-			}
-
-			sectionBodyBufferIndex++;
-
-			continue;
+			currentSection.appendDeclaration(currentDeclaration);
 		}
+		else {
+			parseValue();
 
-		propertyBuffer[propertyBufferIndex] = currentCharacter;
-		propertyBufferIndex++;
+			String valueName = currentDeclaration.getValue();
 
+			currentSection.replaceDeclarationValue(propertyIndexIfAlreadyDefined, valueName);
+		}
+		
 		sectionBodyBufferIndex++;
 	}
-
-	delete[] propertyBuffer;
 }
 
 
 void Parser::parseValue() {
-	//std::cerr << "Parsing value..." << std::endl;
-	
 	String value = "";
-	char* valueBuffer = new char[BUFFER_SIZE];
-	int valueBufferIndex = 0;
+	
+	int valueStartIndex = sectionBodyBufferIndex;
+	int valueEndIndex = sectionBodyString.findCharacter(';', sectionBodyBufferIndex) - 1;
 
-	int sectionBodyLength = sectionBodyString.getLength();
+	value = sectionBodyString.substring(valueStartIndex, valueEndIndex);
 
-	while (sectionBodyBufferIndex < sectionBodyLength) {
-		char currentCharacter = sectionBodyString[sectionBodyBufferIndex];
-		
-		if (currentCharacter == ';') {
-			valueBuffer[valueBufferIndex] = '\0';
-			value = valueBuffer;
-			break;
-		}
-
-		valueBuffer[valueBufferIndex] = currentCharacter;
-		valueBufferIndex++;
-		
-		sectionBodyBufferIndex++;
-	}
+	sectionBodyBufferIndex = valueEndIndex + 1;
 
 	value.trimWhitespace();
 
@@ -256,14 +222,10 @@ void Parser::parseValue() {
 	//std::cerr << value << std::endl << std::endl;
 
 	currentDeclaration.setValue(value);
-
-	delete[] valueBuffer;
 }
 
 
 void Parser::parseCommand() {
-	//std::cerr << "Parsing command..." << std::endl;
-
 	String command = "";
 	char* commandBuffer = new char[BUFFER_SIZE];
 	int commandBufferIndex = 0;
@@ -302,6 +264,8 @@ void Parser::parseCommand() {
 		inputStringIndex++;
 	}
 
+	inputStringIndex++;
+
 	if (commandBufferIndex == 0) {
 		delete[] commandBuffer;
 		
@@ -314,8 +278,8 @@ void Parser::parseCommand() {
 
 	command.trimWhitespace();
 
-	//std::cerr << "Command: " << std::endl;
-	//std::cerr << command << std::endl << std::endl;
+	std::cerr << "Command: " << std::endl;
+	std::cerr << command << std::endl << std::endl;
 
 	commandsInterpreter.appendCommand(command);
 
@@ -331,6 +295,8 @@ void Parser::executeCommands() {
 
 
 bool Parser::shouldSwitchToCSSParserMode() {
+	//inputString.trimWhitespace();
+	
 	int nextCSSBlockIndex = inputString.findSubstring("****", inputStringIndex);
 
 	if (nextCSSBlockIndex - inputStringIndex == 0) {
@@ -353,11 +319,11 @@ void Parser::skipCommandsSectionStartSigns() {
 
 
 void Parser::printParsedAndStructuredInput() {
-	std::cerr << std::endl << std::endl;
-	css->printCSS();
+	//std::cerr << std::endl << std::endl;
+	//css->printCSS();
 
-	std::cerr << std::endl << std::endl;
-	commandsInterpreter.printCommands();
+	//std::cerr << std::endl << std::endl;
+	//commandsInterpreter.printCommands();
 }
 
 
