@@ -1,10 +1,9 @@
 #include "String.h"
 
 
-String::String() {
-	length = 0;
-	
-	string = new char[1];
+String::String() :
+	length{ 0 },
+	string { new char[1] } {
 	string[0] = '\0';
 }
 
@@ -182,6 +181,32 @@ int String::findSubstring(const String& substring, int startIndex) const {
 	}
 
 	for (int i = startIndex; i < length; i++) {
+		if (string[i] == substring.string[0]) {
+			bool found = true;
+
+			for (int j = 1; j < substring.length; j++) {
+				if (string[i + j] != substring.string[j]) {
+					found = false;
+					break;
+				}
+			}
+
+			if (found) {
+				return i;
+			}
+		}
+	}
+
+	return -1;
+}
+
+
+int String::findSubstring(const String& substring, int startIndex, int endIndex) const {
+	if (substring.length > length - startIndex or substring.length == 0 or startIndex < 0 or startIndex >= length) {
+		return -1;
+	}
+
+	for (int i = startIndex; i < length and i <= endIndex; i++) {
 		if (string[i] == substring.string[0]) {
 			bool found = true;
 

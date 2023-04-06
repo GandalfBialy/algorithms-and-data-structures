@@ -39,6 +39,7 @@ public:
 	int findCharacter(char character, int startIndex) const;
 	int findSubstring(const String& substring) const;
 	int findSubstring(const String& substring, int startIndex) const;
+	int findSubstring(const String& substring, int startIndex, int endIndex) const;
 
 	bool isNumber() const;
 	int parseToInt();
