@@ -25,7 +25,7 @@ void CSS::printCSS() {
 
 void CSS::removeSection(int sectionIndex, String commandName) {
 	// check if the section exists
-	std::cerr << "removeSection: " << sectionIndex << std::endl;
+	//std::cerr << "removeSection: " << sectionIndex << std::endl;
 	if (sectionIndex < 0 or sectionIndex >= sections.getSize()) {
 		return;
 	}
