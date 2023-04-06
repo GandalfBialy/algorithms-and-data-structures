@@ -2,12 +2,21 @@
 
 
 #include "Section.h"
+#include "BlockList.h"
+
+
+int const SECTIONS_PER_BLOCK = 8;
 
 
 class CSS
 {
 private:
 	List<Section> sections;
+	BlockList<SECTIONS_PER_BLOCK> blockList;
+	
+	Block<SECTIONS_PER_BLOCK>* currentBlock;
+	int currentSectionIndex = 0;
+	//List<Block<SECTIONS_PER_BLOCK>> blocks;
 
 public:
 	CSS();
@@ -20,5 +29,7 @@ public:
 
 	List<Section> getSections() const;
 	int getSectionsCount();
+	
+	BlockList<SECTIONS_PER_BLOCK> getBlockList() const;
 };
 

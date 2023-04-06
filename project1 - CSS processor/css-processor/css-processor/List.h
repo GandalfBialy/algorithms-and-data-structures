@@ -62,6 +62,34 @@ public:
 
 		return currentNode->data;
 	}
+
+	class Iterator {
+	private:
+		Node<T>* current;
+		
+	public:
+		Iterator(Node<T>* current) {
+			this->current = current;
+		}
+
+		Iterator& operator++() {
+			current = current->next;
+			return *this;
+		}
+
+		Iterator& operator--() {
+			current = current->previous;
+			return *this;
+		}
+
+		bool operator!=(const Iterator& other) const {
+			return current != other.current;
+		}
+
+		T& operator*() {
+			return current->data;
+		}
+	};
 };
 
 
