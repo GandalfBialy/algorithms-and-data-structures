@@ -35,6 +35,7 @@ public:
 	void removeAt(int index);
 
 	bool contains(const T& data) const;
+	bool isEmpty() const;
 	void clear();
 
 	Node<T>* getHead();
@@ -62,6 +63,18 @@ public:
 
 		return currentNode->data;
 	}
+
+	
+	const T& operator[](int index) const {
+		Node<T>* currentNode = head;
+
+		for (int i = 0; i < index; i++) {
+			currentNode = currentNode->next;
+		}
+
+		return currentNode->data;
+	}
+	
 
 	class Iterator {
 	private:
@@ -299,6 +312,12 @@ bool List<T>::contains(const T& data) const {
 	}
 
 	return false;
+}
+
+
+template<typename T>
+bool List<T>::isEmpty() const {
+	return size == 0;
 }
 
 
