@@ -18,9 +18,6 @@
     <ClCompile Include="css-processor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Node.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="String.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -28,9 +25,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CSS.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="List.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Section.cpp">
@@ -43,6 +37,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Command.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Block.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -75,6 +75,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Command.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Block.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
